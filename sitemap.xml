@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>https://bkkaggle.github.io/blog/markdown/2020/01/14/test-markdown-post.html</loc>
+<loc>https://bkkaggle.github.io/blog/2020/01/14/template.html</loc>
 <lastmod>2020-01-14T00:00:00-06:00</lastmod>
 </url>
 <url>
@@ -11,6 +11,10 @@
 <url>
 <loc>https://bkkaggle.github.io/blog/ai/non-technical/2020/03/22/what-is-ai.html</loc>
 <lastmod>2020-03-22T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>https://bkkaggle.github.io/blog/rust/2020/08/14/rust-async.html</loc>
+<lastmod>2020-08-14T00:00:00-05:00</lastmod>
 </url>
 <url>
 <loc>https://bkkaggle.github.io/blog/about/</loc>
