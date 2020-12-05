@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Evaluating Language Models | Bilal’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Evaluating Language Models" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The way you evaluate your language model can have a pretty big effect on validation loss and ppl values. Everyone should clearly report how their language models have been evaluated and try to evaluate their language models similarly to make comparing them easy." />
+<meta property="og:description" content="The way you evaluate your language model can have a pretty big effect on validation loss and ppl values. Everyone should clearly report how their language models have been evaluated and try to evaluate their language models similarly to make comparing them easy." />
+<link rel="canonical" href="https://bkkaggle.github.io/blog/ml/nlp/2020/05/14/evaluating-language-models.html" />
+<meta property="og:url" content="https://bkkaggle.github.io/blog/ml/nlp/2020/05/14/evaluating-language-models.html" />
+<meta property="og:site_name" content="Bilal’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-05-14T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://bkkaggle.github.io/blog/ml/nlp/2020/05/14/evaluating-language-models.html","@type":"BlogPosting","headline":"Evaluating Language Models","dateModified":"2020-05-14T00:00:00-05:00","datePublished":"2020-05-14T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bkkaggle.github.io/blog/ml/nlp/2020/05/14/evaluating-language-models.html"},"description":"The way you evaluate your language model can have a pretty big effect on validation loss and ppl values. Everyone should clearly report how their language models have been evaluated and try to evaluate their language models similarly to make comparing them easy.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bkkaggle.github.io/blog/feed.xml" title="Bilal's Blog" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" /><script src="https://hypothes.is/embed.js" async></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Bilal&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About Me</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Evaluating Language Models</h1><p class="page-description">The way you evaluate your language model can have a pretty big effect on validation loss and ppl values. Everyone should clearly report how their language models have been evaluated and try to evaluate their language models similarly to make comparing them easy.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-05-14T00:00:00-05:00" itemprop="datePublished">
+        May 14, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      6 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#ML">ML</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#NLP">NLP</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#tldr">Tl;dr</a></li>
+<li class="toc-entry toc-h2"><a href="#vocabulary-size">Vocabulary size</a></li>
+<li class="toc-entry toc-h2"><a href="#context-length-and-evaluation-method">Context Length and Evaluation Method</a></li>
+<li class="toc-entry toc-h2"><a href="#gpt-2-and-zero-shot-results-on-wikitext2-and-wikitext103">GPT-2 and zero-shot results on wikitext2 and wikitext103</a></li>
+<li class="toc-entry toc-h2"><a href="#references">References</a></li>
+</ul><h2 id="tldr">
+<a class="anchor" href="#tldr" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tl;dr</h2>
+
+<p>The way you evaluate your language model can have a pretty big effect on validation loss and ppl values. Everyone should clearly report how their language models have been evaluated and try to evaluate their language models similarly to make comparing them easy.</p>
+
+<hr>
+
+<p>This post is going to be a little different from my previous two posts, where I stuck to making posts to write down what I’ve learned about ML. This time, I’m still making notes, but I’ll also be writing about my work <a href="https://github.com/huggingface/transformers/issues/483">trying</a> <a href="https://github.com/openai/gpt-2/issues/78">to</a> <a href="https://github.com/huggingface/transformers/issues/491">replicate</a> GPT-2’s zero-shot results on wikitext2 and wikitext103.</p>
+
+<p>I’m currently working on finetuning gpt2-like models on small datasets and I wanted to compare the results of my finetuned models on wikitext2 to OpenAI’s baseline zero-shot results. This sounded like a pretty easy thing to do, but there are many ways that the authors of different papers choose to evaluate and compare their language models—and not all of them are easily comparable.</p>
+
+<p>Different factors can have an impact on the val or test perplexity for a language model on a particular dataset—The <strong>vocabulary size</strong> of your language model, the <strong>context length</strong> that you use to evaluate on, and your <strong>evalutation method</strong> can all make a big difference.</p>
+
+<hr>
+
+<h2 id="vocabulary-size">
+<a class="anchor" href="#vocabulary-size" aria-hidden="true"><span class="octicon octicon-link"></span></a>Vocabulary size</h2>
+
+<hr>
+
+<p>The size of the input vocabulary for your language model can make it easier or harder for your language model to predict the next token in a sequence, for example, a character level language model with 26 tokens (one for each letter of the english alphabet) will have a lower perplexity that a word level language model with hundreds of thousands of tokens. Think of it like this, it’s a lot easier to predict the next letter in the sentence <code class="language-plaintext highlighter-rouge">I’m a computer science and machine learning enthusias</code> (which would be the letter <code class="language-plaintext highlighter-rouge">t</code>) than the next word in the sentence <code class="language-plaintext highlighter-rouge">I'm a computer science and machine learning</code> (which is the word <code class="language-plaintext highlighter-rouge">enthusiast</code>). This would mean that a character-level language model would have a much lower perplexity value than a word-level model, and that you may be able to break SOTA on most language modelling datasets by just changing the vocabulary!</p>
+
+<p>To make sure that models trained on using different tokenizers (word-level, character-level, BPE, etc) can be compared, you can normalize the loss of a language model with a vocabulary of $V_1$ tokens to a common vocabulary of $V_2$ tokens by multiplying the average loss of the language model with vocabulary size $V_1$ by the ratio between $V_1$ and $V_2$ (you could also sum the losses from the all the tokens and then divide by the number of tokens, but since the two give the identical result, I’ll just refer to the version where we take the average loss):</p>
+
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>o</mi><mi>r</mi><mi>m</mi><mi>a</mi><mi>l</mi><mi>i</mi><mi>z</mi><mi>e</mi><mi>d</mi><mi mathvariant="normal">_</mi><mi>l</mi><mi>o</mi><mi>s</mi><mi>s</mi><mo>=</mo><mi>l</mi><mi>o</mi><mi>s</mi><msub><mi>s</mi><msub><mi>V</mi><mn>1</mn></msub></msub><mo>∗</mo><mfrac><msub><mi>V</mi><mn>1</mn></msub><msub><mi>V</mi><mn>2</mn></msub></mfrac></mrow><annotation encoding="application/x-tex">normalized\_loss = loss_{V_1} * \frac {V_1} {V_2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.00444em;vertical-align:-0.31em;"></span><span class="mord mathdefault">n</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mord mathdefault">e</span><span class="mord mathdefault">d</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">s</span><span class="mord mathdefault">s</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.9445399999999999em;vertical-align:-0.2501em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">s</span><span class="mord"><span class="mord mathdefault">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.22222em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2501em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.19633em;vertical-align:-0.8360000000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.3139999999999996em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.22222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.22222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8360000000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+
+<hr>
+
+<h2 id="context-length-and-evaluation-method">
+<a class="anchor" href="#context-length-and-evaluation-method" aria-hidden="true"><span class="octicon octicon-link"></span></a>Context Length and Evaluation Method</h2>
+
+<hr>
+
+<p>Language models compute the probability of a sequence $s$ with $n$ tokens with:</p>
+
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>s</mi><mo stretchy="false">)</mo><mo>=</mo><munderover><mo>∏</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mi>p</mi><mo stretchy="false">(</mo><msub><mi>w</mi><mi>i</mi></msub><mi mathvariant="normal">∣</mi><msub><mi>w</mi><mn>1</mn></msub><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><msub><mi>w</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(s) = \prod_{i = 1}^{n} p(w_i | w_1 ... w_{i-1})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathdefault">s</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.929066em;vertical-align:-1.277669em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6513970000000002em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∏</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span>
+
+<p>Datasets can have thousands to millions to hundreds of millions of tokens, so sending the entire dataset to the language model at once isn’t possible. To make the calculation of the loss and the perplexity computationally possible, there are two approaches that I’ve seen other people use:</p>
+
+<ol>
+  <li>
+    <p>Splitting the dataset into chunks of length <code class="language-plaintext highlighter-rouge">context_len</code>, passing each chunk to the lm separately, and averaging the loss over all the chunks</p>
+  </li>
+  <li>
+    <p>Using an overlapping sliding windows approach, still only passing chunks of length <code class="language-plaintext highlighter-rouge">context_len</code> to the model at a time, but overlapping $t$ tokens from the previous sequence and not counting these overlapped tokens when calculating the loss.</p>
+  </li>
+</ol>
+
+<p>Approach #1 is the easiest to implement (Like in the official Pytorch example, your dataset would just load in the validation text file, tokenize it, and break it up into <code class="language-plaintext highlighter-rouge">context_len</code> chunks to be iterated over) but isn’t optimal since the lm won’t have any context to use when predicting the first token in each batch.</p>
+
+<p>This is also the approach taken by most tutorials and reference implementations for evaluating language models. For example, the Pytorch examples for word-level language modelling on wikitext-2 <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup>, the AWD-LSTM repository <sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote">2</a></sup>, and the /transformers library’s language modelling example <sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote">3</a></sup> all evaluate on fixed chunks of length <code class="language-plaintext highlighter-rouge">context_len</code>.</p>
+
+<p>In contrast, approach #2 is used by Transformer-XL <sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote">4</a></sup> and Megatron-LM <sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote">5</a></sup> and is a little more difficult to implement, you still need to break the tokenized validation file into chunks of length <code class="language-plaintext highlighter-rouge">context_len</code> but only move the start of each chunk $t$ tokens ahead at a time. The value of $t$ that you choose will make a difference, if you priorize the precision of the resulting loss value and set $t = 1$, your loss will be closer to the true value over the dataset than if you choose $t = 30$ (like Megatron-LM), but using a lower value of $t$ will also increase the amount of time it will take to calculate the loss over the entire validation set, especially if it is very large. Using overlapping sliding windows also means that you will have to only count the loss of the non-overlapping segments, masking out the loss for the first $t$ tokens. The Transformer-XL <sup id="fnref:4:1" role="doc-noteref"><a href="#fn:4" class="footnote">4</a></sup> paper discusses this topic in section 3.1 and shows how its cached sequence of hidden states from previous timesteps lets it evaluate on overlapping sliding windows at a lower computational cost.</p>
+
+<p>Whichever approach you choose, the value of <code class="language-plaintext highlighter-rouge">context_len</code> that you choose will also make a significant effect on your loss. On my experiments with gpt2, I could see a decrease of 4ppl across many model sizes (gpt2-medium, gpt2-large, gpt2-xl) just by increasing the context len that the models were evaluated on from 256 to 1024.</p>
+
+<hr>
+
+<h2 id="gpt-2-and-zero-shot-results-on-wikitext2-and-wikitext103">
+<a class="anchor" href="#gpt-2-and-zero-shot-results-on-wikitext2-and-wikitext103" aria-hidden="true"><span class="octicon octicon-link"></span></a>GPT-2 and zero-shot results on wikitext2 and wikitext103</h2>
+
+<hr>
+
+<p>OpenAI’s GPT-2 <sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote">6</a></sup> paper is pretty short on details when it comes to how they ran zero-shot (no finetuning!) evaluation on a range of datasets and several people have also had some trouble <a href="https://github.com/huggingface/transformers/issues/483">trying</a> <a href="https://github.com/openai/gpt-2/issues/78">to</a> <a href="https://github.com/huggingface/transformers/issues/491">replicate</a> their results.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>model-size</th>
+      <th>loss on wikitext103’s test set</th>
+      <th>perplexity</th>
+      <th>adjusted perplexity</th>
+      <th>reported perplexities</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>gpt2</td>
+      <td>3.149</td>
+      <td>23.33</td>
+      <td>35.12</td>
+      <td>37.5</td>
+    </tr>
+    <tr>
+      <td>gpt2-medium</td>
+      <td>2.923</td>
+      <td>18.59</td>
+      <td>27.18</td>
+      <td>26.37</td>
+    </tr>
+    <tr>
+      <td>gpt2-large</td>
+      <td>2.786</td>
+      <td>16.23</td>
+      <td>23.30</td>
+      <td>22.05</td>
+    </tr>
+    <tr>
+      <td>gpt2-xl</td>
+      <td>2.706</td>
+      <td>14.97</td>
+      <td>21.28</td>
+      <td>17.48</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>I was able to get these results on WikiText-103’s test set that are pretty close (except for gpt2-xl, that’s off by almost 4ppl) to the paper’s reported results after a bit of experimenting, here’s what I did:</p>
+
+<p>For my zero-shot results, I used a non-overlapping context length of 1024 tokens (using overlapping sliding windows should get you better results and get you to OpenAI’s results). As for adjusting the loss to account for GPT-2’s custom tokenizer, I used the normalized loss calculation from above with the original and tokenized number of tokens from the test file—I split the preprocessed test set on spaces to get $217646$ tokens, and with GPT-2’s tokenizer to get $249612$ tokens.</p>
+
+<p>OpenAI says in section 3.1 that they used invertible detokenizers to remove tokenization artifacts from the processed WikiText-103 test set (<code class="language-plaintext highlighter-rouge">wiki.test.tokens</code>) (like extra spaces before and after punctuation marks) created by the original authors of the dataset. Since they didn’t provide details on what preprocessing artifacts they removed in either the paper or code, I used the Megatron-LM <sup id="fnref:5:1" role="doc-noteref"><a href="#fn:5" class="footnote">5</a></sup> project’s <a href="https://github.com/NVIDIA/Megatron-LM/blob/master/tasks/zeroshot_gpt2/detokenizer.py">invertible detokenizers</a> that they used for their own zero-shot evaluation results on WikiText-103.</p>
+
+<hr>
+
+<h2 id="references">
+<a class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h2>
+
+<hr>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>https://github.com/pytorch/examples/blob/master/word_language_model/main.py#L136 <a href="#fnref:1" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>https://github.com/salesforce/awd-lstm-lm/blob/master/finetune.py#L104 <a href="#fnref:2" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>https://github.com/huggingface/transformers/blob/master/examples/run_language_modeling.py <a href="#fnref:3" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:4" role="doc-endnote">
+      <p>https://arxiv.org/abs/1901.02860 <a href="#fnref:4" class="reversefootnote" role="doc-backlink">↩</a> <a href="#fnref:4:1" class="reversefootnote" role="doc-backlink">↩<sup>2</sup></a></p>
+    </li>
+    <li id="fn:5" role="doc-endnote">
+      <p>https://arxiv.org/abs/1909.08053 <a href="#fnref:5" class="reversefootnote" role="doc-backlink">↩</a> <a href="#fnref:5:1" class="reversefootnote" role="doc-backlink">↩<sup>2</sup></a></p>
+    </li>
+    <li id="fn:6" role="doc-endnote">
+      <p>https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf <a href="#fnref:6" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="bkkaggle/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/ml/nlp/2020/05/14/evaluating-language-models.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>My blog where I write about what I&#39;m working on, currently machine learning and rust dev.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/bkkaggle" title="bkkaggle"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

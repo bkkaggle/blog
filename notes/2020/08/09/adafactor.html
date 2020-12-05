@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Adafactor | Bilal’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Adafactor" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Writing down my notes on the adafactor optimizer" />
+<meta property="og:description" content="Writing down my notes on the adafactor optimizer" />
+<link rel="canonical" href="https://bkkaggle.github.io/blog/notes/2020/08/09/adafactor.html" />
+<meta property="og:url" content="https://bkkaggle.github.io/blog/notes/2020/08/09/adafactor.html" />
+<meta property="og:site_name" content="Bilal’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-09T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://bkkaggle.github.io/blog/notes/2020/08/09/adafactor.html","@type":"BlogPosting","headline":"Adafactor","dateModified":"2020-08-09T00:00:00-05:00","datePublished":"2020-08-09T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bkkaggle.github.io/blog/notes/2020/08/09/adafactor.html"},"description":"Writing down my notes on the adafactor optimizer","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bkkaggle.github.io/blog/feed.xml" title="Bilal's Blog" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" /><script src="https://hypothes.is/embed.js" async></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Bilal&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About Me</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Adafactor</h1><p class="page-description">Writing down my notes on the adafactor optimizer</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-08-09T00:00:00-05:00" itemprop="datePublished">
+        Aug 9, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      4 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#notes">notes</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#purpose">Purpose</a></li>
+<li class="toc-entry toc-h2"><a href="#adam-default-hyperparmeters">Adam default hyperparmeters</a></li>
+<li class="toc-entry toc-h2"><a href="#adafactor">Adafactor</a></li>
+<li class="toc-entry toc-h2"><a href="#the-problem-with-adamadafactor-section-5">The problem with Adam/Adafactor (section 5)</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#1-gradient-clipping-section-6">1. Gradient clipping (section 6)</a></li>
+<li class="toc-entry toc-h3"><a href="#2-gradually-increasing-beta_2">2. Gradually increasing $\beta_2$</a></li>
+<li class="toc-entry toc-h3"><a href="#3-relative-update-size">3. Relative update size</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#conclusion">Conclusion</a></li>
+</ul><hr>
+
+<h2 id="purpose">
+<a class="anchor" href="#purpose" aria-hidden="true"><span class="octicon octicon-link"></span></a>Purpose</h2>
+
+<hr>
+
+<p>The purpose of these series of blog posts is to be a place to store my (still in-progress!) notes about topics in machine learning, help me keep track of everything I’ve learned over the last three years, and to practice my Latex skills.</p>
+
+<p>This is my fifth blog post in the series, and this time I’m taking some notes on the Adafactor optimization paper</p>
+
+<hr>
+
+<h2 id="adam-default-hyperparmeters">
+<a class="anchor" href="#adam-default-hyperparmeters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adam default hyperparmeters</h2>
+
+<hr>
+
+<ul>
+  <li>$\beta_1 = 0.9$</li>
+  <li>$\beta_2 = 0.999$</li>
+  <li>
+    <p>linear warmup + inv sqrt decay</p>
+  </li>
+  <li>The default/initial lr for most experiments (the ones with a step size of $a_t = 0.1 * s_t$) is $1e-3$.</li>
+  <li>
+    <p>The authors use an inverse sqrt learning rate decay schedule for all experiments</p>
+  </li>
+  <li>warmup helps but not 100% necessary</li>
+</ul>
+
+<hr>
+
+<h2 id="adafactor">
+<a class="anchor" href="#adafactor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adafactor</h2>
+
+<hr>
+
+<ul>
+  <li>Arxiv: https://arxiv.org/abs/1804.04235</li>
+</ul>
+
+<p>Adafactor factorizes the second moment running averages of the gradient into row and column vectors. The matrix is then “divided by the sum of all entries” in the matrix to approximate the original matrix (Section 3)</p>
+
+<p>By default, Adafactor doesn’t work if you don’t use a learning rate warmup. The authors tried using either only the row or column running averages. Using only the row running averages works almost just as well, but using only the column running averages doesn’t work at all.</p>
+
+<p><em>Note: check if you can get away with only using row means without warmup</em>.</p>
+
+<p>Also, most of the Adafactor benchmarks in the paper were done with $\beta_1 = 0$, but IIRC some pretraining papers use it (?).</p>
+
+<hr>
+
+<h2 id="the-problem-with-adamadafactor-section-5">
+<a class="anchor" href="#the-problem-with-adamadafactor-section-5" aria-hidden="true"><span class="octicon octicon-link"></span></a>The problem with Adam/Adafactor (section 5)</h2>
+
+<hr>
+
+<p>Adam without $\beta_1$ works almost just as well as the original Adam implementation and it saves you quite a bit of memory. Note that this only holds true when you’re using a linear warmup with it. The problem is that using a fast ($0.9$) $\beta_2$ leads to Adam not converging no matter what, while using a slow ($0.999$) $\beta_2$ leads to your model only training well if you also use warmup_.</p>
+
+<p><strong>You either need a $\beta_1$ of $0.9$ or warmup with a $\beta_2$ of $0.999$.</strong></p>
+
+<p>Here’s why: Using a slow $\beta_2$ means that second moment information is updated very slowly, leading to the current value of the running average matrix be out of date (this is shown in section 6, figure 1).</p>
+
+<p>How do we fix this?</p>
+
+<p>Well, the authors outline a few ways on how to do so…</p>
+
+<hr>
+
+<h3 id="1-gradient-clipping-section-6">
+<a class="anchor" href="#1-gradient-clipping-section-6" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Gradient clipping (section 6)</h3>
+
+<hr>
+
+<p>Having an out of date second moment estimator means that the raw gradient updates are often larger than they should be. A simple way to fix this would be to just scale down the magnitude of the update if it is larger than a particular “clipping” value. Empirically, update clipping works well when training without warmup but doesn’t match the original’s performance. The authors show that clipping at $1$ works well with both Adam and Adafactor.</p>
+
+<p><em>This is referred to in the paper as clipping, which it technically is, but acts more like gradient scaling since you’re really only scaling down the magnitude of the gradient update when it passes a particular “clipping” threshold.</em></p>
+
+<hr>
+
+<h3 id="2-gradually-increasing-beta_2">
+<a class="anchor" href="#2-gradually-increasing-beta_2" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. Gradually increasing $\beta_2$</h3>
+
+<hr>
+
+<p>Add a schedule ($1 - t ^ {- x}$) that gradually increases the $\beta_2$ from $0$ to $1$. The quality of the results for when you’re training without warmup are very dependent on the value of $x$ that you choose. It seems like it stabilizes when you use this with update clipping, but the end result of using a $\beta_2$ schedule + update clipping is really no better than just update clipping.</p>
+
+<p><em>Does this mean that a $\beta_2$ schedule is practically useless?</em></p>
+
+<hr>
+
+<h3 id="3-relative-update-size">
+<a class="anchor" href="#3-relative-update-size" aria-hidden="true"><span class="octicon octicon-link"></span></a>3. Relative update size</h3>
+
+<hr>
+
+<p>Instead of hardcoded learning rate, multiply the gradient update by “the root-mean-square of its components, lower-bounded by a small constant 2”. In equation form (taken from Section 9, algorithm 4), it’s</p>
+
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϵ</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn><mi>e</mi><mo>−</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">\epsilon_2 = 1e-3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">ϵ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mord mathdefault">e</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span></span></span></span></span>
+
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>t</mi></msub><mo>=</mo><mi>max</mi><mo>⁡</mo><mo stretchy="false">(</mo><msub><mi>ϵ</mi><mn>2</mn></msub><mo separator="true">,</mo><mi>R</mi><mi>M</mi><mi>S</mi><mo stretchy="false">(</mo><msub><mi>X</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">p_t = \max(\epsilon_2, RMS(X_{t - 1}))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">max</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">ϵ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span>
+
+<p>In practice, the authors combine this with $\beta_2$ scheduling and update clipping.</p>
+
+<p><em>It would be nice to see how the relative update size method performs by itself without the scheduler or update clipping but 🤷‍♂️</em></p>
+
+<p>The authors try adding a $\beta_1$ of $0.9$, but that actually makes the results slightly worse.</p>
+
+<hr>
+
+<h2 id="conclusion">
+<a class="anchor" href="#conclusion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conclusion</h2>
+
+<hr>
+
+<p>Most codebases that I’ve seen (this includes all of mine too!) use the Adafactor optimizer don’t use it the way that the authors reccommend to use it in their paper. It’s pretty common to see people use Adafactor without a $\beta_1$, without the $\beta_2$ decay schedule, and with a simple linear warmup and decay.</p>
+
+<p>For my future self looking back at this post to figure out what hyperparmeters they should use for Adafactor (or anyone else who’s reading this), here’s a summary for what hyperparameters to use with Adafactor:</p>
+
+<ul>
+  <li>no warmup</li>
+  <li>no $\beta_1$</li>
+  <li>Adafactor’s built-in inv sqrt lr decay</li>
+  <li>update clipping at $1.0$</li>
+  <li>Relative update step sizes instead of a fixed learning rate</li>
+</ul>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="bkkaggle/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/notes/2020/08/09/adafactor.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>My blog where I write about what I&#39;m working on, currently machine learning and rust dev.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/bkkaggle" title="bkkaggle"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
