@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Algpt2 Part 1 | Bilal’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Algpt2 Part 1" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Best Practices for Finetuning Large Transformer Language models" />
+<meta property="og:description" content="Best Practices for Finetuning Large Transformer Language models" />
+<link rel="canonical" href="https://bkkaggle.github.io/blog/algpt2/2020/06/22/ALGPT2-part-1.html" />
+<meta property="og:url" content="https://bkkaggle.github.io/blog/algpt2/2020/06/22/ALGPT2-part-1.html" />
+<meta property="og:site_name" content="Bilal’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-06-22T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://bkkaggle.github.io/blog/algpt2/2020/06/22/ALGPT2-part-1.html","@type":"BlogPosting","headline":"Algpt2 Part 1","dateModified":"2020-06-22T00:00:00-05:00","datePublished":"2020-06-22T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bkkaggle.github.io/blog/algpt2/2020/06/22/ALGPT2-part-1.html"},"description":"Best Practices for Finetuning Large Transformer Language models","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bkkaggle.github.io/blog/feed.xml" title="Bilal's Blog" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" /><script src="https://hypothes.is/embed.js" async></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Bilal&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About Me</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Algpt2 Part 1</h1><p class="page-description">Best Practices for Finetuning Large Transformer Language models</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-06-22T00:00:00-05:00" itemprop="datePublished">
+        Jun 22, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      11 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#algpt2">algpt2</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#background">Background</a></li>
+<li class="toc-entry toc-h2"><a href="#objectives">Objectives</a></li>
+<li class="toc-entry toc-h2"><a href="#data">Data</a></li>
+<li class="toc-entry toc-h2"><a href="#frameworks">Frameworks</a></li>
+<li class="toc-entry toc-h2"><a href="#finetuning">Finetuning</a></li>
+</ul><hr>
+
+<blockquote>
+  <p>Part 1: Best Practices for Finetuning Large Transformer Language models</p>
+
+  <p><a href="/blog/algpt2/2020/07/17/ALGPT2-part-2">Part 2: How I (almost) replicated OpenAI’s GPT-2 (124M version)</a></p>
+</blockquote>
+
+<h2 id="background">
+<a class="anchor" href="#background" aria-hidden="true"><span class="octicon octicon-link"></span></a>Background</h2>
+
+<hr>
+
+<p>A few months ago I started working on a research project on how to best finetune GPT2-like language models for text generation. Once I ran a few experiments on that, I wanted to expand the scope of the project and try to pretrain my own, more efficient language model from scratch. I got access to a 128-core TPUv3 pod from the Tensorflow Reseach Cloud and used it to pretrain GPT2-124M to a perplexity pretty close to OpenAI’s results (my pretrained model used was trained for about $1/8$th of the number of iterations that OpenAI trained their model for and got $21$ ppl on OpenWebText compared to $17$ ppl for OpenAI’s model), and then pretrained an ALBERT-style GPT2 (that I’m calling ALGPT2) language model with a factorized input embedding and parameter sharing that would reduce the number of paramters from 124M to around 12M.</p>
+
+<p>Unfortunately, ALGPT2 doesn’t generate coherent, natural sounding text as well as GPT2 (ALGPT2 gets $31$ ppl on OpenWebText compared to $21$ ppl for my pretrained GPT2 model), but I’m writing this series of blog posts to go through everything I’ve learned over the last few months.</p>
+
+<p>I have a cleaned-up version of my codebase on Github <a href="https://github.com/bkkaggle/lm-training-research-project">here</a>, and my original codebase with all my notes <a href="https://github.com/bkkaggle/lm-finetuning">here</a>.</p>
+
+<p>You can take a look at my Weights&amp;Biases workspace with all my runs <a href="https://app.wandb.ai/bkkaggle/lm-finetuning">here</a>.</p>
+
+<hr>
+
+<h2 id="objectives">
+<a class="anchor" href="#objectives" aria-hidden="true"><span class="octicon octicon-link"></span></a>Objectives</h2>
+
+<hr>
+
+<p>I don’t usually have access to a lot of compute (I mostly just use Google Colab) so I started out by limiting the scope of my project to finetuning or running inference on GPT2. I wrote down a <a href="https://github.com/bkkaggle/lm-finetuning/blob/master/Markdown/RESEARCH.md#objectives">few notes</a> on what I wanted to look into:</p>
+
+<hr>
+
+<ul>
+  <li>If I wanted to finetune a LM to generate text of a specific style/content, what good defaults would I choose?</li>
+  <li>Find best practices or good defaults for finetuning tranformer language models for text generation.</li>
+  <li>Understand the effect of context len, model, and dataset size on generating coherent text</li>
+</ul>
+
+<hr>
+
+<h2 id="data">
+<a class="anchor" href="#data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data</h2>
+
+<hr>
+
+<p>I ran most of the finetuning experiments on WikiText-2, which was small enough (~10mb on disk with a total of ~2m words) that I could run experiments fast enough (usually within 5-10m) on the v100 or p100 that I usually got through Colab.</p>
+
+<p>I also ran a few experiments using WikiText-103 (~500mb, 100m words) but these were a lot harder to do because the size of the dataset forced me to use smaller batch sizes which took too long.</p>
+
+<p>Loading in larger datasets (like WikiText-103) into memory can become pretty inefficient because of Python’s overhead. IIRC, if you want to load the <em>entire</em> WikiText-103 train set into memory with Python and tokenize the whole thing in one go using Huggingface’s Tokenizers library and the GPT2 byte-level BPE tokenizer, it takes about 10 minutes and uses up about 60GB of RAM (Most of the time is spent tokenizing and most of the RAM is used loading the file into memory). Using something like <a href="https://arrow.apache.org/">Apache Arrow</a> like the <a href="https://github.com/huggingface/nlp">Huggingface NLP</a> library should make this a whole lot more efficient.</p>
+
+<p>The WikiText datasets are stored as a single text file, with one Wikipedia article per line. Another more efficient way of processing the data would be to load in the file line-by-line and tokenize each line in parallel using the Huggingface tokenizer library’s <code class="language-plaintext highlighter-rouge">batch_encode_plus()</code> function. This is a lot faster and efficient (taking up only 2GB of RAM and 2 minutes) but has its own drawbacks. <code class="language-plaintext highlighter-rouge">batch_encode_plus()</code> truncates sequences beyond that have more than <code class="language-plaintext highlighter-rouge">context_len</code> tokens and leaves sequences that are smaller than <code class="language-plaintext highlighter-rouge">context_len</code> as is, which means that you need to zero-pad the sequences that are smaller than <code class="language-plaintext highlighter-rouge">context_len</code> and discard any portion of a sequence beyond the first <code class="language-plaintext highlighter-rouge">context_len</code> tokens. For datasets that are used to benchmark the performance of a wide range of language models, this can lead to your model being harder to compare against other models that follow the commonly used convention of just tokenizing the entire dataset and chunking it into sequences of <code class="language-plaintext highlighter-rouge">context_len</code> length.</p>
+
+<p>I wanted to make sure the way that I preprocessed the data made sure that the models that I finetuned on WikiText-2 and WikiText-103 would be comparable to other models, so in my code, I load in the entire dataset, tokenize it, and split it into contigous sequences of length <code class="language-plaintext highlighter-rouge">context_len</code>. There are a few other preprocessing-related factors that can affect how comparable results between different models can be, I <a href="/blog/2020/5/14/evaluating-language-models/">wrote a post on the topic</a> a while ago, check it out if you’re interested.</p>
+
+<hr>
+
+<h2 id="frameworks">
+<a class="anchor" href="#frameworks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Frameworks</h2>
+
+<hr>
+
+<p>I originally wrote all my code in vanilla Pytorch. I wanted to try using Colab’s free TPUv3 board that has 8 TPU cores each with 16GB of RAM, each of which is a little slower that a single V100. Using the entire TPU board should be <em>at least</em> as fast as using a cluster of 8 V100s but at a much lower cost.</p>
+
+<p>I tried using <a href="https://github.com/PyTorchLightning/pytorch-lightning">Pytorch Lightning</a> to see if it would help make the Pytorch model run on the Colab TPU more easily, but after about a week of trying to use the library I switched over to having two training scripts; One in plain Pytorch and one in Tensorflow2.0 with Keras — Even though Pytorch Lightning was very well designed, the time and effort required to make sure the framework is working the way that I want wasn’t worth it in the end.</p>
+
+<p>This was my first time working with TF/Keras since around early 2018 when I switched to Pytorch (back in the 0.3 days when you still had to use <code class="language-plaintext highlighter-rouge">Variable</code>). TF2.0 is a lot better now than it used to be two or three years ago but still doesn’t feel as intuitive or easy to use as Pytorch. The documentation looks pretty good at first glance but there were a lot of gaps in the documentation when I was trying to figure out how to write and decode TFRecord files and scale my Keras code to TPUs and TPU pods.</p>
+
+<blockquote>
+  <p>Trying to get gradient accumulation to work with TPUs was especially hard, IIRC grad accumulation isn’t natively supported in Keras but there are a lot of independent implementations that people have open-sourced on Github, but they didn’t work well with TPUs.</p>
+</blockquote>
+
+<p>I used the <a href="https://github.com/huggingface/transformers">Huggingface/Transformers</a> repository for the GPT-2 model and <a href="https://www.wandb.com/">Weights&amp;Biases</a> to track all the experiments that I ran.</p>
+
+<blockquote>
+  <p>Fun fact, I ran into a problem with Colab’s TPU a couple of times where I was silently downgraded from a TPUv3 to a TPUv2 and as a result I was getting a lot of OOM errors for a model and batch size that was working perfectly just a few hours ago. Colab doesn’t really advertise this and makes it almost impossible to know if you have been downgraded :(</p>
+</blockquote>
+
+<p>Pytorch recently released <a href="https://github.com/pytorch/xla">Pytorch/XLA</a> which is supposed to let you run Pytorch code on TPUs with only a few changes to your code. I spent quite a bit of time to try and make this work but using it is still a lot more complex than just using a GPU.</p>
+
+<p>Pytorch/XLA is a lot slower on Colab, which probably has something to do with Colab’s network connection to the TPUs being a lot slower. Using <a href="https://github.com/pytorch/xla/issues/1777">some operations</a> that aren’t supported by Pytorch/XLA can have a pretty drastic impact on the speed of your program, so if your code is running unusually slow on a TPU, unsupported ops are a common culprit. <a href="https://github.com/pytorch/xla/issues/1777">For example</a>, I was trying to use the memory-saving Adafactor optimizer on Pytorch/XLA but since I was using a non-Pytorch operation in one part of the code (using Python’s <code class="language-plaintext highlighter-rouge">sqrt()</code> function instead of <code class="language-plaintext highlighter-rouge">torch.sqrt()</code>), a single iteration was taking ~10 seconds compared to 10 iterations/second for SGD.</p>
+
+<p>TPU support for Pytorch works pretty differently from TPU support for Tensorflow. Each TPU has a powerful dedicated CPU and several 100GBs of RAM for data processing, so whenever you run TF code on a TPU, your data gets copied to each core’s CPU (unless you use TFRecord files, in which case each core’s CPU downloads and processes data directly from your cloud bucket) and gets processed there. By doing it in this way, you only need to rent a small cloud instance (like a n1-standard-1) and scaling your code from a single TPU board with 8 cores to a part of a TPU pod is (relatively) painless.</p>
+
+<p>On the other hand, Pytorch/XLA can’t <a href="https://github.com/pytorch/xla/issues/1742">currently use</a> the TPU’s CPU and instead has to replicate the data $8$ times on your own VM for an $8$ core TPU board. If you want to use Pytorch/XLA for a TPU pod, you have to create a VM group with one host VM for each $8$ core TPU board. This means that Pytorch/XLA isn’t currently practical for large scale training, but it <a href="https://github.com/pytorch/xla/issues/1858">looks like</a> the next version of TPUs will be a lot more optimized for Pytorch. It works alright for a small dataset like WikiText-2 but when I tried finetuning on WikiText-103 (~500mb, 100m words) I needed to upgrade my VM to have 80+ GB of RAM.</p>
+
+<hr>
+
+<h2 id="finetuning">
+<a class="anchor" href="#finetuning" aria-hidden="true"><span class="octicon octicon-link"></span></a>Finetuning</h2>
+
+<hr>
+
+<p>I wasn’t able to finetune GPT2-1.5b on a TPU with the AdamW optimizer even with the TPU’s built in bfloat16 support, so most of the experiments that I ran were with the memory-saving Adafactor optimizer with <code class="language-plaintext highlighter-rouge">beta1</code> set to zero to disable momentum. Enabling momentum might increase the performance of the Adafactor optimizer, but would also require storing an extra momentum value for each parameter and would make it harder to train larger models.</p>
+
+<p><em>Fun fact: The AdamW optimizer implementation in Google’s official BERT <a href="https://github.com/google-research/bert/blob/master/optimization.py#L65">repository</a> excludes layernorm and bias parameters from weight decay and AFAICT is the only optimizer that does so. I tried running a few experiments with and without finetuning these parameters and didn’t find any significant difference in performance.</em></p>
+
+<p>Most of the GPU experiments I did were with NVidia’s Apex library, with its $01$ mixed precision setting. I also tried running a few experiments on using only FP16, but the gradients would explode or vanish and the model wouldn’t train.</p>
+
+<p>I have a <a href="https://github.com/bkkaggle/transformers/tree/grad-checkpointing">forked version</a> of Huggingface’s Transformers repository where I’ve implemented gradient checkpointing for GPT-2. I haven’t been maintaining it but you can see all the changes that I did to make it work (it’s really only a few lines of code) <a href="https://github.com/huggingface/transformers/compare/master...bkkaggle:grad-checkpointing">here</a>. I tried training GPT2-XL with grad checkpointing which IIRC worked with a smaller context length of 256 but still threw OOM errors when finetuning at a context length of 1024.</p>
+
+<p>For small datasets like WikiText-2, (WikiText-2 consists of about 2 million words, so it’s actually on the larger size for datasets that you might collect yourself) the model usually overfits within the first 1-3 epochs, so most of the experiments that I did trained for a single epoch — there really is no performance benefit to finetuning for any longer. I set the learning rate for all of my finetuning experiments to $5e-5$ (This was just the first value I tried, no hyperparameter tuning involved) and linearly increased the learning rate from $0$ to $5e-5$ over the first 10% of the training iterations and then linearly decayed it to zero over the rest of the training iterations.</p>
+
+<blockquote>
+  <p>Note: The Adafactor paper shows that warmup is strongly recommended to stabilize training, take a look at the <a href="https://arxiv.org/abs/1804.04235">paper</a> for more details</p>
+</blockquote>
+
+<p>If you want to finetune GPT2 on a dataset like WikiText-2, there’s a relationship between the batch size, learning rate, and the number of training iterations that you need to adjust to train effectively and avoid overfitting or plateauing. There’s a pretty important ratio that you need to keep constant between the batch size and the learning rate. A larger batch size means that there are fewer gradient updates performed if you keep the number of training iterations constant.</p>
+
+<p>I have a <a href="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/1-epoch-context-len--Vmlldzo3NTI4MA">WandB report</a> showing a few different training runs on WikiText-2 with different sized GPT2 models and context lengths. The results aren’t really that surprising, finetuning larger models at larger context lengths increases perplexity significantly.</p>
+
+<p>I wrote a quick <a href="https://colab.research.google.com/drive/1Vxh91ASFvCPgBL0I6ui97SyxtoLBvY3I?usp=sharing">Colab notebook</a> on how to finetune and evaluate on WikiText-2.</p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="bkkaggle/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/algpt2/2020/06/22/ALGPT2-part-1.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>My blog where I write about what I&#39;m working on, currently machine learning and rust dev.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/bkkaggle" title="bkkaggle"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
