@@ -1,7 +1,7 @@
 ---
 toc: true
 layout: post
-description: [Extremely WIP] Make your own fast PyTorch-style ML library in Rust
+description: "[Extremely WIP]: Make your own fast PyTorch-style ML library in Rust"
 categories: [rust]
 comments: true
 sticky_rank: 2
