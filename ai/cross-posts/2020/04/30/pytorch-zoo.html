@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Pytorch Zoo | Bilal’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Pytorch Zoo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A collection of useful modules and utilities in PyTorch" />
+<meta property="og:description" content="A collection of useful modules and utilities in PyTorch" />
+<link rel="canonical" href="https://bkkaggle.github.io/blog/ai/cross-posts/2020/04/30/pytorch-zoo.html" />
+<meta property="og:url" content="https://bkkaggle.github.io/blog/ai/cross-posts/2020/04/30/pytorch-zoo.html" />
+<meta property="og:site_name" content="Bilal’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-04-30T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://bkkaggle.github.io/blog/ai/cross-posts/2020/04/30/pytorch-zoo.html","@type":"BlogPosting","headline":"Pytorch Zoo","dateModified":"2020-04-30T00:00:00-05:00","datePublished":"2020-04-30T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bkkaggle.github.io/blog/ai/cross-posts/2020/04/30/pytorch-zoo.html"},"description":"A collection of useful modules and utilities in PyTorch","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bkkaggle.github.io/blog/feed.xml" title="Bilal's Blog" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" /><script src="https://hypothes.is/embed.js" async></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Bilal&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About Me</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Pytorch Zoo</h1><p class="page-description">A collection of useful modules and utilities in PyTorch</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-04-30T00:00:00-05:00" itemprop="datePublished">
+        Apr 30, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      3 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#AI">AI</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#cross-posts">cross-posts</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#cyclical-momentum">Cyclical Momentum</a></li>
+<li class="toc-entry toc-h1"><a href="#squeeze-and-excitation">Squeeze and Excitation</a></li>
+<li class="toc-entry toc-h1"><a href="#utilities">Utilities</a></li>
+<li class="toc-entry toc-h1"><a href="#conclusion">Conclusion</a></li>
+<li class="toc-entry toc-h1"><a href="#references">References</a></li>
+</ul><p>I originally wrote this blog post for the PyTorch blog which is available <a href="https://medium.com/pytorch/pytorch-zoo-a-collection-of-useful-modules-and-utilities-in-pytorch-c05ca4d500d8?source=friends_link&amp;sk=9fcc0180af0abbc01d26d3680bdab83b">here</a> (Use this link to access my article with my friend link so you don’t need to worry about Medium paywalling my article)</p>
+
+<hr>
+
+<p>PyTorch Zoo is a collection of modules and utilities that I’ve found to be useful when working on machine learning projects and competitions. PyTorch Zoo contains several modules not available in PyTorch, like cyclical momentum and squeeze-and-excitation, as well as useful utilities like the ability to send notifications and set random seeds to get consistent results. PyTorch Zoo is meant to provide high-quality reference implementations of modules that don’t have official implementations in PyTorch and save you time that would have otherwise been spent searching for implementations on Github or coding the module yourself.</p>
+
+<hr>
+
+<p><img src="https://raw.githubusercontent.com/bkkaggle/pytorch_zoo/master/screenshot.png" width="100%">&lt;/img&gt;</p>
+
+<p>From: <a href="https://github.com/bkkaggle/pytorch_zoo">https://github.com/bkkaggle/pytorch_zoo</a></p>
+
+<hr>
+
+<p>The library is open-source on <a href="https://github.com/bkkaggle/pytorch_zoo">Github</a> and is available as a pip package. Just run:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>pytorch_zoo
+</code></pre></div></div>
+
+<p>to install it in your local development environment and check out the <a href="https://github.com/bkkaggle/pytorch_zoo#documentation">documentation</a> for in-depth examples on all the library’s features. I’ve included quite a few modules in PyTorch Zoo, so I’ll try to focus only on some of the ones that I found to be the most interesting for this blog post.</p>
+
+<hr>
+
+<h1 id="cyclical-momentum">
+<a class="anchor" href="#cyclical-momentum" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cyclical Momentum</h1>
+
+<hr>
+
+<p>Cyclical momentum, which was first proposed in the same paper as cyclical learning rates <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup>, is usually used together with cyclical learning rates. It decreases the amount of momentum while the learning rate increases and increases the amount of momentum while the learning rate decreases, stabilizing training and allowing for the use of higher learning rates. Here’s an example of how you could use cyclical momentum just like a normal PyTorch scheduler:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">optim</span><span class="p">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="n">scheduler</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">optim</span><span class="p">.</span><span class="n">CyclicMomentum</span><span class="p">(</span><span class="n">optimizer</span><span class="p">)</span>
+<span class="n">data_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">utils</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">DataLoader</span><span class="p">(...)</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">data_loader</span><span class="p">:</span>
+        <span class="n">scheduler</span><span class="p">.</span><span class="n">batch_step</span><span class="p">()</span>
+        <span class="n">train_batch</span><span class="p">(...)</span>
+</code></pre></div></div>
+
+<hr>
+
+<h1 id="squeeze-and-excitation">
+<a class="anchor" href="#squeeze-and-excitation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Squeeze and Excitation</h1>
+
+<hr>
+
+<p>Squeeze and Excitation modules <sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote">2</a></sup> <sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote">3</a></sup> can be easily integrated into existing models by just adding one of these modules after each convolutional block and improves the model’s performance without significantly impacting training time. All three variants of the squeeze-and-excitation block that were proposed in the original papers are available in PyTorch Zoo, see the <a href="https://github.com/bkkaggle/pytorch_zoo#modules">documentation</a> for specific examples on how to use each one. Here’s an example of how you could use SqueezeAndExcitation in a convolutional block</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Encoder</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_ch</span><span class="p">,</span> <span class="n">out_ch</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Encoder</span><span class="p">,</span> <span class="bp">self</span><span class="p">).</span><span class="n">__init__</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="p">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_ch</span><span class="p">,</span> <span class="n">out_ch</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">se</span> <span class="o">=</span> <span class="n">SqueezeAndExcitation</span><span class="p">(</span><span class="n">out_ch</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">se</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+</code></pre></div></div>
+<hr>
+
+<h1 id="utilities">
+<a class="anchor" href="#utilities" aria-hidden="true"><span class="octicon octicon-link"></span></a>Utilities</h1>
+
+<hr>
+
+<p>PyTorch Zoo also has a small range of utilities to make it easier to follow PyTorch best practices when doing things like saving a model to disk and setting random seeds, as well as easy to use one-liners to do things like sending push notifications when a training run ends.</p>
+
+<p>Here’s an example of how you could use some of these utilities:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Send a notification to your phone directly with IFTTT (https://ifttt.com/) notifying 
+# you when a training run ends or at the end of an epoch.
+</span><span class="n">notify</span><span class="p">({</span><span class="s">'value1'</span><span class="p">:</span> <span class="s">'Notification title'</span><span class="p">,</span> <span class="s">'value2'</span><span class="p">:</span> <span class="s">'Notification body'</span><span class="p">},</span> <span class="n">key</span><span class="o">=</span><span class="p">[</span><span class="n">IFTTT_KEY</span><span class="p">])</span>
+
+<span class="c1"># Automatically set random seeds for Python, numpy, and Pytorch to make sure your results can be reproduced
+</span><span class="n">seed_envirionment</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Print how much GPU memory is currently allocated
+</span><span class="n">gpu_usage</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">digits</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="c1"># GPU Usage: 6.5 GB
+</span>
+<span class="c1"># Print out the number of parameters in a Pytorch model
+</span><span class="k">print</span><span class="p">(</span><span class="n">n_params</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+<span class="c1"># 150909673
+</span>
+<span class="c1"># Save a model for a particular cross-validation fold to disk
+</span><span class="n">save_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">fold</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<hr>
+
+<h1 id="conclusion">
+<a class="anchor" href="#conclusion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conclusion</h1>
+
+<hr>
+
+<p>To learn more about PyTorch Zoo and its features, check out our <a href="https://github.com/bkkaggle/pytorch_zoo">Github repository</a>.</p>
+
+<p>The project is still a work in progress, so if you find a bug, think there is something missing, or have any suggestions for new features or modules, feel free to open an issue or a pull request. Feel free to use the library or code from it in your own projects, and if you feel that some code used in this project hasn’t been properly accredited, please open an issue.</p>
+
+<hr>
+
+<h1 id="references">
+<a class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h1>
+
+<hr>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>https://arxiv.org/abs/1803.09820 <a href="#fnref:1" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>https://arxiv.org/abs/1709.01507 <a href="#fnref:2" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>https://arxiv.org/abs/1803.02579 <a href="#fnref:3" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="bkkaggle/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/ai/cross-posts/2020/04/30/pytorch-zoo.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>My blog where I talk about what I&#39;m working on, currently machine learning and rust dev.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fastai" title="fastai"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/fastdotai" title="fastdotai"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
