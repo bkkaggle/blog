@@ -4,7 +4,6 @@ layout: post
 description: The way you evaluate your language model can have a pretty big effect on validation loss and ppl values. Everyone should clearly report how their language models have been evaluated and try to evaluate their language models similarly to make comparing them easy.
 categories: [ML, NLP]
 comments: true
-hide: true
 ---
 
 ## Tl;dr

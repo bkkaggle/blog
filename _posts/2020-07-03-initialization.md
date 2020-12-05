@@ -4,7 +4,6 @@ layout: post
 description: Writing down some of my notes on initializing neural networks 
 categories: [notes]
 comments: true
-hide: true
 ---
 
 ---

@@ -4,8 +4,8 @@ layout: post
 description: Writing down my notes on memory usage in neural networks
 categories: []
 comments: true
-hide: true
 ---
+
 ---
 
 ## Purpose
