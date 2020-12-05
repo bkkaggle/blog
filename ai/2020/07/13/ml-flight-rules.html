@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Ml Flight Rules | Bilal’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Ml Flight Rules" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A guide for astronauts (now, people doing machine learning) about what to do when things go wrong." />
+<meta property="og:description" content="A guide for astronauts (now, people doing machine learning) about what to do when things go wrong." />
+<link rel="canonical" href="https://bkkaggle.github.io/blog/ai/2020/07/13/ml-flight-rules.html" />
+<meta property="og:url" content="https://bkkaggle.github.io/blog/ai/2020/07/13/ml-flight-rules.html" />
+<meta property="og:site_name" content="Bilal’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-07-13T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://bkkaggle.github.io/blog/ai/2020/07/13/ml-flight-rules.html","@type":"BlogPosting","headline":"Ml Flight Rules","dateModified":"2020-07-13T00:00:00-05:00","datePublished":"2020-07-13T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bkkaggle.github.io/blog/ai/2020/07/13/ml-flight-rules.html"},"description":"A guide for astronauts (now, people doing machine learning) about what to do when things go wrong.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bkkaggle.github.io/blog/feed.xml" title="Bilal's Blog" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" /><script src="https://hypothes.is/embed.js" async></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Bilal&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About Me</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Ml Flight Rules</h1><p class="page-description">A guide for astronauts (now, people doing machine learning) about what to do when things go wrong.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-07-13T00:00:00-05:00" itemprop="datePublished">
+        Jul 13, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      24 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#AI">AI</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#what-are-flight-rules">What are “flight rules”?</a></li>
+<li class="toc-entry toc-h2"><a href="#general-tips">General tips</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#look-at-the-wrongly-classified-predictions-of-your-network">Look at the wrongly classified predictions of your network</a></li>
+<li class="toc-entry toc-h3"><a href="#always-set-the-random-seed">Always set the random seed</a></li>
+<li class="toc-entry toc-h3"><a href="#make-a-baseline-and-then-increase-the-size-of-your-model-until-it-overfits">Make a baseline and then increase the size of your model until it overfits</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#use-a-very-simplified-baseline-to-test-that-your-code-works-correctly">Use a very simplified baseline to test that your code works correctly</a></li>
+<li class="toc-entry toc-h4"><a href="#overfit-on-a-single-batch">Overfit on a single batch</a></li>
+<li class="toc-entry toc-h4"><a href="#be-sure-that-youre-data-has-been-correctly-processed">Be sure that you’re data has been correctly processed</a></li>
+<li class="toc-entry toc-h4"><a href="#simple-models---complex-models">Simple models -&gt; complex models</a></li>
+<li class="toc-entry toc-h4"><a href="#start-with-a-simple-optimizer">Start with a simple optimizer</a></li>
+<li class="toc-entry toc-h4"><a href="#change-one-thing-at-a-time">Change one thing at a time</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#regularize-your-model">Regularize your model</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#get-more-data">Get more data</a></li>
+<li class="toc-entry toc-h4"><a href="#data-augmentation">Data augmentation</a></li>
+<li class="toc-entry toc-h4"><a href="#use-a-pretrained-network">Use a pretrained network</a></li>
+<li class="toc-entry toc-h4"><a href="#decrease-the-batch-size">Decrease the batch size</a></li>
+<li class="toc-entry toc-h4"><a href="#use-early-stopping">Use early stopping</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#squeeze-out-more-performance-out-of-the-network">Squeeze out more performance out of the network</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#ensemble">Ensemble</a></li>
+<li class="toc-entry toc-h4"><a href="#use-early-stopping-on-the-val-metric">Use early stopping on the val metric</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#learn-to-deal-with-long-iteration-times">Learn to deal with long iteration times</a></li>
+<li class="toc-entry toc-h3"><a href="#keep-a-log-of-what-youre-working-on">Keep a log of what you’re working on</a></li>
+<li class="toc-entry toc-h3"><a href="#try-to-predict-how-your-code-will-fail">Try to predict how your code will fail</a></li>
+<li class="toc-entry toc-h3"><a href="#resources">Resources</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#advanced-tips">Advanced tips</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#basic-architectures-are-sometimes-better">Basic architectures are sometimes better</a></li>
+<li class="toc-entry toc-h3"><a href="#be-sure-that-code-that-you-copied-from-github-or-stackoverflow-is-correct">Be sure that code that you copied from Github or Stackoverflow is correct</a></li>
+<li class="toc-entry toc-h3"><a href="#dont-excessively-tune-hyperparameters">Don’t excessively tune hyperparameters</a></li>
+<li class="toc-entry toc-h3"><a href="#set-up-cyclic-learning-rates-correctly">Set up cyclic learning rates correctly</a></li>
+<li class="toc-entry toc-h3"><a href="#manually-init-layers">Manually init layers</a></li>
+<li class="toc-entry toc-h3"><a href="#mixedhalf-precision-training">Mixed/half precision training</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#what-is-the-difference-between-mixed-and-half-precision-training">What is the difference between mixed and half precision training?</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#apex-wont-install-on-gcps-deep-learning-vm">Apex won’t install on GCP’s deep learning vm</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#resources-1">Resources</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#gradient-accumulation">gradient accumulation</a></li>
+<li class="toc-entry toc-h3"><a href="#multi-gpumachine-training">multi gpu/machine training</a></li>
+<li class="toc-entry toc-h3"><a href="#determinism">determinism</a></li>
+<li class="toc-entry toc-h3"><a href="#initialization">Initialization</a></li>
+<li class="toc-entry toc-h3"><a href="#normalization">Normalization</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#batch-norm">Batch norm</a>
+<ul>
+<li class="toc-entry toc-h5"><a href="#you-cant-use-a-batch-size-of-1-with-batch-norm">You can’t use a batch size of 1 with batch norm</a></li>
+<li class="toc-entry toc-h5"><a href="#be-sure-to-use-modeleval-with-batch-norm">Be sure to use model.eval() with batch norm</a></li>
+<li class="toc-entry toc-h5"><a href="#resources-2">Resources</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#common-errors">Common errors</a></li>
+<li class="toc-entry toc-h2"><a href="#pytorch">Pytorch</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#losses">Losses</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#cross_entropy-vs-nll-loss-for-multi-class-classification">cross_entropy vs nll loss for multi-class classification</a></li>
+<li class="toc-entry toc-h4"><a href="#binary_cross_entropy-vs-binary_cross_entropy_with_logits-for-binary-classification-tasks">binary_cross_entropy vs binary_cross_entropy_with_logits for binary classification tasks</a></li>
+<li class="toc-entry toc-h4"><a href="#binary-classification-vs-multi-class-classification">Binary classification vs multi-class classification</a></li>
+<li class="toc-entry toc-h4"><a href="#pin-memory-in-the-dataloader">Pin memory in the dataloader</a></li>
+<li class="toc-entry toc-h4"><a href="#modeleval-vs-torchno_grad">model.eval() vs torch.no_grad()</a></li>
+<li class="toc-entry toc-h4"><a href="#what-to-use-for-num_workers-in-the-dataloader">What to use for num_workers in the dataloader</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#tensorboard">Tensorboard</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#how-to-use-it">How to use it</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#use-tensorboard-in-a-kaggle-kernel">Use Tensorboard in a kaggle kernel</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#what-do-all-the-tensorboard-histograms-mean">What do all the Tensorboard histograms mean?</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#common-errors-1">Common errors</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#runtimeerror-one-of-the-variables-needed-for-gradient-computation-has-been-modified-by-an-inplace-operation">RuntimeError: one of the variables needed for gradient computation has been modified by an inplace operation</a></li>
+<li class="toc-entry toc-h4"><a href="#creating-mtgp-constants-failed-error">Creating MTGP constants failed error</a></li>
+<li class="toc-entry toc-h4"><a href="#valueerror-expected-more-than-1-value-per-channel-when-training">ValueError: Expected more than 1 value per channel when training</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#how-to">How to</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#how-to-implement-gradient-clipping">How to implement gradient clipping</a></li>
+<li class="toc-entry toc-h4"><a href="#how-to-implement-global-maxavg-pooling">How to implement global max/avg pooling</a></li>
+<li class="toc-entry toc-h4"><a href="#how-to-release-gpu-memory">How to release gpu memory</a></li>
+<li class="toc-entry toc-h4"><a href="#how-to-concatenate-hidden-states-of-a-bidirectional-lstm">How to concatenate hidden states of a bidirectional lstm</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#torchtext">Torchtext</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#sort-batches-by-length">Sort batches by length</a></li>
+<li class="toc-entry toc-h4"><a href="#pretrained-embeddings">Pretrained embeddings</a></li>
+<li class="toc-entry toc-h4"><a href="#serializing-datasets">Serializing datasets</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#kaggle">Kaggle</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#tips">Tips</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#trust-your-local-validation">Trust your local validation</a></li>
+<li class="toc-entry toc-h4"><a href="#optimize-for-the-metric">Optimize for the metric</a></li>
+<li class="toc-entry toc-h4"><a href="#something-that-works-for-someone-might-not-work-for-you">Something that works for someone might not work for you</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#tricks">Tricks</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#removing-negative-samples-from-a-dataset-is-equivalent-to-loss-weighting">Removing negative samples from a dataset is equivalent to loss weighting</a></li>
+<li class="toc-entry toc-h4"><a href="#thresholding">Thresholding</a>
+<ul>
+<li class="toc-entry toc-h5"><a href="#using-the-optimal-threshold-on-a-dataset-can-lead-to-brittle-results">Using the optimal threshold on a dataset can lead to brittle results</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h4"><a href="#shakeup">Shakeup</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#encoding-categorical-features">Encoding categorical features</a></li>
+<li class="toc-entry toc-h3"><a href="#optimizing-code">Optimizing code</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#save-processed-datasets-to-disk">Save processed datasets to disk</a></li>
+<li class="toc-entry toc-h4"><a href="#use-multiprocessing">Use multiprocessing</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#data-leaks">Data Leaks</a></li>
+<li class="toc-entry toc-h3"><a href="#tools">Tools</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#ctr-click-through-rate-prediction-tools">CTR (Click Through Rate prediction) tools</a></li>
+<li class="toc-entry toc-h4"><a href="#ftrl-follow-the-regularized-leader">FTRL (Follow The Regularized Leader)</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h3"><a href="#ensembling">Ensembling</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#correlation">Correlation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#semantic-segmentation">Semantic segmentation</a></li>
+<li class="toc-entry toc-h2"><a href="#nlp">NLP</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#awd-lstm">awd-LSTM</a></li>
+<li class="toc-entry toc-h3"><a href="#multitask-learning">Multitask learning</a></li>
+<li class="toc-entry toc-h3"><a href="#combine-pretrained-embeddings">Combine pretrained embeddings</a></li>
+<li class="toc-entry toc-h3"><a href="#reinitialize-random-embedding-matrices-between-models">Reinitialize random embedding matrices between models</a></li>
+<li class="toc-entry toc-h3"><a href="#try-out-dropout-or-gaussian-noise-after-the-embedding-layer">Try out dropout or gaussian noise after the embedding layer</a></li>
+<li class="toc-entry toc-h3"><a href="#correctly-use-masking-with-softmax">Correctly use masking with softmax</a></li>
+<li class="toc-entry toc-h3"><a href="#use-dynamic-minibatches-when-training-sequence-models">Use dynamic minibatches when training sequence models</a></li>
+<li class="toc-entry toc-h3"><a href="#reduce-the-amount-of-oov-out-of-vocabulary-words">Reduce the amount of OOV (Out Of Vocabulary) words</a></li>
+<li class="toc-entry toc-h3"><a href="#creating-a-vocabulary-on-the-train-val-sets-between-folds-can-lead-to-information-being-leaked-and-artificially-increasing-your-score">Creating a vocabulary on the train, val sets between folds can lead to information being leaked and artificially increasing your score</a></li>
+<li class="toc-entry toc-h3"><a href="#how-to-use-pad_packed_sequence-and-pack_padded_sequence">How to use pad_packed_sequence and pack_padded_sequence</a></li>
+<li class="toc-entry toc-h3"><a href="#transformers">Transformers</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#gradient-boosting">Gradient boosting</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#how-to-set-hyperparameters">How to set hyperparameters</a></li>
+<li class="toc-entry toc-h3"><a href="#resources-3">Resources</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#setting-up-your-environment">Setting up your environment</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#jupyter-notebooks">Jupyter notebooks</a></li>
+<li class="toc-entry toc-h3"><a href="#python-36">Python 3.6+</a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#conda">Conda</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#build-your-own-library">Build your own library</a></li>
+<li class="toc-entry toc-h2"><a href="#resources-4">Resources</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#essential-tools">Essential tools</a></li>
+<li class="toc-entry toc-h3"><a href="#model-zoos">Model zoos</a></li>
+<li class="toc-entry toc-h3"><a href="#arxiv-alternatives">Arxiv alternatives</a></li>
+<li class="toc-entry toc-h3"><a href="#machine-learning-demos">Machine learning demos</a></li>
+<li class="toc-entry toc-h3"><a href="#link-aggregators">Link aggregators</a></li>
+<li class="toc-entry toc-h3"><a href="#machine-learning-as-a-service">Machine learning as a service</a></li>
+<li class="toc-entry toc-h3"><a href="#coreml">Coreml</a></li>
+<li class="toc-entry toc-h3"><a href="#courses">Courses</a></li>
+<li class="toc-entry toc-h3"><a href="#miscelaneous">Miscelaneous</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#contributing">Contributing</a></li>
+<li class="toc-entry toc-h1"><a href="#authors">Authors</a></li>
+<li class="toc-entry toc-h1"><a href="#license">License</a></li>
+<li class="toc-entry toc-h1"><a href="#acknowledgements">Acknowledgements</a></li>
+</ul><p><em>My Repository: https://github.com/bkkaggle/machine-learning-flight-rules</em></p>
+
+<p><em>A guide for astronauts (now, people doing machine learning) about what to do when things go wrong.</em></p>
+
+<h2 id="what-are-flight-rules">
+<a class="anchor" href="#what-are-flight-rules" aria-hidden="true"><span class="octicon octicon-link"></span></a>What are “flight rules”?</h2>
+
+<hr>
+
+<p><em>Copied from: https://github.com/k88hudson/git-flight-rules</em></p>
+<blockquote>
+  <p>Flight Rules are the hard-earned body of knowledge recorded in manuals that list, step-by-step, what to do if X occurs, and why. Essentially, they are extremely detailed, scenario-specific standard operating procedures._</p>
+
+  <p>NASA has been capturing our missteps, disasters and solutions since the early 1960s, when Mercury-era ground teams first started gathering “lessons learned” into a compendium that now lists thousands of problematic situations, from engine failure to busted hatch handles to computer glitches, and their solutions._</p>
+</blockquote>
+
+<p>— Chris Hadfield, <em>An Astronaut’s Guide to Life</em>.</p>
+
+<hr>
+
+<h2 id="general-tips">
+<a class="anchor" href="#general-tips" aria-hidden="true"><span class="octicon octicon-link"></span></a>General tips</h2>
+
+<hr>
+
+<p>https://karpathy.github.io/2019/04/25/recipe has some great best practices for training neural networks. Some of his tips include:</p>
+
+<h3 id="look-at-the-wrongly-classified-predictions-of-your-network">
+<a class="anchor" href="#look-at-the-wrongly-classified-predictions-of-your-network" aria-hidden="true"><span class="octicon octicon-link"></span></a>Look at the wrongly classified predictions of your network</h3>
+
+<hr>
+
+<p>This can help tell you what might be wrong with your dataset or model.</p>
+
+<h3 id="always-set-the-random-seed">
+<a class="anchor" href="#always-set-the-random-seed" aria-hidden="true"><span class="octicon octicon-link"></span></a>Always set the random seed</h3>
+
+<hr>
+
+<p>This will prevent (most, but not all!) variation in results between otherwise identical training runs.</p>
+
+<h3 id="make-a-baseline-and-then-increase-the-size-of-your-model-until-it-overfits">
+<a class="anchor" href="#make-a-baseline-and-then-increase-the-size-of-your-model-until-it-overfits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Make a baseline and then increase the size of your model until it overfits</h3>
+
+<hr>
+
+<h4 id="use-a-very-simplified-baseline-to-test-that-your-code-works-correctly">
+<a class="anchor" href="#use-a-very-simplified-baseline-to-test-that-your-code-works-correctly" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use a very simplified baseline to test that your code works correctly</h4>
+
+<hr>
+
+<p>Use a simple model (e.g. a small resnet18 or linear regression) and confirm that your code works properly and as it is supposed to.</p>
+
+<h4 id="overfit-on-a-single-batch">
+<a class="anchor" href="#overfit-on-a-single-batch" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overfit on a single batch</h4>
+
+<hr>
+
+<p>Try using as small of a batch size as you can (if you’re using batch normalization, that would be a batch of two examples). Your loss should go down to zero within a few iterations. If it doesn’t, that means you have a problem somewhere in your code.</p>
+
+<h4 id="be-sure-that-youre-data-has-been-correctly-processed">
+<a class="anchor" href="#be-sure-that-youre-data-has-been-correctly-processed" aria-hidden="true"><span class="octicon octicon-link"></span></a>Be sure that you’re data has been correctly processed</h4>
+
+<hr>
+
+<p>Visualize your input data right before the <code class="language-plaintext highlighter-rouge">out = model(x)</code> to be sure that the data being sent to the network is correct (data has normalized properly, augmentations have been applied correctly, etc)</p>
+
+<h4 id="simple-models---complex-models">
+<a class="anchor" href="#simple-models---complex-models" aria-hidden="true"><span class="octicon octicon-link"></span></a>Simple models -&gt; complex models</h4>
+
+<hr>
+
+<p>In most cases, start with a simple model (eg: resnet18) then go on to using larger and more complex models (eg: SE-ResNeXt-101).</p>
+
+<h4 id="start-with-a-simple-optimizer">
+<a class="anchor" href="#start-with-a-simple-optimizer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Start with a simple optimizer</h4>
+
+<hr>
+
+<p>Adam is almost always a safe choice, It works well and doesn’t need extensive hyperparameter tuning. Kaparthy suggests using it with a learning rate of 3e-4.
+I usually start with SGD with a learning rate of 0.1 and a momentum of 0.9 for most image classification and segmentation tasks.</p>
+
+<h4 id="change-one-thing-at-a-time">
+<a class="anchor" href="#change-one-thing-at-a-time" aria-hidden="true"><span class="octicon octicon-link"></span></a>Change one thing at a time</h4>
+
+<hr>
+
+<p>Change one hyperparameter/augmentation/architecture and see its effects on the performance of your network. Changing multiple things at a time won’t tell you what changes helped and which didn’t.</p>
+
+<h3 id="regularize-your-model">
+<a class="anchor" href="#regularize-your-model" aria-hidden="true"><span class="octicon octicon-link"></span></a>Regularize your model</h3>
+
+<hr>
+
+<h4 id="get-more-data">
+<a class="anchor" href="#get-more-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get more data</h4>
+
+<hr>
+
+<p>Training on more data will always decrease the amount of overfitting and is the easiest way to regularize a model</p>
+
+<h4 id="data-augmentation">
+<a class="anchor" href="#data-augmentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data augmentation</h4>
+
+<hr>
+
+<p>This will artificially increase the size of your dataset and is the next best thing to collecting more data. Be sure that the augmentations you use make sense in the context of the task (flipping images of text in an OCR task left to right will hurt your model instead of helping it).</p>
+
+<h4 id="use-a-pretrained-network">
+<a class="anchor" href="#use-a-pretrained-network" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use a pretrained network</h4>
+
+<hr>
+
+<p>Pretrained networks (usually on Imagenet) help jumpstart your model especially when you have a smaller dataset. The domain of the pretrained network doesn’t usually prevent it from helping although pretraining on a similar domain will be better.</p>
+
+<h4 id="decrease-the-batch-size">
+<a class="anchor" href="#decrease-the-batch-size" aria-hidden="true"><span class="octicon octicon-link"></span></a>Decrease the batch size</h4>
+
+<hr>
+
+<p>Smaller batch sizes usually help increase regularization</p>
+
+<h4 id="use-early-stopping">
+<a class="anchor" href="#use-early-stopping" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use early stopping</h4>
+
+<hr>
+
+<p>Use the validation loss to only save the best performing checkpoint of the network after the val loss hasn’t gone down for a certain number of epochs</p>
+
+<h3 id="squeeze-out-more-performance-out-of-the-network">
+<a class="anchor" href="#squeeze-out-more-performance-out-of-the-network" aria-hidden="true"><span class="octicon octicon-link"></span></a>Squeeze out more performance out of the network</h3>
+
+<hr>
+
+<h4 id="ensemble">
+<a class="anchor" href="#ensemble" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ensemble</h4>
+
+<hr>
+
+<p>Ensemble multiple models either trained on different cross validation splits of the dataset or using different architectures. This always boosts performance by a few percentage points and gives you a more confident measure of the performance of the model on the dataset. Averaging metrics from models in an ensemble will help you figure out whether a change in the model is actually an improvement or random noise.</p>
+
+<h4 id="use-early-stopping-on-the-val-metric">
+<a class="anchor" href="#use-early-stopping-on-the-val-metric" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use early stopping on the val metric</h4>
+
+<hr>
+
+<ul>
+  <li>Increase the size of the model until you overfit, then add regularization</li>
+  <li>augmentation on mask</li>
+  <li>correlation in ensembles</li>
+  <li>noise in ensembling</li>
+</ul>
+
+<hr>
+
+<p>Another great resource for best practices when training neural networks is (http://amid.fish/reproducing-deep-rl). This article focused on best practices for deep rl, but most of its recommendations are still useful on normal machine learning. Some of these tips include:</p>
+
+<h3 id="learn-to-deal-with-long-iteration-times">
+<a class="anchor" href="#learn-to-deal-with-long-iteration-times" aria-hidden="true"><span class="octicon octicon-link"></span></a>Learn to deal with long iteration times</h3>
+
+<hr>
+
+<p>Most normal programming (web development, IOS development, etc) iteration times usually range in the seconds, but iteration times in machine learning range from minutes to hours. This means that “experimenting a lot and thinking a little”, which is usually fine in other programming contexts, will make you waste a lot of time waiting for a training run to finish. Instead, spending more time thinking about what your code does and how it might not work will help you make less mistakes and waste less time.</p>
+
+<h3 id="keep-a-log-of-what-youre-working-on">
+<a class="anchor" href="#keep-a-log-of-what-youre-working-on" aria-hidden="true"><span class="octicon octicon-link"></span></a>Keep a log of what you’re working on</h3>
+
+<hr>
+
+<p>Keeping records (tensorboard graphs/model checkpoints/metrics) of training runs and configurations will really help you out when figuring out what worked and what didn’t. Additionally, keeping track of what you’re working on and your mindset as you’re working through a problem will help you when you have to come back to your work days or weeks later.</p>
+
+<h3 id="try-to-predict-how-your-code-will-fail">
+<a class="anchor" href="#try-to-predict-how-your-code-will-fail" aria-hidden="true"><span class="octicon octicon-link"></span></a>Try to predict how your code will fail</h3>
+
+<hr>
+
+<p>Doing this will cut down on the amount of failures that seem obvious in retrospect. I’ve sometimes had problems where I knew what was wrong with my code before going through the code to debug it. To stop making as many obvious mistakes, I wouldn’t start a new training run if I was uncertain about whether it would work, and then would find and fix what might have gone wrong.</p>
+
+<h3 id="resources">
+<a class="anchor" href="#resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources</h3>
+
+<hr>
+
+<ul>
+  <li>https://karpathy.github.io/2019/04/25/recipe</li>
+  <li>http://amid.fish/reproducing-deep-rl</li>
+</ul>
+
+<hr>
+
+<h2 id="advanced-tips">
+<a class="anchor" href="#advanced-tips" aria-hidden="true"><span class="octicon octicon-link"></span></a>Advanced tips</h2>
+
+<hr>
+
+<ul>
+  <li>some tips should be taken with a grain of salt</li>
+  <li>from: https://gist.github.com/bkkaggle/67bb9b5e6132e5d3c30e366c8d403369</li>
+</ul>
+
+<hr>
+
+<h3 id="basic-architectures-are-sometimes-better">
+<a class="anchor" href="#basic-architectures-are-sometimes-better" aria-hidden="true"><span class="octicon octicon-link"></span></a>Basic architectures are sometimes better</h3>
+
+<hr>
+
+<p>Always using the latest, most advanced, SOTA model for a task isn’t always the best choice. For example, Although more advanced semantic segmentation models like deeplab and pspnet are SOTA on datasets like PASCAL VOC and cityscapes, simpler architectures like U-nets are easier to train and adapt to new tasks and preform almost just as well on several recent kaggle competitions (https://www.kaggle.com/c/siim-acr-pneumothorax-segmentation/discussion/107824#latest-623920) (https://www.kaggle.com/c/tgs-salt-identification-challenge/discussion/69291#latest-592781).</p>
+
+<h3 id="be-sure-that-code-that-you-copied-from-github-or-stackoverflow-is-correct">
+<a class="anchor" href="#be-sure-that-code-that-you-copied-from-github-or-stackoverflow-is-correct" aria-hidden="true"><span class="octicon octicon-link"></span></a>Be sure that code that you copied from Github or Stackoverflow is correct</h3>
+
+<hr>
+
+<p>It’s a good idea to check code from Github and Stackoverflow to make sure it is correct and that you are using it in the correct way. In the Quora insincere questions classification Kaggle competition, a popular implementation of attention summed up the weighted features instead of weighting the actual features with the attention weights (https://www.kaggle.com/c/quora-insincere-questions-classification/discussion/79911) (https://www.kaggle.com/c/quora-insincere-questions-classification/discussion/76583#450210).</p>
+
+<h3 id="dont-excessively-tune-hyperparameters">
+<a class="anchor" href="#dont-excessively-tune-hyperparameters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Don’t excessively tune hyperparameters</h3>
+
+<hr>
+
+<p>Every time you tune hyperparameters on a validation set, you risk overfitting those hyperparameters to that validation set. If done correctly, the improvement from having better hyperparameters will outweigh the risk of having hyperparameters that don’t work well on the test set.</p>
+
+<h3 id="set-up-cyclic-learning-rates-correctly">
+<a class="anchor" href="#set-up-cyclic-learning-rates-correctly" aria-hidden="true"><span class="octicon octicon-link"></span></a>Set up cyclic learning rates correctly</h3>
+
+<hr>
+
+<p>If you’re using a cyclic learning rate, be sure that the learning rate is at it’s lowest point when you have finished training.</p>
+
+<h3 id="manually-init-layers">
+<a class="anchor" href="#manually-init-layers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Manually init layers</h3>
+
+<hr>
+
+<p>Pytorch will automatically initialize layers for you, but depending on your activation function, you might want to use the correct gain for your activation function. Take a look at the pytorch <a href="https://pytorch.org/docs/stable/nn.init.html">documentation</a> for more information.</p>
+
+<h3 id="mixedhalf-precision-training">
+<a class="anchor" href="#mixedhalf-precision-training" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mixed/half precision training</h3>
+
+<hr>
+
+<p>Mixed or half precision training lets you train on larger batch sizes and can speed up your training. Take a look at <a href="https://discuss.pytorch.org/t/training-with-half-precision/11815">this</a> if you want to simply use half precision training.</p>
+
+<h4 id="what-is-the-difference-between-mixed-and-half-precision-training">
+<a class="anchor" href="#what-is-the-difference-between-mixed-and-half-precision-training" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is the difference between mixed and half precision training?</h4>
+
+<hr>
+
+<p>Nvidia’s Volta and Turing GPUs contain tensor cores that can do fast fp16 matrix multiplications and significantly speed up your training.</p>
+
+<p>“True” half precision training casts the inputs and the model’s parameters to 16 bit floats and computes everything using 16 bit floats. The advantages of this are that fp16 floats only use half the amount of vram as normal fp32 floats, letting you double the batch size while training. This is the fastest and most optimized way to take advantage of tensor cores, but comes at a cost. Using fp16 floats for the model’s parameters and batch norm statistics means that if the gradients are small enough, they can underflow and be replaced by zeros.</p>
+
+<p>Mixed precision solves these problems by keeping a master copy of the model’s parameters in 32 bit floats. The inputs and the model’s parameters are still cast to fp16, but after the backwards pass, the gradients are copied to the master copy and cast to fp32. The parameters are updated in fp32 to prevent gradients from underflowing, and the new, updated master copy’s parameters are cast to fp16 and copied to the original fp16 model. Nvidia’s apex library recommends using mixed precision in a different way by casting inputs to tensor core-friendly operations to fp16 and keeping other operations in fp32. Both of these mixed precision approaches have an overhead compared to half precision training, but are faster and use less vram than fp32 training.</p>
+
+<p>Take a look at (https://medium.com/huggingface/training-larger-batches-practical-tips-on-1-gpu-multi-gpu-distributed-setups-ec88c3e51255) for more information.</p>
+
+<h3 id="apex-wont-install-on-gcps-deep-learning-vm">
+<a class="anchor" href="#apex-wont-install-on-gcps-deep-learning-vm" aria-hidden="true"><span class="octicon octicon-link"></span></a>Apex won’t install on GCP’s deep learning vm</h3>
+
+<hr>
+
+<p>This is a known issue with apex, take a look at (https://github.com/NVIDIA/apex/issues/259) for some possible solutions.</p>
+
+<h4 id="resources-1">
+<a class="anchor" href="#resources-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources</h4>
+
+<hr>
+
+<p>If you’re using pytorch, Nvidia’s apex library (https://docs.nvidia.com/deeplearning/sdk/mixed-precision-training/index.html) is the easiest way to start using mixed precision.
+If you want to read more about half and mixed precision training, take a look at https://forums.fast.ai/t/mixed-precision-training/20720</p>
+
+<h3 id="gradient-accumulation">
+<a class="anchor" href="#gradient-accumulation" aria-hidden="true"><span class="octicon octicon-link"></span></a>gradient accumulation</h3>
+
+<hr>
+
+<p>If you want to train larger batches on a gpu without enough vram, gradient accumulation can help you out.</p>
+
+<p>The basic idea is this: call <code class="language-plaintext highlighter-rouge">optimizer.step()</code> every n minibatches, accumulating the gradients at each minibatch, effectively training on a minibatch of size <code class="language-plaintext highlighter-rouge">batch_size x n</code>.</p>
+
+<p>Here’s a example showing how you could use gradient accumulation in pytorch, from (https://gist.github.com/thomwolf/ac7a7da6b1888c2eeac8ac8b9b05d3d3#file-gradient_accumulation-py):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span><span class="p">.</span><span class="n">zero_grad</span><span class="p">()</span>                                   <span class="c1"># Reset gradients tensors
+</span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">training_set</span><span class="p">):</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>                     <span class="c1"># Forward pass
+</span>    <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>       <span class="c1"># Compute loss function
+</span>    <span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span> <span class="o">/</span> <span class="n">accumulation_steps</span>                <span class="c1"># Normalize our loss (if averaged)
+</span>    <span class="n">loss</span><span class="p">.</span><span class="n">backward</span><span class="p">()</span>                                 <span class="c1"># Backward pass
+</span>    <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">accumulation_steps</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>             <span class="c1"># Wait for several backward steps
+</span>        <span class="n">optimizer</span><span class="p">.</span><span class="n">step</span><span class="p">()</span>                            <span class="c1"># Now we can do an optimizer step
+</span>        <span class="n">model</span><span class="p">.</span><span class="n">zero_grad</span><span class="p">()</span>                           <span class="c1"># Reset gradients tensors
+</span>        <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">evaluation_steps</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>           <span class="c1"># Evaluate the model when we...
+</span>            <span class="n">evaluate_model</span><span class="p">()</span>                        <span class="c1"># ...have no gradients accumulated
+</span></code></pre></div></div>
+
+<p>If you want to read more about gradient accumulation, check out this blog post (https://medium.com/huggingface/training-larger-batches-practical-tips-on-1-gpu-multi-gpu-distributed-setups-ec88c3e51255)</p>
+
+<h3 id="multi-gpumachine-training">
+<a class="anchor" href="#multi-gpumachine-training" aria-hidden="true"><span class="octicon octicon-link"></span></a>multi gpu/machine training</h3>
+
+<hr>
+
+<p>If you have multiple gpus, you can easily convert your current code to train your model on multiple gpus. Just follow the official tutorials on pytorch.org (https://pytorch.org/tutorials/beginner/blitz/data_parallel_tutorial.html). The only problem with this is that Pytorch’s build in <code class="language-plaintext highlighter-rouge">DataParallel</code> will gather the outputs from all the other gpus to gpu 1 to compute the loss and calculate gradients, using up more vram. There <em>is</em> an alternative to this though, just use this alternative balanced data parallel implementation (https://gist.github.com/thomwolf/7e2407fbd5945f07821adae3d9fd1312).</p>
+
+<p>Take a look at (https://medium.com/huggingface/training-larger-batches-practical-tips-on-1-gpu-multi-gpu-distributed-setups-ec88c3e51255#) for more information about multi gpu and distributed training.</p>
+
+<h3 id="determinism">
+<a class="anchor" href="#determinism" aria-hidden="true"><span class="octicon octicon-link"></span></a>determinism</h3>
+
+<hr>
+
+<p>Pytorch will give you different results every time you run a script unless you set random seeds for python, numpy, and pytorch. Fortunately, doing this is very simple and only requires you to add a few lines to the top of each python file. There is a catch though, setting <code class="language-plaintext highlighter-rouge">torch.backends.cudnn.deterministic</code> to <code class="language-plaintext highlighter-rouge">True</code> will slightly slow down your network.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SEED</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+<span class="n">torch</span><span class="p">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+<span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+<span class="n">torch</span><span class="p">.</span><span class="n">backends</span><span class="p">.</span><span class="n">cudnn</span><span class="p">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="bp">True</span>
+</code></pre></div></div>
+
+<p>If you want a simple one-line way to do this, check out my <code class="language-plaintext highlighter-rouge">pytorch_zoo</code> library on github (https://github.com/bkkaggle/pytorch_zoo#seed_environmentseed42).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pytorch_zoo.utils</span> <span class="kn">import</span> <span class="n">seed_environment</span>
+
+<span class="n">seed_environment</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>If you want more information on determinism in pytorch, take a look at these links:</p>
+
+<ul>
+  <li>https://discuss.pytorch.org/t/how-to-get-deterministic-behavior/18177/7</li>
+  <li>https://www.kaggle.com/c/quora-insincere-questions-classification/discussion/72770</li>
+  <li>https://www.kaggle.com/bminixhofer/deterministic-neural-networks-using-pytorch</li>
+  <li>https://www.kaggle.com/c/quora-insincere-questions-classification/discussion/72040</li>
+</ul>
+
+<hr>
+
+<h3 id="initialization">
+<a class="anchor" href="#initialization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Initialization</h3>
+
+<p>Take a look at my <a href="/blog/2020/7/3/initialization">post</a> for more information.</p>
+
+<hr>
+
+<h3 id="normalization">
+<a class="anchor" href="#normalization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Normalization</h3>
+
+<p>Take a look at my <a href="/blog/2020/3/25/normalization">post</a> for an overview.</p>
+
+<hr>
+
+<h4 id="batch-norm">
+<a class="anchor" href="#batch-norm" aria-hidden="true"><span class="octicon octicon-link"></span></a>Batch norm</h4>
+
+<hr>
+
+<p>The original batch normalization paper put the batch norm layer before the activation function, recent research shows that putting the batch norm layer after the activation gives better results. A great article on batch norm and why it works can be found here (https://blog.paperspace.com/busting-the-myths-about-batch-normalization/).</p>
+
+<h5 id="you-cant-use-a-batch-size-of-1-with-batch-norm">
+<a class="anchor" href="#you-cant-use-a-batch-size-of-1-with-batch-norm" aria-hidden="true"><span class="octicon octicon-link"></span></a>You can’t use a batch size of 1 with batch norm</h5>
+
+<hr>
+
+<p>Batch norm relies on the mean and variance of all the elements in a batch, it won’t work if you’re using a batch size of one while training, so either skip over any leftover batches with batch sizes of 1 or increase the batch size to atleast 2.</p>
+
+<h5 id="be-sure-to-use-modeleval-with-batch-norm">
+<a class="anchor" href="#be-sure-to-use-modeleval-with-batch-norm" aria-hidden="true"><span class="octicon octicon-link"></span></a>Be sure to use model.eval() with batch norm</h5>
+
+<hr>
+
+<p>Run <code class="language-plaintext highlighter-rouge">model.eval()</code> before your validation loop to make sure pytorch uses the running mean and variance calculated over the training set. Also make sure to call <code class="language-plaintext highlighter-rouge">model.train()</code> before your training loop to start calculating the batch norm statistics again. You can read more about this at (https://discuss.pytorch.org/t/what-does-model-eval-do-for-batchnorm-layer/7146)</p>
+
+<h5 id="resources-2">
+<a class="anchor" href="#resources-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources</h5>
+
+<hr>
+
+<p>http://mlexplained.com/2018/11/30/an-overview-of-normalization-methods-in-deep-learning/ is a really good blog post on the different types of normalizations and when to them.</p>
+
+<hr>
+
+<h2 id="common-errors">
+<a class="anchor" href="#common-errors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Common errors</h2>
+
+<hr>
+
+<h2 id="pytorch">
+<a class="anchor" href="#pytorch" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pytorch</h2>
+
+<hr>
+
+<h3 id="losses">
+<a class="anchor" href="#losses" aria-hidden="true"><span class="octicon octicon-link"></span></a>Losses</h3>
+
+<hr>
+
+<h4 id="cross_entropy-vs-nll-loss-for-multi-class-classification">
+<a class="anchor" href="#cross_entropy-vs-nll-loss-for-multi-class-classification" aria-hidden="true"><span class="octicon octicon-link"></span></a><code class="language-plaintext highlighter-rouge">cross_entropy</code> vs nll loss for multi-class classification</h4>
+
+<hr>
+
+<p>Either pass the logits for a multi-class classification task to <code class="language-plaintext highlighter-rouge">log_softmax</code> first, then through the <code class="language-plaintext highlighter-rouge">nll</code> loss or pass the logits directly to <code class="language-plaintext highlighter-rouge">cross_entropy</code>. They will give you the same result, but <code class="language-plaintext highlighter-rouge">cross_entropy</code> is more numerically stable. Use <code class="language-plaintext highlighter-rouge">softmax</code> separately to convert logits into probabilities for prediction or for calculating metrics. Take a look at (https://sebastianraschka.com/faq/docs/pytorch-crossentropy.html) for more information.</p>
+
+<h4 id="binary_cross_entropy-vs-binary_cross_entropy_with_logits-for-binary-classification-tasks">
+<a class="anchor" href="#binary_cross_entropy-vs-binary_cross_entropy_with_logits-for-binary-classification-tasks" aria-hidden="true"><span class="octicon octicon-link"></span></a><code class="language-plaintext highlighter-rouge">binary_cross_entropy</code> vs <code class="language-plaintext highlighter-rouge">binary_cross_entropy_with_logits</code> for binary classification tasks</h4>
+
+<hr>
+
+<p>Either pass the logits for a binary classification task to <code class="language-plaintext highlighter-rouge">sigmoid</code> first, then through <code class="language-plaintext highlighter-rouge">binary_cross_entropy</code> or pass the logits directly to <code class="language-plaintext highlighter-rouge">binary_cross_entropy_with_logits</code>. Just as the example above, they will give you the same result, but <code class="language-plaintext highlighter-rouge">binary_cross_entropy</code> is more numerically stable. Use <code class="language-plaintext highlighter-rouge">sigmoid</code> separately to conver the logits into probabilities for prediction or for calculating metrics. Again, take a look at (https://sebastianraschka.com/faq/docs/pytorch-crossentropy.html) for more information.</p>
+
+<h4 id="binary-classification-vs-multi-class-classification">
+<a class="anchor" href="#binary-classification-vs-multi-class-classification" aria-hidden="true"><span class="octicon octicon-link"></span></a>Binary classification vs multi-class classification</h4>
+
+<hr>
+
+<p>A binary classification task can also be represented as a multi-class classification task with two classes, positive and negative. They will give you the same result and should be numerically identical.</p>
+
+<p>Here’s an example, taken from (https://sebastianraschka.com/faq/docs/pytorch-crossentropy.html), on how you could do this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">torch</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="p">.</span><span class="nb">float</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">probas</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="p">.</span><span class="nb">float</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">functional</span><span class="p">.</span><span class="n">binary_cross_entropy</span><span class="p">(</span><span class="n">probas</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+<span class="n">tensor</span><span class="p">(</span><span class="mf">0.1446</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="p">.</span><span class="nb">long</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">probas</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">],</span>
+<span class="p">...</span>                        <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
+<span class="p">...</span>                        <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="p">.</span><span class="nb">float</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">functional</span><span class="p">.</span><span class="n">nll_loss</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="n">probas</span><span class="p">),</span> <span class="n">labels</span><span class="p">)</span>
+<span class="n">tensor</span><span class="p">(</span><span class="mf">0.1446</span><span class="p">)</span>
+</code></pre></div></div>
+
+<hr>
+
+<h4 id="pin-memory-in-the-dataloader">
+<a class="anchor" href="#pin-memory-in-the-dataloader" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pin memory in the dataloader</h4>
+
+<hr>
+
+<p>Set <code class="language-plaintext highlighter-rouge">pin_memory</code> to <code class="language-plaintext highlighter-rouge">true</code> in your dataloader to speed up transferring your data from cpu to gpu. Take a look at this for more information (https://discuss.pytorch.org/t/when-to-set-pin-memory-to-true/19723).</p>
+
+<h4 id="modeleval-vs-torchno_grad">
+<a class="anchor" href="#modeleval-vs-torchno_grad" aria-hidden="true"><span class="octicon octicon-link"></span></a><code class="language-plaintext highlighter-rouge">model.eval()</code> vs <code class="language-plaintext highlighter-rouge">torch.no_grad()</code>
+</h4>
+
+<hr>
+
+<p><code class="language-plaintext highlighter-rouge">model.eval()</code> will switch your dropout and batch norm layers to eval mode, turning off dropout and using the running mean and stddev for the batch norm layers. <code class="language-plaintext highlighter-rouge">torch.no_grad()</code> will tell pytorch to stop tracking operations, reducing memory usage and speeding up your evaluation loop. To use these properly, run <code class="language-plaintext highlighter-rouge">model.train()</code> before each training loop, run <code class="language-plaintext highlighter-rouge">model.eval()</code> before each evaluation loop, and wrap your evaluation loop with <code class="language-plaintext highlighter-rouge">with torch.no_grad():</code> Take a look at this for more information (https://discuss.pytorch.org/t/model-eval-vs-with-torch-no-grad/19615/11).</p>
+
+<h4 id="what-to-use-for-num_workers-in-the-dataloader">
+<a class="anchor" href="#what-to-use-for-num_workers-in-the-dataloader" aria-hidden="true"><span class="octicon octicon-link"></span></a>What to use for <code class="language-plaintext highlighter-rouge">num_workers</code> in the dataloader</h4>
+
+<hr>
+
+<p>If your gpu utilization fluctuates a lot and generally remains low (&lt; 90%), this might mean that your gpu is waiting for the cpu to finish processing all the elements in your batch and that <code class="language-plaintext highlighter-rouge">num_workers</code> might be your main bottleneck. <code class="language-plaintext highlighter-rouge">num_workers</code> in the dataloader is used to tell pytorch how many parallel workers to use to preprocess the data ahead of time. Set <code class="language-plaintext highlighter-rouge">num_workers</code> to the number of cores that you have in your cpu. This will fully utilize all your cpu cores to minimize the amount of time the gpu spends waiting for the cpu to process the data. If your gpu utilization still remains low, you should get more cpu cores or preprocess the data ahead of time and save it to disk. Take a look at these articles for more information: (https://discuss.pytorch.org/t/guidelines-for-assigning-num-workers-to-dataloader) and (https://stanford.edu/~shervine/blog/pytorch-how-to-generate-data-parallel).</p>
+
+<h3 id="tensorboard">
+<a class="anchor" href="#tensorboard" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tensorboard</h3>
+
+<hr>
+
+<p>Tensorboard is really useful when you want to view your model’s training progress in real time. Now that Pytorch 1.1 is out, you can now log metrics directly to tensorboard from Pytorch.</p>
+
+<h4 id="how-to-use-it">
+<a class="anchor" href="#how-to-use-it" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use it</h4>
+
+<hr>
+
+<p>Follow these instructions for a quickstart (https://pytorch.org/tutorials/intermediate/tensorboard_tutorial.html).</p>
+
+<h3 id="use-tensorboard-in-a-kaggle-kernel">
+<a class="anchor" href="#use-tensorboard-in-a-kaggle-kernel" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use Tensorboard in a kaggle kernel</h3>
+
+<hr>
+
+<p>Just copy this code snippet into a cell at the top of your kernel</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">!</span><span class="n">mkdir</span> <span class="n">logs</span>
+<span class="n">get_ipython</span><span class="p">().</span><span class="n">system_raw</span><span class="p">(</span><span class="s">'tensorboard --logdir ./logs --host 0.0.0.0 --port 6006 &amp;'</span><span class="p">)</span>
+<span class="err">!</span><span class="n">ssh</span> <span class="o">-</span><span class="n">o</span> <span class="s">"StrictHostKeyChecking no"</span> <span class="o">-</span><span class="n">R</span> <span class="mi">80</span><span class="p">:</span><span class="n">localhost</span><span class="p">:</span><span class="mi">6006</span> <span class="n">serveo</span><span class="p">.</span><span class="n">net</span>
+</code></pre></div></div>
+
+<p>I also have another quickstart at my <a href="https://github.com/bkkaggle/pytorch_zoo#viewing-training-progress-with-tensorboard-in-a-kaggle-kernel">pytorch_zoo</a> repository.</p>
+
+<h4 id="what-do-all-the-tensorboard-histograms-mean">
+<a class="anchor" href="#what-do-all-the-tensorboard-histograms-mean" aria-hidden="true"><span class="octicon octicon-link"></span></a>What do all the Tensorboard histograms mean?</h4>
+
+<hr>
+
+<p>Take a look at these stackoberflow posts:</p>
+
+<ul>
+  <li>https://stackoverflow.com/questions/42315202/understanding-tensorboard-weight-histograms</li>
+  <li>https://stackoverflow.com/questions/38149622/what-is-a-good-explanation-of-how-to-read-the-histogram-feature-of-tensorboard</li>
+</ul>
+
+<hr>
+
+<h3 id="common-errors-1">
+<a class="anchor" href="#common-errors-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Common errors</h3>
+
+<hr>
+
+<h4 id="runtimeerror-one-of-the-variables-needed-for-gradient-computation-has-been-modified-by-an-inplace-operation">
+<a class="anchor" href="#runtimeerror-one-of-the-variables-needed-for-gradient-computation-has-been-modified-by-an-inplace-operation" aria-hidden="true"><span class="octicon octicon-link"></span></a>RuntimeError: one of the variables needed for gradient computation has been modified by an inplace operation</h4>
+
+<hr>
+
+<p>In place operations and operations on slices of tensors can cause problems with Pytorch’s autograd. To fix this, convert your inplace operation, <code class="language-plaintext highlighter-rouge">x[:, 0, :] += 1</code>, to a non inplace operation, <code class="language-plaintext highlighter-rouge">x[:, 0, :] = x[:, 0, :].clone() + 1</code>, and use <code class="language-plaintext highlighter-rouge">.clone()</code> to avoid problems with operations on tensor slices. Take a look at (https://discuss.pytorch.org/t/encounter-the-runtimeerror-one-of-the-variables-needed-for-gradient-computation-has-been-modified-by-an-inplace-operation/836) for more information.</p>
+
+<h4 id="creating-mtgp-constants-failed-error">
+<a class="anchor" href="#creating-mtgp-constants-failed-error" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating MTGP constants failed error</h4>
+
+<hr>
+
+<p>This error happens when “using an embedding layer and passing out of range indexes (indexes &gt; num_embeddings)” from (https://discuss.pytorch.org/t/solved-creating-mtgp-constants-failed-error/15084/4). For more information, take a look at (https://discuss.pytorch.org/t/solved-creating-mtgp-constants-failed-error/15084).</p>
+
+<h4 id="valueerror-expected-more-than-1-value-per-channel-when-training">
+<a class="anchor" href="#valueerror-expected-more-than-1-value-per-channel-when-training" aria-hidden="true"><span class="octicon octicon-link"></span></a>ValueError: Expected more than 1 value per channel when training</h4>
+
+<hr>
+
+<p>This error happens when you’re using a batch size of 1 while training with batch norm. Batch norm expects to have a batch size of at least 2. For more information, take a look at (https://github.com/pytorch/pytorch/issues/4534)</p>
+
+<hr>
+
+<h3 id="how-to">
+<a class="anchor" href="#how-to" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to</h3>
+
+<hr>
+
+<h4 id="how-to-implement-gradient-clipping">
+<a class="anchor" href="#how-to-implement-gradient-clipping" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to implement gradient clipping</h4>
+
+<hr>
+
+<p>Here’s the code for gradient clipping:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">utils</span><span class="p">.</span><span class="n">clip_grad_norm</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">value</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>If you want to read more about gradient clipping in pytorch, take a look at (https://discuss.pytorch.org/t/proper-way-to-do-gradient-clipping/191).</p>
+
+<h4 id="how-to-implement-global-maxavg-pooling">
+<a class="anchor" href="#how-to-implement-global-maxavg-pooling" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to implement global max/avg pooling</h4>
+
+<hr>
+
+<p>Follow the instructions from (https://discuss.pytorch.org/t/global-max-pooling/1345/2)</p>
+
+<h4 id="how-to-release-gpu-memory">
+<a class="anchor" href="#how-to-release-gpu-memory" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to release gpu memory</h4>
+
+<hr>
+
+<p>There is no simple way to do this, but you can release as much memory as you can by running <code class="language-plaintext highlighter-rouge">torch.cuda.empty_cache()</code>. Take a look at (https://discuss.pytorch.org/t/how-can-we-release-gpu-memory-cache/14530) for more information.</p>
+
+<h4 id="how-to-concatenate-hidden-states-of-a-bidirectional-lstm">
+<a class="anchor" href="#how-to-concatenate-hidden-states-of-a-bidirectional-lstm" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to concatenate hidden states of a bidirectional lstm</h4>
+
+<hr>
+
+<p>Follow the instructions from (https://discuss.pytorch.org/t/concatenation-of-the-hidden-states-produced-by-a-bidirectional-lstm/3686/2).</p>
+
+<h3 id="torchtext">
+<a class="anchor" href="#torchtext" aria-hidden="true"><span class="octicon octicon-link"></span></a>Torchtext</h3>
+
+<hr>
+
+<p>Torchtext is Pytorch’s official NLP library, The library’s official <a href="https://torchtext.readthedocs.io/en/latest/index.html">docs</a> are the best way to get started with the library, but are a bit limited and there are some blog posts that help you get a better sense of how to use the library:</p>
+
+<ul>
+  <li>https://pytorch.org/tutorials/beginner/torchtext_translation_tutorial.html</li>
+  <li>https://pytorch.org/tutorials/beginner/text_sentiment_ngrams_tutorial.html</li>
+  <li>https://pytorch.org/tutorials/beginner/transformer_tutorial.html</li>
+  <li>http://anie.me/On-Torchtext/</li>
+  <li>http://mlexplained.com/2018/02/08/a-comprehensive-tutorial-to-torchtext/</li>
+  <li>http://mlexplained.com/2018/02/15/language-modeling-tutorial-in-torchtext-practical-torchtext-part-2/</li>
+  <li>https://towardsdatascience.com/use-torchtext-to-load-nlp-datasets-part-i-5da6f1c89d84</li>
+  <li>https://towardsdatascience.com/use-torchtext-to-load-nlp-datasets-part-ii-f146c8b9a496</li>
+  <li>https://pytorch.org/tutorials/beginner/torchtext_translation_tutorial.html</li>
+</ul>
+
+<hr>
+
+<h4 id="sort-batches-by-length">
+<a class="anchor" href="#sort-batches-by-length" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sort batches by length</h4>
+
+<hr>
+
+<p>Your recurrent models will train best if all the examples in a batch have similar lengths. Since all the examples in a batch are padded with zeros to the length of the longest example, grouping examples with identical or similar lengths will make your model more efficient and waste less of the GPU’s memory. Use the iterator’s <code class="language-plaintext highlighter-rouge">sort_key</code> attribute to tell it to group examples of similar lengths into each batch. If you’re using <code class="language-plaintext highlighter-rouge">pack_padded_sequence</code>, set <code class="language-plaintext highlighter-rouge">sort_within_batch</code> to <code class="language-plaintext highlighter-rouge">True</code> since <code class="language-plaintext highlighter-rouge">pack_padded_sequence</code> expects examples in a batch to be in ascending order. Take a look at <a href="https://github.com/pytorch/text/issues/303">this</a> for more information.</p>
+
+<ul>
+  <li>https://github.com/pytorch/text/issues/303</li>
+</ul>
+
+<hr>
+
+<h4 id="pretrained-embeddings">
+<a class="anchor" href="#pretrained-embeddings" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pretrained embeddings</h4>
+
+<hr>
+
+<p>If you want to use a pretrained embedding like word2vec or glove, you will have to load in the pretrained vectors and update the field’s vectors.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Load in the vectors
+vectors = torchtext.vocab.Vectors('/path/to/vectors')
+
+# Create the text field
+text_field = data.Field(tokenize=tokenizer, lower=True, batch_first=True, include_lengths=True)
+
+# Built the vocab for the field using the train dataset
+text_field.build_vocab(train_dataset)
+
+# Set the vectors of the field to be the pretrained vectors
+text_field.vocab.set_vectors(vectors.stoi, vectors.vectors, vectors.dim)
+</code></pre></div></div>
+
+<p>Take a look at <a href="https://discuss.pytorch.org/t/aligning-torchtext-vocab-index-to-loaded-embedding-pre-trained-weights/20878">this</a> for more information.</p>
+
+<h4 id="serializing-datasets">
+<a class="anchor" href="#serializing-datasets" aria-hidden="true"><span class="octicon octicon-link"></span></a>Serializing datasets</h4>
+
+<hr>
+
+<p>If you’re working with large datasets that take time to load and process, being able to serialize and save processed datasets to disk is a really nice feature. Unfortunately, this feature is <a href="https://github.com/pytorch/text/issues/140">still</a> a work in progress (the issue was created in 2017, and there doesn’t seem to be that much work being done on torchtext as of late 2019), so the only way to do this at the moment is to follow <a href="https://towardsdatascience.com/use-torchtext-to-load-nlp-datasets-part-ii-f146c8b9a496">this</a> article.</p>
+
+<h2 id="kaggle">
+<a class="anchor" href="#kaggle" aria-hidden="true"><span class="octicon octicon-link"></span></a>Kaggle</h2>
+
+<hr>
+
+<p>Here are some of tips and tricks I picked up while participating in kaggle competitions.</p>
+
+<h3 id="tips">
+<a class="anchor" href="#tips" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tips</h3>
+
+<hr>
+
+<h4 id="trust-your-local-validation">
+<a class="anchor" href="#trust-your-local-validation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Trust your local validation</h4>
+
+<hr>
+
+<p>Your score on your local validation set should be the most important, and sometimes the only, metric to pay attention to. Creating a validation set that you can trust to tell you whether you are or are not making progress is very important.</p>
+
+<h4 id="optimize-for-the-metric">
+<a class="anchor" href="#optimize-for-the-metric" aria-hidden="true"><span class="octicon octicon-link"></span></a>Optimize for the metric</h4>
+
+<hr>
+
+<p>The goal of kaggle competitions is to get the highest (or lowest, depending on the metric) score on a specific metric. To do this, you might need to modify your model’s loss function. For example, if the competition metric penalizes mistakes on rare classes more than common classes, oversampling or weighting the loss in favor of those classes can force the model to optimize for that metric.</p>
+
+<h4 id="something-that-works-for-someone-might-not-work-for-you">
+<a class="anchor" href="#something-that-works-for-someone-might-not-work-for-you" aria-hidden="true"><span class="octicon octicon-link"></span></a>Something that works for someone might not work for you</h4>
+
+<hr>
+
+<p>Just because someone says on the discussion forum that a particular technique or module works better for them doesn’t automatically mean that it will work for you.</p>
+
+<h3 id="tricks">
+<a class="anchor" href="#tricks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tricks</h3>
+
+<hr>
+
+<h4 id="removing-negative-samples-from-a-dataset-is-equivalent-to-loss-weighting">
+<a class="anchor" href="#removing-negative-samples-from-a-dataset-is-equivalent-to-loss-weighting" aria-hidden="true"><span class="octicon octicon-link"></span></a>Removing negative samples from a dataset is equivalent to loss weighting</h4>
+
+<hr>
+
+<p>This usually works well and is easier to do than loss weighting.</p>
+
+<h4 id="thresholding">
+<a class="anchor" href="#thresholding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Thresholding</h4>
+
+<hr>
+
+<h5 id="using-the-optimal-threshold-on-a-dataset-can-lead-to-brittle-results">
+<a class="anchor" href="#using-the-optimal-threshold-on-a-dataset-can-lead-to-brittle-results" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using the optimal threshold on a dataset can lead to brittle results</h5>
+
+<hr>
+
+<p>If you choose thresholds for (binary) classification problems by choosing whatever value gives you the optimal score on a validation set, the threshold might be overfitting to the specific train-val split or to the specific architecture/hyperparameters. This can have two effects. First, the optimial threshold you found on the val set might not be the optimal threshold on the held out test set, decreasing your score. Second, this makes comparing results between runs with different model architectures or hyperparameters more difficult. Using different thresholds means that a model that is actually worse might get a higher score than a better model if you find a ‘lucky’ threshold.</p>
+
+<h4 id="shakeup">
+<a class="anchor" href="#shakeup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Shakeup</h4>
+
+<hr>
+
+<p>Shakeup prediction is a powerful tool to predict the likely range of scores for your model when evaluated on an unknown test set. It was first introduced by the winner of a kaggle competition as a way to stabilize his models in (https://www.kaggle.com/c/planet-understanding-the-amazon-from-space/discussion/36809). It has also been used <a href="https://www.kaggle.com/c/tgs-salt-identification-challenge/discussion/67090">here</a> and <a href="https://www.kaggle.com/c/quora-insincere-questions-classification/discussion/75821">here</a>.</p>
+
+<h3 id="encoding-categorical-features">
+<a class="anchor" href="#encoding-categorical-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Encoding categorical features</h3>
+
+<hr>
+
+<p>Encoding categorical features is a pretty important thing to do when working with tabular data.</p>
+
+<p>Some resources I found for this are:</p>
+
+<ul>
+  <li>https://www.kaggle.com/c/microsoft-malware-prediction/discussion/79045</li>
+  <li>https://www.kaggle.com/vprokopev/mean-likelihood-encodings-a-comprehensive-study</li>
+  <li>https://www.kaggle.com/tnarik/likelihood-encoding-of-categorical-features</li>
+  <li>https://www.kaggle.com/c/microsoft-malware-prediction/discussion/76668</li>
+</ul>
+
+<h3 id="optimizing-code">
+<a class="anchor" href="#optimizing-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>Optimizing code</h3>
+
+<hr>
+
+<h4 id="save-processed-datasets-to-disk">
+<a class="anchor" href="#save-processed-datasets-to-disk" aria-hidden="true"><span class="octicon octicon-link"></span></a>Save processed datasets to disk</h4>
+
+<hr>
+
+<p>As long as your dataset isn’t too large, saving the processed dataset to disk as a <code class="language-plaintext highlighter-rouge">.pkl</code> file, then loading it in whenever you need to use it, will save you time and will help increase your GPU utilization.</p>
+
+<h4 id="use-multiprocessing">
+<a class="anchor" href="#use-multiprocessing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use multiprocessing</h4>
+
+<hr>
+
+<p>Python’s <a href="https://docs.python.org/2/library/multiprocessing.html"><code class="language-plaintext highlighter-rouge">multiprocessing</code></a> library can help you take full advantage of all the cores in your CPU.</p>
+
+<h3 id="data-leaks">
+<a class="anchor" href="#data-leaks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data Leaks</h3>
+
+<hr>
+
+<p>Finding leaks in a dataset is a difficult, but sometimes useful skill.</p>
+
+<p>Some good examples of how kagglers found leaks are:</p>
+
+<ul>
+  <li>https://www.kaggle.com/raddar/towards-de-anonymizing-the-data-some-insights</li>
+  <li>https://www.kaggle.com/cpmpml/raddar-magic-explained-a-bit/</li>
+</ul>
+
+<h3 id="tools">
+<a class="anchor" href="#tools" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tools</h3>
+
+<hr>
+
+<ul>
+  <li>https://github.com/mxbi/mlcrate</li>
+  <li>https://github.com/bkkaggle/pytorch_zoo (I made this)</li>
+</ul>
+
+<hr>
+
+<h4 id="ctr-click-through-rate-prediction-tools">
+<a class="anchor" href="#ctr-click-through-rate-prediction-tools" aria-hidden="true"><span class="octicon octicon-link"></span></a>CTR (Click Through Rate prediction) tools</h4>
+
+<ul>
+  <li>https://github.com/guoday/ctrNet-tool</li>
+  <li>https://www.kaggle.com/c/avazu-ctr-prediction/discussion/10927</li>
+  <li>https://www.kaggle.com/c/microsoft-malware-prediction/discussion/75149</li>
+  <li>https://www.kaggle.com/scirpus/microsoft-libffm-munger</li>
+  <li>https://www.kaggle.com/c/talkingdata-adtracking-fraud-detection/discussion/56497#331685</li>
+</ul>
+
+<hr>
+
+<h4 id="ftrl-follow-the-regularized-leader">
+<a class="anchor" href="#ftrl-follow-the-regularized-leader" aria-hidden="true"><span class="octicon octicon-link"></span></a>FTRL (Follow The Regularized Leader)</h4>
+
+<ul>
+  <li>https://www.kaggle.com/c/microsoft-malware-prediction/discussion/75246</li>
+</ul>
+
+<hr>
+
+<h3 id="ensembling">
+<a class="anchor" href="#ensembling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ensembling</h3>
+
+<h4 id="correlation">
+<a class="anchor" href="#correlation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Correlation</h4>
+
+<hr>
+
+<p>Ensembling models with low correlations is better than ensembling models with high correlations.</p>
+
+<p>More information can be found here:</p>
+
+<ul>
+  <li>https://www.kaggle.com/c/microsoft-malware-prediction/discussion/80368</li>
+  <li>https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/discussion/51058</li>
+</ul>
+
+<hr>
+
+<h2 id="semantic-segmentation">
+<a class="anchor" href="#semantic-segmentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Semantic segmentation</h2>
+
+<hr>
+
+<p>Some good resources for semantic segmentation include:</p>
+
+<ul>
+  <li>http://blog.qure.ai/notes/semantic-segmentation-deep-learning-review</li>
+  <li>https://tuatini.me/practical-image-segmentation-with-unet/</li>
+  <li>https://www.jeremyjordan.me/semantic-segmentation/#loss</li>
+  <li>https://becominghuman.ai/investigating-focal-and-dice-loss-for-the-kaggle-2018-data-science-bowl-65fb9af4f36c</li>
+</ul>
+
+<hr>
+
+<h2 id="nlp">
+<a class="anchor" href="#nlp" aria-hidden="true"><span class="octicon octicon-link"></span></a>NLP</h2>
+
+<hr>
+
+<p>Take a look at some of these blog posts:</p>
+
+<ul>
+  <li>http://ruder.io/a-review-of-the-recent-history-of-nlp/</li>
+  <li>https://medium.com/huggingface/learning-meaning-in-natural-language-processing-the-semantics-mega-thread-9c0332dfe28e</li>
+  <li>https://medium.com/huggingface/100-times-faster-natural-language-processing-in-python-ee32033bdced</li>
+</ul>
+
+<hr>
+
+<h3 id="awd-lstm">
+<a class="anchor" href="#awd-lstm" aria-hidden="true"><span class="octicon octicon-link"></span></a>awd-LSTM</h3>
+
+<p>Take a look at these links:</p>
+
+<ul>
+  <li>https://github.com/salesforce/awd-lstm-lm</li>
+  <li>https://www.fast.ai/2017/08/25/language-modeling-sota/</li>
+</ul>
+
+<hr>
+
+<h3 id="multitask-learning">
+<a class="anchor" href="#multitask-learning" aria-hidden="true"><span class="octicon octicon-link"></span></a>Multitask learning</h3>
+
+<p>Take a look at these links:</p>
+
+<ul>
+  <li>http://ruder.io/multi-task/</li>
+  <li>http://ruder.io/multi-task-learning-nlp/</li>
+</ul>
+
+<hr>
+
+<h3 id="combine-pretrained-embeddings">
+<a class="anchor" href="#combine-pretrained-embeddings" aria-hidden="true"><span class="octicon octicon-link"></span></a>Combine pretrained embeddings</h3>
+
+<p>Adding/concatenating/(weighted) averaging multiple pretrained embeddings almost always leads to a boost in accuracy.</p>
+
+<hr>
+
+<h3 id="reinitialize-random-embedding-matrices-between-models">
+<a class="anchor" href="#reinitialize-random-embedding-matrices-between-models" aria-hidden="true"><span class="octicon octicon-link"></span></a>Reinitialize random embedding matrices between models</h3>
+
+<p>Initializing embeddings for unknown words randomly helps increase the diversity between models.</p>
+
+<p>From: (https://www.kaggle.com/c/quora-insincere-questions-classification/discussion/79720)</p>
+
+<h3 id="try-out-dropout-or-gaussian-noise-after-the-embedding-layer">
+<a class="anchor" href="#try-out-dropout-or-gaussian-noise-after-the-embedding-layer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Try out dropout or gaussian noise after the embedding layer</h3>
+
+<hr>
+
+<p>It can help increase model diversity and decrease overfitting</p>
+
+<h3 id="correctly-use-masking-with-softmax">
+<a class="anchor" href="#correctly-use-masking-with-softmax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Correctly use masking with softmax</h3>
+
+<hr>
+
+<h3 id="use-dynamic-minibatches-when-training-sequence-models">
+<a class="anchor" href="#use-dynamic-minibatches-when-training-sequence-models" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use dynamic minibatches when training sequence models</h3>
+
+<hr>
+
+<p>Using this will try to create batches of examples with equal lengths to minimize unncessary padding and wasted calculations. The code to use this is available at (https://www.kaggle.com/c/jigsaw-unintended-bias-in-toxicity-classification/discussion/94779)</p>
+
+<h3 id="reduce-the-amount-of-oov-out-of-vocabulary-words">
+<a class="anchor" href="#reduce-the-amount-of-oov-out-of-vocabulary-words" aria-hidden="true"><span class="octicon octicon-link"></span></a>Reduce the amount of OOV (Out Of Vocabulary) words</h3>
+
+<hr>
+
+<h3 id="creating-a-vocabulary-on-the-train-val-sets-between-folds-can-lead-to-information-being-leaked-and-artificially-increasing-your-score">
+<a class="anchor" href="#creating-a-vocabulary-on-the-train-val-sets-between-folds-can-lead-to-information-being-leaked-and-artificially-increasing-your-score" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating a vocabulary on the train, val sets between folds can lead to information being leaked and artificially increasing your score</h3>
+
+<hr>
+
+<ul>
+  <li>https://www.kaggle.com/c/quora-insincere-questions-classification/discussion/79556</li>
+</ul>
+
+<hr>
+
+<h3 id="how-to-use-pad_packed_sequence-and-pack_padded_sequence">
+<a class="anchor" href="#how-to-use-pad_packed_sequence-and-pack_padded_sequence" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use <code class="language-plaintext highlighter-rouge">pad_packed_sequence</code> and <code class="language-plaintext highlighter-rouge">pack_padded_sequence</code>
+</h3>
+
+<p>Take a look at these links:</p>
+
+<ul>
+  <li>https://discuss.pytorch.org/t/packedsequence-for-seq2seq-model/3907</li>
+  <li>https://discuss.pytorch.org/t/solved-multiple-packedsequence-input-ordering/2106/7</li>
+</ul>
+
+<hr>
+
+<h3 id="transformers">
+<a class="anchor" href="#transformers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Transformers</h3>
+
+<p>Take a look at these links:</p>
+
+<ul>
+  <li>https://blog.floydhub.com/the-transformer-in-pytorch/</li>
+  <li>http://www.wildml.com/2016/01/attention-and-memory-in-deep-learning-and-nlp/</li>
+  <li>https://jalammar.github.io/illustrated-transformer/</li>
+</ul>
+
+<hr>
+
+<h2 id="gradient-boosting">
+<a class="anchor" href="#gradient-boosting" aria-hidden="true"><span class="octicon octicon-link"></span></a>Gradient boosting</h2>
+
+<h3 id="how-to-set-hyperparameters">
+<a class="anchor" href="#how-to-set-hyperparameters" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to set hyperparameters</h3>
+
+<hr>
+
+<p>Laurae’s <a href="https://sites.google.com/view/lauraepp/parameters">website</a> is the best place to understand what parameters to use and what values to set them to.</p>
+
+<h3 id="resources-3">
+<a class="anchor" href="#resources-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources</h3>
+
+<hr>
+
+<ul>
+  <li>https://www.kaggle.com/c/microsoft-malware-prediction/discussion/78253</li>
+  <li>http://mlexplained.com/2018/01/05/lightgbm-and-xgboost-explained</li>
+  <li>https://xgboost.readthedocs.io/en/latest/tutorials/model.html</li>
+  <li>https://lightgbm.readthedocs.io/en/latest/</li>
+  <li>https://xlearn-doc.readthedocs.io/en/latest/index.html</li>
+  <li>https://catboost.ai/docs/</li>
+</ul>
+
+<h2 id="setting-up-your-environment">
+<a class="anchor" href="#setting-up-your-environment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setting up your environment</h2>
+
+<hr>
+
+<h3 id="jupyter-notebooks">
+<a class="anchor" href="#jupyter-notebooks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Jupyter notebooks</h3>
+
+<hr>
+
+<ul>
+  <li>https://stackoverflow.com/questions/43759610/how-to-add-python-3-6-kernel-alongside-3-5-on-jupyter</li>
+  <li>https://forums.fast.ai/t/jupyter-notebook-keyerror-allow-remote-access/24392</li>
+</ul>
+
+<hr>
+
+<h3 id="python-36">
+<a class="anchor" href="#python-36" aria-hidden="true"><span class="octicon octicon-link"></span></a>Python 3.6+</h3>
+
+<ul>
+  <li>https://www.rosehosting.com/blog/how-to-install-python-3-6-4-on-debian-9/</li>
+</ul>
+
+<hr>
+
+<h4 id="conda">
+<a class="anchor" href="#conda" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conda</h4>
+
+<ul>
+  <li>https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#activating-an-environment</li>
+  <li>https://stackoverflow.com/questions/35245401/combining-conda-environment-yml-with-pip-requirements-txt</li>
+  <li>https://stackoverflow.com/questions/42352841/how-to-update-an-existing-conda-environment-with-a-yml-file</li>
+</ul>
+
+<hr>
+
+<h2 id="build-your-own-library">
+<a class="anchor" href="#build-your-own-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build your own library</h2>
+
+<p>I recently built my own machine learning <a href="https://github.com/bkkaggle/L2">library</a>, here are some of the resources I used:</p>
+
+<ul>
+  <li>https://medium.com/@florian.caesar/how-to-create-a-machine-learning-framework-from-scratch-in-491-steps-93428369a4eb</li>
+  <li>https://github.com/joelgrus/joelnet</li>
+  <li>https://medium.com/@johan.mabille/how-we-wrote-xtensor-1-n-n-dimensional-containers-f79f9f4966a7</li>
+  <li>https://mlfromscratch.com</li>
+  <li>https://eisenjulian.github.io/deep-learning-in-100-lines/</li>
+  <li>http://blog.ezyang.com/2019/05/pytorch-internals/</li>
+</ul>
+
+<hr>
+
+<h2 id="resources-4">
+<a class="anchor" href="#resources-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources</h2>
+
+<h3 id="essential-tools">
+<a class="anchor" href="#essential-tools" aria-hidden="true"><span class="octicon octicon-link"></span></a>Essential tools</h3>
+
+<hr>
+
+<ul>
+  <li>https://paperswithcode.com - This website lists available implementations of papers along with leaderboards showing which models are currently SOTA on a range of tasks and datasets</li>
+  <li>https://www.arxiv-vanity.com - This site converts PDF papers from Arxiv to mobile-friendly responsive web pages.</li>
+  <li>http://www.arxiv-sanity.com - This site is a better way to keep up to date with popular and interesting papers.</li>
+</ul>
+
+<hr>
+
+<h3 id="model-zoos">
+<a class="anchor" href="#model-zoos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Model zoos</h3>
+
+<ul>
+  <li>https://modelzoo.co/blog</li>
+  <li>https://modeldepot.io/search</li>
+  <li>https://github.com/sebastianruder/NLP-progress</li>
+</ul>
+
+<hr>
+
+<h3 id="arxiv-alternatives">
+<a class="anchor" href="#arxiv-alternatives" aria-hidden="true"><span class="octicon octicon-link"></span></a>Arxiv alternatives</h3>
+
+<ul>
+  <li>https://www.arxiv-vanity.com</li>
+  <li>http://www.arxiv-sanity.com</li>
+  <li>https://www.scihive.org</li>
+</ul>
+
+<hr>
+
+<h3 id="machine-learning-demos">
+<a class="anchor" href="#machine-learning-demos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Machine learning demos</h3>
+
+<ul>
+  <li>https://ganbreeder.app</li>
+  <li>https://talktotransformer.com</li>
+  <li>https://transformer.huggingface.co</li>
+  <li>https://www.nvidia.com/en-us/research/ai-playground/</li>
+  <li>https://alantian.net/ganshowcase/</li>
+  <li>https://rowanzellers.com/grover/</li>
+  <li>http://nvidia-research-mingyuliu.com/gaugan/</li>
+  <li>http://nvidia-research-mingyuliu.com/petswap/</li>
+</ul>
+
+<hr>
+
+<h3 id="link-aggregators">
+<a class="anchor" href="#link-aggregators" aria-hidden="true"><span class="octicon octicon-link"></span></a>Link aggregators</h3>
+
+<ul>
+  <li>https://news.ycombinator.com</li>
+  <li>https://www.sciencewiki.com</li>
+  <li>https://git.news/?ref=producthunt</li>
+</ul>
+
+<hr>
+
+<h3 id="machine-learning-as-a-service">
+<a class="anchor" href="#machine-learning-as-a-service" aria-hidden="true"><span class="octicon octicon-link"></span></a>Machine learning as a service</h3>
+
+<ul>
+  <li>https://runwayml.com</li>
+  <li>https://supervise.ly</li>
+</ul>
+
+<hr>
+
+<h3 id="coreml">
+<a class="anchor" href="#coreml" aria-hidden="true"><span class="octicon octicon-link"></span></a>Coreml</h3>
+
+<ul>
+  <li>https://developer.apple.com/machine-learning/models/</li>
+  <li>https://github.com/huggingface/swift-coreml-transformers</li>
+  <li>https://www.fritz.ai</li>
+</ul>
+
+<hr>
+
+<h3 id="courses">
+<a class="anchor" href="#courses" aria-hidden="true"><span class="octicon octicon-link"></span></a>Courses</h3>
+
+<ul>
+  <li>https://fast.ai</li>
+  <li>https://www.coursera.org/learn/competitive-data-science</li>
+  <li>https://www.deeplearning.ai</li>
+  <li>https://www.kaggle.com/learn/overview</li>
+</ul>
+
+<hr>
+
+<h3 id="miscelaneous">
+<a class="anchor" href="#miscelaneous" aria-hidden="true"><span class="octicon octicon-link"></span></a>Miscelaneous</h3>
+
+<ul>
+  <li>https://markus-beuckelmann.de/blog/boosting-numpy-blas.html</li>
+  <li>https://github.com/Wookai/paper-tips-and-tricks</li>
+  <li>https://github.com/dennybritz/deeplearning-papernotes</li>
+  <li>https://github.com/HarisIqbal88/PlotNeuralNet</li>
+</ul>
+
+<hr>
+
+<h1 id="contributing">
+<a class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h1>
+
+<p>I’ve tried to make sure that all the information in this repository is accurate, but if you find something that you think is wrong, please let me know by opening an issue.</p>
+
+<p>This repository is still a work in progress, so if you find a bug, think there is something missing, or have any suggestions for new features, feel free to open an issue or a pull request. Feel free to use the library or code from it in your own projects, and if you feel that some code used in this project hasn’t been properly accredited, please open an issue.</p>
+
+<hr>
+
+<h1 id="authors">
+<a class="anchor" href="#authors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors</h1>
+
+<ul>
+  <li><em>Bilal Khan</em></li>
+</ul>
+
+<hr>
+
+<h1 id="license">
+<a class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h1>
+
+<p>This project is licensed under the CC-BY-SA-4.0 License - see the <a href="LICENSE">license</a> file for details</p>
+
+<hr>
+
+<h1 id="acknowledgements">
+<a class="anchor" href="#acknowledgements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Acknowledgements</h1>
+
+<ul>
+  <li>
+<em>k88hudson</em> - <em>Parts of https://github.com/k88hudson/git-flight-rules were used in this repository</em>
+</li>
+</ul>
+
+<p>This repository was inspired by https://github.com/k88hudson/git-flight-rules and copied over parts of it</p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="bkkaggle/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/ai/2020/07/13/ml-flight-rules.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>My blog where I write about what I&#39;m working on, currently machine learning and rust dev.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/bkkaggle" title="bkkaggle"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
