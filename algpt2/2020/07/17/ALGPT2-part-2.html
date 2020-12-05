@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Algpt2 Part 2 | Bilal’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Algpt2 Part 2" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="How I (almost) replicated OpenAI’s GPT-2 (124M version)" />
+<meta property="og:description" content="How I (almost) replicated OpenAI’s GPT-2 (124M version)" />
+<link rel="canonical" href="https://bkkaggle.github.io/blog/algpt2/2020/07/17/ALGPT2-part-2.html" />
+<meta property="og:url" content="https://bkkaggle.github.io/blog/algpt2/2020/07/17/ALGPT2-part-2.html" />
+<meta property="og:site_name" content="Bilal’s Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-07-17T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://bkkaggle.github.io/blog/algpt2/2020/07/17/ALGPT2-part-2.html","@type":"BlogPosting","headline":"Algpt2 Part 2","dateModified":"2020-07-17T00:00:00-05:00","datePublished":"2020-07-17T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bkkaggle.github.io/blog/algpt2/2020/07/17/ALGPT2-part-2.html"},"description":"How I (almost) replicated OpenAI’s GPT-2 (124M version)","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bkkaggle.github.io/blog/feed.xml" title="Bilal's Blog" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" /><script src="https://hypothes.is/embed.js" async></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Bilal&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About Me</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Algpt2 Part 2</h1><p class="page-description">How I (almost) replicated OpenAI's GPT-2 (124M version)</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-07-17T00:00:00-05:00" itemprop="datePublished">
+        Jul 17, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      26 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#algpt2">algpt2</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#tldr">TL;DR</a></li>
+<li class="toc-entry toc-h1"><a href="#the-idea">The Idea</a></li>
+<li class="toc-entry toc-h1"><a href="#background">Background</a></li>
+<li class="toc-entry toc-h1"><a href="#gpt-2-and-albert">GPT-2 and ALBERT</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#factorized-embedding">Factorized embedding</a></li>
+<li class="toc-entry toc-h3"><a href="#layer-wise-parameter-sharing">Layer-wise parameter sharing</a></li>
+<li class="toc-entry toc-h3"><a href="#sentence-order-prediction-auxillary-loss">Sentence-order-prediction auxillary loss</a></li>
+<li class="toc-entry toc-h3"><a href="#removing-dropout">Removing dropout</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#setup">Setup</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#openwebtext">OpenWebText</a></li>
+<li class="toc-entry toc-h2"><a href="#tokenization">Tokenization</a></li>
+<li class="toc-entry toc-h2"><a href="#tfrecords">TFRecords</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#replicating-gpt-2">Replicating GPT-2</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#replicating-gpt-2-1">Replicating GPT-2</a></li>
+<li class="toc-entry toc-h2"><a href="#adamw-vs-adafactor">AdamW vs Adafactor</a></li>
+<li class="toc-entry toc-h2"><a href="#learning-rates">Learning rates</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#pretraining-algpt-2">Pretraining ALGPT-2</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#implementing-parameter-sharing">Implementing parameter sharing</a></li>
+<li class="toc-entry toc-h2"><a href="#implementing-a-factorized-embedding">Implementing a factorized embedding</a></li>
+<li class="toc-entry toc-h2"><a href="#effect-of-layer-wise-parameter-sharing">Effect of layer-wise parameter sharing</a></li>
+<li class="toc-entry toc-h2"><a href="#effect-of-removing-dropout">Effect of removing dropout</a></li>
+<li class="toc-entry toc-h2"><a href="#effect-of-factorized-embeddings">Effect of factorized embeddings</a></li>
+<li class="toc-entry toc-h2"><a href="#effect-of-model-size">Effect of model size</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#conclusion-and-next-steps">Conclusion and next steps</a></li>
+</ul><hr>
+
+<blockquote>
+  <p><a href="/blog/nlp-research-part-1">Part 1: Best Practices for Finetuning Large Transformer Language models</a></p>
+
+  <p>Part 2: How I (almost) replicated OpenAI’s GPT-2 (124M version)</p>
+</blockquote>
+
+<hr>
+
+<h1 id="tldr">
+<a class="anchor" href="#tldr" aria-hidden="true"><span class="octicon octicon-link"></span></a>TL;DR</h1>
+
+<hr>
+
+<p>A few months ago I started working on a research project trying to pretrain my own, more efficient language model from scratch. I got access to a 128-core TPUv3 pod from the Tensorflow Reseach Cloud and used it to pretrain a $124$M parameter GPT-2 model to a perplexity pretty close to OpenAI’s results (my pretrained model was trained for about $1/8$th of the number of iterations that OpenAI trained their model for and got $21$ ppl on OpenWebText compared to $17$ ppl for OpenAI’s model), and then pretrained an ALBERT-style GPT-2 (that I’m calling ALGPT2) language model with a factorized input embedding and layer-wise parameter sharing that would reduce the number of paramters in the model from $124$M to around $12$M.</p>
+
+<p>Unfortunately, ALGPT-2 doesn’t perform as well as GPT-2 (ALGPT-2 gets $31$ ppl on OpenWebText compared to $21$ ppl for my pretrained GPT-2 model), but I’m writing this series of blog posts to go through everything I’ve learned over the last few months.</p>
+
+<hr>
+
+<h1 id="the-idea">
+<a class="anchor" href="#the-idea" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Idea</h1>
+
+<hr>
+
+<p>The main thing that I wanted to do from this sort-of “research project” that I was working on by myself this spring was to develop and train a more efficient version of the $124$M parameter version of <a href="https://openai.com/blog/better-language-models/">GPT-2</a>. I wanted to pretrain the $1.5$B parameter version of GPT-2 but since I only got access to the TPU pod for a week, I had to choose a model that would train in time. A $100$k iteration training run takes about $20$ hours to run which gave me plenty of time to run multiple experiments. In contrast, following OpenAI’s training procedure exactly and training for the full $800$k iterations would take up almost an entire week and use up most of my quota.</p>
+
+<p>I was able to almost replicate the $124$M parameter version of GPT-2 by pretraining it to a perplexity pretty close to OpenAI’s results (my pretrained model used was trained for about $1/8$th of the number of iterations that OpenAI trained their model for and got $21$ perplexity (ppl) on the standard OpenWebText dataset compared to $17$ ppl for OpenAI’s model),</p>
+
+<p>My idea of making a more efficient transformer didn’t really work out since my pretrained transformer ended up being about $20$ppl worse than an equivalent GPT-2 model, but I wanted to writeup what I learned over the two or three months that I was working on this anyway.</p>
+
+<hr>
+
+<h1 id="background">
+<a class="anchor" href="#background" aria-hidden="true"><span class="octicon octicon-link"></span></a>Background</h1>
+
+<hr>
+
+<p>A little bit about myself: I’m an incoming software engineering student at the University of Waterloo and this post is supposed to be a writeup of a NLP research project that I was working on from around March to May of 2020 (right in the middle of the first Covid-19 lockdown of 2020, I’m currently writing this on July 15, 2020 while waiting for my Pix2PixHD model to train for a few hundred epochs on colab for a new project that I’m working on).</p>
+
+<p>Over the last three or four years I’ve done a lot of machine learning related stuff. I started out back in early 2017 by going through the <a href="https://www.google.com/search?sxsrf=ALeKk010AvJn990-Vqb1MA50AAVbnMg8uw:1594828665718&amp;q=Introduction+to+Machine+Learning+with+Python:+A+Guide+for+Data+Scientists&amp;stick=H4sIAAAAAAAAAONgVuLVT9c3NEwyLzRLKs_Ke8RowS3w8sc9YSn9SWtOXmPU5OIKzsgvd80rySypFJLmYoOyBKX4uVB18ixi9fTMKynKTylNLsnMz1MoyVfwTUzOyMxLVfBJTSzKy8xLVyjPLMlQCKgsycjPs1JwVHAvzUxJVUjLL1JwSSxJVAhOzkwFGl9cUgwAxHs76ZgAAAA&amp;biw=1920&amp;bih=969">Introduction to Machine Learning with Python</a> and <a href="https://www.google.com/search?q=hands+on+machine+learning+with+scikit-learn+and+tensorflow&amp;oq=hands+on+mac&amp;aqs=chrome.0.0j69i57j46j0l5.1936j0j7&amp;sourceid=chrome&amp;ie=UTF-8">Hands-On Machine Learning with Scikit-Learn and TensorFlow</a> books. At the time, I didn’t really understand all the math behind neural networks, but it got me hooked on ML and then I took the <a href="https://www.deeplearning.ai/">deeplearning.ai</a> courses on Coursera and the original <a href="https://www.fast.ai/">fast.ai</a> course (back in late 2017 when they hadn’t switched over to Pytorch and still used Tensorflow and Keras).</p>
+
+<p>I started competing on <a href="https://kaggle.com">Kaggle</a> in early 2018 and kept on competing in competitions non-stop for about a year and a half, winning a few medals and becoming a competitions expert (At one point I was ranked in the top $100$ Kagglers on the competitions leaderboard). Kaggle was a really nice way to get a lot of experience using neural networks because of the wide range of competitions and datasets that I had access to. I started out by doing a few semantic segmentation competitions then moved onto competing in NLP competitions. Since around mid 2019, I’ve been working on a bunch of different projects in ML and lower-level CS stuff. I worked on making a PyTorch-style machine learning library in <a href="https://github.com/bkkaggle/L2/tree/c%2B%2B">C++</a> and more recently in <a href="https://github.com/bkkaggle/L2">Rust</a>, and for the last few months I’ve also been trying to keep up with all the new machine learning (esp. NLP) papers on arXiv.</p>
+
+<p>I was pretty lucky that I started learning NLP right before transformers exploded in popularity, I remember when <a href="https://arxiv.org/abs/1301.3781">word2vec</a> and LSTMs were still SOTA on a lot of NLP tasks, and it has been really interesting to see how much the field of NLP has changed in just a few years, going from when LSTMs with only a a handful of layers and somewhere on the order of $512$ units were considered to be large networks and computationally expensive to train, to training LSTMs with <a href="https://arxiv.org/abs/1409.0473">attention</a> layers on top, to the original <a href="https://arxiv.org/abs/1706.03762">transformer encoder/decoder networks</a>, to <a href="https://arxiv.org/abs/1801.06146">ULMFIT</a> and <a href="https://arxiv.org/abs/1802.05365">ELMO</a>, then <a href="https://arxiv.org/abs/1810.04805">BERT</a>, <a href="https://arxiv.org/abs/1907.11692">RoBERTa</a>, <a href="https://openai.com/blog/better-language-models/">GPT-2</a>, and <a href="https://arxiv.org/abs/1910.10683">T5</a>, to just a few months ago with the explosion of new, more efficient replacements for self-attention like the <a href="https://openai.com/blog/sparse-transformer/">Sparse Transformer</a>, the <a href="https://arxiv.org/abs/2001.04451">Reformer</a>, and <a href="https://arxiv.org/abs/2005.00743">Synthesizers</a>, and now <a href="https://arxiv.org/abs/2005.14165">GPT-3</a>, which IMO has the potential to really change the whole field of NLP.</p>
+
+<p>Just a few years ago we trained shallow recurrent networks on datasets, then pretrained large transformer language models on large datasets and finetuned on task-specific datasets. Now the whole idea of just training a gigantic language model on a huge dataset, then conditioning the model in a form of few-shot learning by prepending a few examples of a certain task to an input feels like it can really make NLP models a lot more accessible and easier to productionize as well as making human-chatbot interactions a lot more realistic than they are today.</p>
+
+<p>I’ve rambled on for long enough, lets get to the main topic of this post.</p>
+
+<hr>
+
+<h1 id="gpt-2-and-albert">
+<a class="anchor" href="#gpt-2-and-albert" aria-hidden="true"><span class="octicon octicon-link"></span></a>GPT-2 and ALBERT</h1>
+
+<hr>
+
+<p><a href="https://openai.com/blog/better-language-models/">GPT-2</a> is a transformer decoder.</p>
+
+<p>The embedding layer at the root of the model maps a one-hot vector of a given token’s index (all the GPT-2 models use a vocabulary size of $50257$) to a $768$ dimensional vector (all GPT-2 numbers in this blog post will be for the $124$m parameter version of GPT-2).</p>
+
+<p>The embedding matrix is followed by a stack of self-attention and feed-forward layers that each output a $768$ dimensional vector (keeping the number of outputs for each layer constant), which makes up the main part of the transformer.</p>
+
+<p>The stack of self-attention layers is then followed by an output embedding (the weights of the input and output embeddings are tied to make training easier) that maps the $768$ dimensional vector that is the output of the last layer of the transformer to the same $50257$ dimensional vector that represents the probability of each token in the vocabulary being the next token in the sequence.</p>
+
+<p>Take a look at <a href="http://jalammar.github.io/illustrated-gpt2/">The Illustrated GPT-2</a> for a more in-depth look into GPT-2.</p>
+
+<p><a href="https://arxiv.org/abs/1909.11942">ALBERT</a> (A Lite BERT) is a paper that takes a look at <a href="https://arxiv.org/abs/1810.04805">BERT</a> and identifies some ways in which to make it more efficient and reduce the number of parameters in the model in four major ways: a factorized embedding, layer-wise parameter sharing, a sentence-order-prediction auxillary loss, and removing dropout.</p>
+
+<hr>
+
+<h3 id="factorized-embedding">
+<a class="anchor" href="#factorized-embedding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Factorized embedding</h3>
+
+<hr>
+
+<p>GPT-2’s embedding has a lot of parameters. It’s really just a matrix of dimensions $50257 \times 768$. That means that the input embedding alone uses up almost $50257 \times 768 = \space \sim 38,000,000$ parameters which is a pretty big chunk of the $128$M total parameters in the model.</p>
+
+<p>The ALBERT authors propose a factorized embedding with an intermediate embedding size of $128$: one embedding of size $50257 \times 128$ and another embedding of size $128 \times 768$. By breaking up the large embedding matrix into two smaller matrices, the total number of parameters used in the embedding goes from about $38$M to about $6$M.</p>
+
+<p>$50257 \times 128 = \sim 6,000,000$</p>
+
+<p>$128 \times 768 = \sim 100,000$</p>
+
+<p>The authors try different intermediate embedding sizes and settle on $128$ as a good tradeoff betweeen parameters and performance.</p>
+
+<hr>
+
+<h3 id="layer-wise-parameter-sharing">
+<a class="anchor" href="#layer-wise-parameter-sharing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Layer-wise parameter sharing</h3>
+
+<hr>
+
+<p>In a normal transformer model, the transformer layers are created something like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BERT</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_layers</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="o">//</span> <span class="p">...</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">blocks</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">ModuleList</span><span class="p">([</span><span class="n">Block</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_layers</span><span class="p">)])</span>
+        <span class="o">//</span> <span class="p">...</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="o">//</span> <span class="p">...</span>
+        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">blocks</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="o">//</span> <span class="p">...</span>
+</code></pre></div></div>
+
+<p>ALBERT shares all parameters across the transformer layers something like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ALBERT</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_layers</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="o">//</span> <span class="p">...</span>
+
+        <span class="bp">self</span><span class="p">.</span><span class="n">n_layers</span> <span class="o">=</span> <span class="n">n_layers</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">block</span> <span class="o">=</span> <span class="n">Block</span><span class="p">()</span>
+        <span class="o">//</span> <span class="p">...</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="o">//</span> <span class="p">...</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">n_layers</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="o">//</span> <span class="p">...</span>
+</code></pre></div></div>
+
+<p>By only defining one transformer block and looping around it <code class="language-plaintext highlighter-rouge">n_layers</code> times, ALBERT saves the GPU memory that would be used to store the parameters for all the layers.</p>
+
+<p>Since we normally use $32$ bit floats to store parameters on the GPU, storing the $1.5$B parameter GPT-2 on the GPU will use up about $6$GB of the GPU’s memory — that’s a pretty big chunk of the $16$GB of memory that’s on a normal V100 GPU already being used up before taking into account the memory needed to store the model’s activations as well as any momentum parameters needed by the optimizer. In contrast, if you share parameters across all transformer layers in the $1.5$B parameter GPT-2, the resulting model will only have about $37$M parameters, the parameter-sharing version would only use up around $148$MB of GPU memory.</p>
+
+<p>The authors try applying parameter sharing to BERT and see that it reduces performance but makes it easier to train larger and larger models.</p>
+
+<blockquote>
+  <p>In a machine learning framework like JAX, which by default unrolls and inlines loops when it’s compiling your code with XLA, the size of the unrolled and inlined loop would make the computation graph really large and take a long time to compile. This is why you’re recommended to use somehting like <a href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html"><code class="language-plaintext highlighter-rouge">lax.scan()</code></a> in these situations.</p>
+</blockquote>
+
+<hr>
+
+<h3 id="sentence-order-prediction-auxillary-loss">
+<a class="anchor" href="#sentence-order-prediction-auxillary-loss" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sentence-order-prediction auxillary loss</h3>
+
+<p>The ALBERT authors add an auxillary loss to help training. Since language modelling is usually done autoregressively, I didn’t use this for my custom model.</p>
+
+<hr>
+
+<h3 id="removing-dropout">
+<a class="anchor" href="#removing-dropout" aria-hidden="true"><span class="octicon octicon-link"></span></a>Removing dropout</h3>
+
+<p>The ALBERT authors remove all dropout from BERT and see that it significantly improves performance.</p>
+
+<hr>
+
+<p>That’s pretty much what my idea was: Take GPT-2, add a factorized embedding, share parameters across all transformer layers, remove dropout (I actually missed the part about ALBERT removing dropout until I was pretty far into my work, but I did run one or two runs without dropout to see how that works), and pretrain on a large dataset for a few hundred thousand iterations.</p>
+
+<p>There’s no way that I could pretrain something like GPT-2 by myself, so I applied to the <a href="https://www.tensorflow.org/tfrc">Tensorflow Research Cloud</a> (TFRC).</p>
+
+<blockquote>
+  <p>The TFRC puts an emphasis on wanting to help researchers from non-traditional backgrounds which makes it an amazing resource for anyone who isn’t a “traditional” machine learning researcher. They were willing to give me, a 17 year old with no formal education or credentials (not even a high school diploma :/), access to an extremely powerful cluster of TPUs at no cost. Being able to be a part of this program was really helpful to me, especially since I don’t have access to a dedicated GPU and usually rely on Colab’s free GPU to train my models.</p>
+</blockquote>
+
+<p>I emailed the TFRC team to ask if I could get upgraded from $5$ separate individual TPUv3’s (with 8 cores each) to a TPU pod to pretrain a large language model. The very next day (!) I got an email back saying that I could get access to a preemptible 128-core TPUv3 Pod for 7 days which unfortunately wasn’t long enough for me to pretrain the $1.5$B parameter model but was enough to train a few runs on the $124$M model.</p>
+
+<hr>
+
+<h1 id="setup">
+<a class="anchor" href="#setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setup</h1>
+
+<hr>
+
+<p>So for setup I’ll be going through all the steps that I took to setup my VM and TPU Pod and preprocess the dataset as well.</p>
+
+<p>When I was working on this project, I set up two VMs; One with a lot of RAM and CPU cores to process the data quickly and another small instance to run the TPU training script. <em>One of the nice things about training on TPUs and TPU pods is that as long as your data has been preprocessed as a set of TFRecord files, you don’t need a really powerful VM instance which saves you a lot of money/compute credits.</em></p>
+
+<p>You can look at <a href="https://github.com/bkkaggle/lm-finetuning/blob/master/Markdown/CLOUD.md">this</a> for a full list of every command that I used to setup the VM and preprocess the dataset.</p>
+
+<hr>
+
+<h2 id="openwebtext">
+<a class="anchor" href="#openwebtext" aria-hidden="true"><span class="octicon octicon-link"></span></a>OpenWebText</h2>
+
+<hr>
+
+<p>I used a <code class="language-plaintext highlighter-rouge">n-1-standard-16</code> instance with TF2.1 to process the OpenWebText dataset. Make sure that you use an instance with a SSD instead of the default HDD because processing the dataset involves processing a lot of very small text files and is mostly limited by your drive’s io speed. <em>I made the mistake of using a HDD and just extracting the dataset’s TAR archives took about 7 hours.</em> I put all the data in a folder at <code class="language-plaintext highlighter-rouge">~/data/openwebtext/</code> so modify it if you want to download the data elsewhere.</p>
+
+<blockquote>
+  <p>TIL: most common linux utilities (like <code class="language-plaintext highlighter-rouge">ls</code>, <code class="language-plaintext highlighter-rouge">mv</code>, and <code class="language-plaintext highlighter-rouge">cat</code>) aren’t really that optimized for working with almost 10 million files like in OpenWebText. Just counting the number of text files in the dataset could take several minutes._</p>
+</blockquote>
+
+<p>Download the <a href="https://skylion007.github.io/OpenWebTextCorpus/">OpenWebText</a> dataset (which is really just a tar archive of a bunch of tar archives that contain a lot of text files) and extract it:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gdown https://drive.google.com/uc?id<span class="o">=</span>1EA5V0oetDCOke7afsktL_JDQ-ETtNOvx
+<span class="nb">tar</span> <span class="nt">-xf</span> openwebtext.tar.xz
+<span class="nb">cat</span> <span class="k">*</span>.xz | <span class="nb">tar</span> <span class="nt">-J</span> <span class="nt">-xf</span> - <span class="nt">-i</span>
+</code></pre></div></div>
+
+<p>The dataset is about 12GB compressed and 53GB uncompressed and has just about 8 million text files.</p>
+
+<p>I moved the first $100,000$ files in the dataset to a separate directory to create a validation set:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">ls</span> <span class="nt">-f</span> | <span class="nb">head</span> <span class="nt">-100000</span> | xargs <span class="nt">-i</span> <span class="nb">mv</span> <span class="o">{}</span> ../openwebtext-valid/
+</code></pre></div></div>
+
+<hr>
+
+<h2 id="tokenization">
+<a class="anchor" href="#tokenization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tokenization</h2>
+
+<hr>
+
+<p>I trained a Byte-level BPE tokenizer with a vocabulary size of $50,257$ (The same as GPT-2) on a $1$M file subset of the training set (I’m not sure if GPT-2 trains the tokenizer on the entire dataset or on just a subset, but I know that the <a href="https://arxiv.org/abs/1909.05858">CTRL</a> paper trains their tokenizer on a 5% split of their training set.). I used Hugginface’s fast Rust-based <a href="https://github.com/huggingface/tokenizers">Tokenizers</a> library and their <code class="language-plaintext highlighter-rouge">ByteLevelBPETokenizer</code> tokenizer.</p>
+
+<p>You can use my script <a href="https://github.com/bkkaggle/lm-finetuning/blob/master/train_tokenizer.py">here</a> and run</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">python3</span> <span class="n">train_tokenizer</span><span class="p">.</span><span class="n">py</span> <span class="o">--</span><span class="n">train_path</span> <span class="p">.</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">openwebtext</span><span class="o">/</span> <span class="o">--</span><span class="n">save_path</span> <span class="p">.</span><span class="o">/</span><span class="n">tokenizer</span><span class="o">/</span> \
+    <span class="o">--</span><span class="n">vocab_size</span> <span class="mi">50257</span> <span class="o">--</span><span class="n">n_files</span> <span class="mi">1000000</span>
+</code></pre></div></div>
+
+<p>to train the tokenizer, or just take a look at this for the main details (It just trains a tokenizer and saves it as well as a configuration file to disk):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">tokenizers</span> <span class="kn">import</span> <span class="n">ByteLevelBPETokenizer</span>
+
+<span class="n">paths</span> <span class="o">=</span> <span class="n">glob</span><span class="p">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">'./data/openwebtext'</span><span class="p">,</span> <span class="s">'*'</span><span class="p">))[:</span><span class="mi">1000000</span><span class="p">]</span>
+
+<span class="n">tok</span> <span class="o">=</span> <span class="n">ByteLevelBPETokenizer</span><span class="p">()</span>
+<span class="n">tok</span><span class="p">.</span><span class="n">train</span><span class="p">(</span><span class="n">files</span><span class="o">=</span><span class="n">paths</span><span class="p">,</span> <span class="n">vocab_size</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">special_tokens</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">control_codes</span><span class="p">)</span>
+<span class="n">tok</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="s">'./tokenizer/'</span><span class="p">)</span>
+
+<span class="n">tokenizer_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"max_len"</span><span class="p">:</span> <span class="mi">1024</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">'./tokenizer/'</span><span class="p">,</span> <span class="s">"tokenizer_config.json"</span><span class="p">),</span> <span class="s">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">json</span><span class="p">.</span><span class="n">dump</span><span class="p">(</span><span class="n">tokenizer_config</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+</code></pre></div></div>
+
+<hr>
+
+<h2 id="tfrecords">
+<a class="anchor" href="#tfrecords" aria-hidden="true"><span class="octicon octicon-link"></span></a>TFRecords</h2>
+
+<hr>
+
+<p>TPU Pods expect your data to be available as a set of TFRecord files in a GCP cloud bucket that get downloaded to each of your TPU board’s built in powerful VM that will take care of de-serializing the files and feeding it to the TPU chips. Make sure that your GCP bucket and your TPU pod are in the same compute zone, otherwise you’ll quickly rack up a lot of charges by transferring hundreds of GBs of data across compute zones.</p>
+
+<blockquote>
+  <p>Here’s a thing that’s not very well documented when working with TPU Pods (this doesn’t really apply to TPUs as much): TPU Pods create a lot (100s of GBs) of logs that get sent to Stackdriver, where you get charged about 50 cents for each GiB of logs ingested beyond a certain limit (I think it’s around 50GiB/month). In just a few days of training, I ended up being charged about a $$100$ IIRC. Luckily, I still had most of the free GCP credits so this didn’t end up being a major problem for me, but make sure to turn off ingesting logs for TPUs.</p>
+
+  <p>I ran into a problem early on when I got access to the TPU pod where my code would work perfectly on a single TPU, but would throw an <code class="language-plaintext highlighter-rouge">Out of range: End of sequence</code> <a href="https://gist.github.com/bkkaggle/ee63a04cd86c5fd45c41dc0b7ce109eb">error</a> when running it on a TPU pod. I struggled with this for a pretty long time until I took a look at <a href="https://www.kaggle.com/c/flower-classification-with-tpus/discussion/130199">this</a> Kaggle discussion post that says that TPUs expect each TPU board (8 cores) to get its own TFrecord file (until that point, I was splitting the train set into 8 TFRecord files where I should’ve been splitting it into 16 (128 cores / 8 cores per board) TFRecord files.</p>
+
+  <p>TPUs are awesome for scaling to huge models and huge datasets, but there are a lot of TPU-specific information (especially for TPU Pods) that you need to know that’s not covered in the documentation and isn’t easy to find._**</p>
+</blockquote>
+
+<p>You can use my script <a href="https://github.com/bkkaggle/lm-finetuning/blob/master/make_tfrecords.py">here</a> and run</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 make_tfrecords.py <span class="nt">--path</span> ./data/openwebtext/ <span class="nt">--save_path</span> ./train/ <span class="nt">--files_per_tfrecord</span> 500000 <span class="se">\</span>
+    <span class="nt">--use_control_codes</span> <span class="nt">--seq_len</span> 1024 <span class="nt">--min_seq_len</span> <span class="nt">--tokenizer</span> ./tokenizer/
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 make_tfrecords.py <span class="nt">--path</span> ./data/openwebtext-valid/ <span class="nt">--save_path</span> ./val/ <span class="nt">--files_per_tfrecord</span> 50000 <span class="se">\</span>
+    <span class="nt">--use_control_codes</span> <span class="nt">--seq_len</span> 1024 <span class="nt">--min_seq_len</span> <span class="nt">--tokenizer</span> ./tokenizer/
+</code></pre></div></div>
+
+<p>to convert the raw text files from the train and validation splits into two sets of $16$ TFRecord files.</p>
+
+<p>I ran a quick analysis on the average lengths of text fields in the dataset, $67$% of files have less than $1024$ tokens, $35$% of files have less than $512$ tokens, and only $10$% of files have less than $256$ tokens. This means that if I wanted to make the dataset as clean as possible and have each input sequence to the model be of a single contigous stream of $1024$ tokens, the dataset’s size would be a lot smaller. For this reason, everyone prepends a token like <code class="language-plaintext highlighter-rouge">&lt;|endoftext|&gt;</code> to the beginning of each sequence and concatenates together sequences with lengths smaller than $1024$. The specifics of how exactly you do that (e.g. do you treat the dataset as single stream of tokens and just break it up into sequences of length $1024$, or do you keep track of sequences smaller that $1024$ and just concatenate them together into a single sequence) really shouldn’t make too big of a difference in your model’s performance, but you can take a look at my implementation <a href="https://github.com/bkkaggle/lm-finetuning/blob/master/make_tfrecords.py">here</a>.</p>
+
+<p>My version doesn’t take full advantage of the fast, multithreaded <code class="language-plaintext highlighter-rouge">batch_encode_plus()</code> way to tokenize large datasets in parallel since it only keeps the first <code class="language-plaintext highlighter-rouge">context_len</code> tokens in each line of the files which makes dealing with files with more or less than $1024$ tokens harder. Because of this, tokenizing the dataset takes about $8$ hours, which is something I want to improve.</p>
+
+<p>The train set comes out to about $26$GB and consists of about $8$M text files that have been transformed into just under $7$M tfrecord examples, each with $1024$ tokens (same as GPT-2). The validation set comes out to about $300$MB and consists of about $100$K text files that have been transformed into just about $90$K tfrecord examples, each with $1024$ tokens (also the same as GPT-2).</p>
+
+<hr>
+
+<p># Code</p>
+
+<hr>
+
+<p>Since I’m using TPUs, the only real library that you can practically use right now would be Tensorflow. I didn’t want to have to go through the learning curve of learning how to make custom training loops and stuff in TF2 so I just stuck to using Keras. You can take a look at my training script (It’s pretty short) <a href="https://github.com/bkkaggle/lm-finetuning/blob/master/train_tfrecords.py">here</a>. It’s pretty simple so I’m not going to copy over the entire training script, but I will talk about a few small code snippets.</p>
+
+<p>I usually like to add a ptvsd breakpoint to my script so I can debug my training script locally with vscode before pushing it up to my VM</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">debug</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">ptvsd</span>
+    <span class="n">ptvsd</span><span class="p">.</span><span class="n">enable_attach</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="p">(</span><span class="s">'localhost'</span><span class="p">,</span> <span class="mi">5678</span><span class="p">),</span>
+                        <span class="n">redirect_output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">ptvsd</span><span class="p">.</span><span class="n">wait_for_attach</span><span class="p">()</span>
+    <span class="n">breakpoint</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>I’m using <a href="https://www.wandb.com/">Weights&amp;Biases</a> to keep track of my experiments and save checkpoints.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">wandb</span><span class="p">.</span><span class="n">login</span><span class="p">()</span>
+    <span class="n">wandb</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s">'lm-finetuning'</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">tags</span><span class="p">)</span>
+
+    <span class="p">...</span>
+
+    <span class="n">wandb_callback</span> <span class="o">=</span> <span class="n">WandbCallback</span><span class="p">(</span><span class="n">save_model</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Usually when you’re using a TPU with Keras, you pass in the IP address and port of the TPU to <code class="language-plaintext highlighter-rouge">TPUClusterResolver</code>, but you pass the name of the TPU itself to the resolver when using a TPU Pod.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">resolver</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">distribute</span><span class="p">.</span><span class="n">cluster_resolver</span><span class="p">.</span><span class="n">TPUClusterResolver</span><span class="p">(</span><span class="n">tpu</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">tpu</span><span class="p">)</span>
+<span class="n">tf</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">experimental_connect_to_cluster</span><span class="p">(</span><span class="n">resolver</span><span class="p">)</span>
+<span class="n">tf</span><span class="p">.</span><span class="n">tpu</span><span class="p">.</span><span class="n">experimental</span><span class="p">.</span><span class="n">initialize_tpu_system</span><span class="p">(</span><span class="n">resolver</span><span class="p">)</span>
+</code></pre></div></div>
+
+<hr>
+
+<h1 id="replicating-gpt-2">
+<a class="anchor" href="#replicating-gpt-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Replicating GPT-2</h1>
+
+<hr>
+
+<p>I tried to use as many of the original hyperparameters that OpenAI used when I was replicating their $124$M parameter version of GPT-2, but I had to modify a few things so I could train everything in time.</p>
+
+<blockquote>
+  <p>Note: For some reason, the authors of the GPT-2 paper don’t state exactly what learning rates they used for training their models and instead just state “The learning rate of each model was manually tuned for the best perplexity on a 5% held-out sample of WebText”.</p>
+</blockquote>
+
+<p>OpenAI trains their models for a total of $800$K iterations at a batch size of $512$ (Which comes out to around a total of $60$ epochs through the training set).</p>
+
+<p>I trained my GPT-2 model for $1/8th$ the number of iterations that OpenAI trained theirs for (a total of around $100$K iterations) since each $100$K iteration training run took about $20$ hours to run on my 128-core TPU Pod. If I wanted to train GPT-2 for the same number of iterations as OpenAI, a single training run would have used up most of my one week of access to the pod.</p>
+
+<p>Since my TPU pod was preemptible and resets every $24$ hours I usually had to resume my training run at least once and is the reason why all of these graphs usually have two or more training runs on them.</p>
+
+<hr>
+
+<h2 id="replicating-gpt-2-1">
+<a class="anchor" href="#replicating-gpt-2-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Replicating GPT-2</h2>
+
+<hr>
+
+<p>So here’s my model that came really close to replicating GPT-2, the training perplexity is about $21.5$ at the end of the almost $90$K training iterations. For comparison, GPT-2 gets a training perplexity about $17.5$ ppl after about $800$K training iterations, so a difference of only about $4$ ppl.</p>
+
+<p>I made a <a href="https://colab.research.google.com/drive/19Q0M9lMI4FqE7sosepkNVeIvan39SVFI?usp=sharing">colab notebook</a> showing how to use my pretrained GPT-2 model to generate text</p>
+
+<iframe title="Replicating GPT-2" src="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/Replicating-GPT-2-(124M)--VmlldzoxNzE3Mzc" height="600px" width="100%"> </iframe>
+
+<hr>
+
+<h2 id="adamw-vs-adafactor">
+<a class="anchor" href="#adamw-vs-adafactor" aria-hidden="true"><span class="octicon octicon-link"></span></a>AdamW vs Adafactor</h2>
+
+<hr>
+
+<p>I wanted to use the memory-saving <a href="https://arxiv.org/abs/1804.04235">Adafactor</a> optimizer to make it easier to train larger language models but all of my Adafactor training runs were a lot (~5ppl IIRC) worse than using AdamW (This may be due to not using Adafactor’s momentum parameter or relative update scale, so this is something I want to look into more soon).</p>
+
+<hr>
+
+<h2 id="learning-rates">
+<a class="anchor" href="#learning-rates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Learning rates</h2>
+
+<hr>
+
+<p>I started out with using Adam’s default learning rate of $1e-4$ but I quickly figured out that I could train my models a lot faster by using a higher learning rate like $1e-3$.</p>
+
+<blockquote>
+  <p>Section 2 of the <a href="https://arxiv.org/pdf/2005.14165.pdf">GPT-3</a> paper lists the learning rates the OpenAI team used for different sized models when training GPT-3. They use a learning rate of $6e-4$ for the $124$M version of their model and decrease the learning rate with model size.</p>
+</blockquote>
+
+<p>You can take a look at <a href="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/adamw-1e-4-vs-1e-3--VmlldzoxNzE3NDc">this</a> partial training run to see the difference between training at different learning rates.</p>
+
+<hr>
+
+<h1 id="pretraining-algpt-2">
+<a class="anchor" href="#pretraining-algpt-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pretraining ALGPT-2</h1>
+
+<hr>
+
+<p>Since I was using the Huggingface <a href="https://github.com/huggingface/transformers">Transformers</a> repository’s implementations of GPT-2 and ALBERT, I just <a href="https://github.com/bkkaggle/transformers/tree/albert-style">forked</a> the repository and modified a few files to implement my ALGPT-2 model. You can take a look at all the changes that I had to make <a href="https://github.com/bkkaggle/transformers/compare/master...bkkaggle:albert-style">here</a>, most of the changes are only to make ALGPT-2 compatible with the /Transformers library and to be able to use the useful abstractions that it gives you, but most of the important code is in the <a href="https://github.com/bkkaggle/transformers/blob/0f7c7c11e7b8bc8a275f3d16865b8a873c271571/src/transformers/modeling_algpt2.py"><code class="language-plaintext highlighter-rouge">modelling_algpt2.py</code> file</a> in which I just copied over the contents of <code class="language-plaintext highlighter-rouge">modelling_gpt2.py</code> and changed a few parts of the code. I’m only showing the changes that I made to the Pytorch version of ALGPT-2 here, the changes in the TF version are pretty similar to the Pytorch version and can be seen <a href="https://github.com/bkkaggle/transformers/blob/0f7c7c11e7b8bc8a275f3d16865b8a873c271571/src/transformers/modeling_tf_algpt2.py">here</a>.</p>
+
+<hr>
+
+<h2 id="implementing-parameter-sharing">
+<a class="anchor" href="#implementing-parameter-sharing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Implementing parameter sharing</h2>
+
+<hr>
+
+<p>Implementing parameter sharing only involves changing a few lines of code:</p>
+
+<div class="language-diff highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">class ALGPT2Model(ALGPT2PreTrainedModel):
+</span>    def __init__(self, config):
+        super().__init__(config)
+
+        ...
+
+-       self.h = nn.ModuleList([Block(config.n_ctx, config, scale=True)
+<span class="gd">-           for _ in range(config.n_layer)])
+</span><span class="gi">+       self.h = Block(config.n_ctx, config, scale=True)
+</span>
+        ...
+
+    def forward(self, ...):
+
+        ...
+
+        if past is None:
+            past_length = 0
+<span class="gd">-           past = [None] * len(self.h)
+</span><span class="gi">+           past = [None] * self.config.n_layer
+</span>
+        ...
+
+-       for i, (block, layer_past) in enumerate(zip(self.h, past)):
+<span class="gi">+       for i in range(self.config.n_layer):
+</span>
+            if self.output_hidden_states:
+                all_hidden_states = all_hidden_states + (hidden_states.view(*output_shape),)
+<span class="gd">-
+-           outputs = block(
+</span><span class="gi">+           outputs = self.h(
+</span>                hidden_states,
+                layer_past=layer_past,
+                attention_mask=attention_mask,
+                head_mask=head_mask[i],
+                use_cache=use_cache,
+            )
+        ...
+
+</code></pre></div></div>
+
+<hr>
+
+<h2 id="implementing-a-factorized-embedding">
+<a class="anchor" href="#implementing-a-factorized-embedding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Implementing a factorized embedding</h2>
+
+<hr>
+
+<p>Adding a factorized embedding is a little more work:</p>
+
+<p>In the <code class="language-plaintext highlighter-rouge">config.json</code> that you use for your ALGPT-2 model, you need to specify that you want to use the ALGPT-2 and you need to specify the dimension of the factorized embedding that you want to use:</p>
+
+<div class="language-diff highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">{</span>
++	"architectures": ["ALGPT2LMHeadModel"],
+	"attn_pdrop": 0.1,
+	"bos_token_id": 50256,
+	"embd_pdrop": 0.1,
+	"eos_token_id": 50256,
+	"initializer_range": 0.02,
+	"layer_norm_epsilon": 1e-5,
+<span class="gi">+	"model_type": "algpt2",
+</span>	"n_ctx": 1024,
+	"n_embd": 768,
+	"n_head": 12,
+	"n_layer": 12,
+	"n_positions": 1024,
+	"resid_pdrop": 0.1,
+	"summary_activation": null,
+	"summary_first_dropout": 0.1,
+	"summary_proj_to_labels": true,
+	"summary_type": "cls_index",
+	"summary_use_proj": true,
+	"vocab_size": 50257,
+<span class="gi">+	"embedding_size": 128
+</span><span class="err">}</span>
+</code></pre></div></div>
+
+<p>Back in <code class="language-plaintext highlighter-rouge">modelling_algpt2.py</code>, define the two factorized embedding matrices (the first second matrix that is really just a simple linear layer)</p>
+
+<div class="language-diff highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">class ALGPT2Model(ALGPT2PreTrainedModel):
+</span>    def __init__(self, config):
+        super().__init__(config)
+
+        ...
+
+-       self.wte = nn.Embedding(config.vocab_size, config.n_embd)
+<span class="gd">-       self.wpe = nn.Embedding(config.n_positions, config.n_embd)
+</span><span class="gi">+       self.wte = nn.Embedding(config.vocab_size, config.embedding_size)
++       self.wpe = nn.Embedding(config.n_positions, config.embedding_size)
+</span>
++       self.projection_layer = nn.Linear(config.embedding_size, config.n_embd)
+
+
+        ...
+
+    def forward(self, ...):
+
+        ...
+
+        hidden_states = inputs_embeds + position_embeds + token_type_embeds
+
++       hidden_states = self.projection_layer(hidden_states)
+
+        ...
+
+
+<span class="p">class ALGPT2LMHeadModel(ALGPT2PreTrainedModel):
+</span>    def __init__(self, config):
+        super().__init__(config)
+
+        ...
+
+-        self.lm_head = nn.Linear(config.n_embd, config.vocab_size, bias=False)
+<span class="gi">+        self.dense = nn.Linear(config.n_embd, config.embedding_size)
++        self.lm_head = nn.Linear(config.embedding_size, config.vocab_size, bias=False)
+</span>
+    def forward(self, ...):
+
+        ...
+
+-       lm_logits = self.lm_head(hidden_states)
+<span class="gi">+       dense = self.dense(hidden_states)
++       lm_logits = self.lm_head(dense)
+</span>        ...
+</code></pre></div></div>
+
+<hr>
+
+<h2 id="effect-of-layer-wise-parameter-sharing">
+<a class="anchor" href="#effect-of-layer-wise-parameter-sharing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Effect of layer-wise parameter sharing</h2>
+
+<hr>
+
+<p>This version of ALGPT-2 has about $47$M parameters while GPT-2 has $124$M. This ALGPT-2 model with parameter sharing trains a lot faster than GPT-2 ($9$ hours vs $20$ hours for a $90$K iteration training run), but is consistently about $10$ ppl worse than GPT-2 ($31$ vs $21$ ppl).</p>
+
+<p>This difference is quite a bit larger than the difference between ALBERT and BERT, but might be explained by masked language modelling being an easier task than autoregressive language modelling. Increasing the size of the ALGPT-2 model might make it more competitive with GPT-2.</p>
+
+<iframe title="Effect of layer-wise parameter sharing" src="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/Effect-of-layer-wise-parameter-sharing--VmlldzoxNzI0NzU" height="600px" width="100%"> </iframe>
+
+<hr>
+
+<h2 id="effect-of-removing-dropout">
+<a class="anchor" href="#effect-of-removing-dropout" aria-hidden="true"><span class="octicon octicon-link"></span></a>Effect of removing dropout</h2>
+
+<hr>
+
+<p>I ran a <a href="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/Effect-of-removing-dropout--VmlldzoxNzI0Nzk">partial training run</a> on removing dropout from ALGPT-2. I didn’t run it for very long, but it looks like removing dropout gives you a slight improvement (~3ppl).</p>
+
+<hr>
+
+<h2 id="effect-of-factorized-embeddings">
+<a class="anchor" href="#effect-of-factorized-embeddings" aria-hidden="true"><span class="octicon octicon-link"></span></a>Effect of factorized embeddings</h2>
+
+<hr>
+
+<p>I ran three experiments for $90$K iterations with three different values for the factorized embedding ($128$, $256$, and $512$) as well as the baseline version without a factorized embedding.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th>ALGPT-2</th>
+      <th>ALGPT-2 512</th>
+      <th>ALGPT-2 256</th>
+      <th>ALGPT-2 128</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Parameters</td>
+      <td>47M</td>
+      <td>34M</td>
+      <td>20M</td>
+      <td>13M</td>
+    </tr>
+    <tr>
+      <td>Time</td>
+      <td>~9H</td>
+      <td>~9H</td>
+      <td>~9H</td>
+      <td>~9H</td>
+    </tr>
+    <tr>
+      <td>Perplexity</td>
+      <td>31</td>
+      <td>31</td>
+      <td>34</td>
+      <td>38</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>There was practically no difference in the loss curves between the baseline and the $512$ run since the change in the number of parameters wasn’t that great. However, the training runs with factorized embeddings of sizes $256$ and $128$ were significantly worse than the baseline: $34$ and $38$ ppl respectively, a pretty big difference from the baseline of $31$ ppl.</p>
+
+<iframe title="Effect of factorized embeddings" src="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/Effect-of-factorized-embeddings--VmlldzoxNzI0ODU" height="600px" width="100%"> </iframe>
+
+<hr>
+
+<h2 id="effect-of-model-size">
+<a class="anchor" href="#effect-of-model-size" aria-hidden="true"><span class="octicon octicon-link"></span></a>Effect of model size</h2>
+
+<hr>
+
+<p>I only had the time to run one more full training run with ALGPT-2-medium (this one is comparable to the $345$M version of GPT-2). ALGPT-2-medium has about $66$M parameters and took twice as long as ALGPT-2 to train (a little more than $20$ hours). The larger model size made quite a big difference in performance, the training perplexity decreased $5$ppl from $31$ to $26$ ppl.</p>
+
+<iframe title="Effect of model size" src="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/Effect-of-model-size--VmlldzoxNzI0OTM" height="600px" width="100%"> </iframe>
+
+<hr>
+
+<h1 id="conclusion-and-next-steps">
+<a class="anchor" href="#conclusion-and-next-steps" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conclusion and next steps</h1>
+
+<hr>
+
+<p>Well that’s pretty much everything that I did. After my TPU pod’s quota was used up, I started working on a <a href="https://github.com/bkkaggle/L2">few</a> <a href="/">other</a>
+<a href="https://github.com/bkkaggle/raytracer">things</a> over the summer and just kept delaying writing up what I did for a couple of months until now.</p>
+
+<p>There are a lot of things that I still want to work on or look into:</p>
+
+<ul>
+  <li>Training larger versions of ALGPT-2</li>
+  <li>Removing or replacing the normalization layers in transformers</li>
+  <li>Working on distilling/shrinking language models with billions of parameters to make them more accessible</li>
+  <li>Apply something like <a href="https://arxiv.org/abs/1912.02164">PPLM</a> to condition language models for few-shot inference (kinda like what GPT-3 does).</li>
+</ul>
+
+<p>Thanks for reading through all this. If you think there’s any mistakes or inaccuracies in this post, please let me know.</p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="bkkaggle/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/algpt2/2020/07/17/ALGPT2-part-2.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>My blog where I write about what I&#39;m working on, currently machine learning and rust dev.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/bkkaggle" title="bkkaggle"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
