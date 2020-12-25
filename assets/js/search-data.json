@@ -215,18 +215,29 @@
   
 
   
+      ,"page7": {
+          "title": "/Uses",
+          "content": "Desk . 75cm Ikea LINNMON table top+legs | 2x Ikea TERTIAL desk lamps with 1200 lumen 5000K bulbs | Ikea JÄRVFJÄLLET ergonomic chair | . . 13” 2019 space gray macbook pro with 2 usb-c ports and 8 GB of RAM | 32” Samsung UJ590 4K monitor | 27” LG 27MP58VQ-P 1080p monitor | . . 2020 IPad+1st gen apple pencil | space gray IPhone X | . . HP Prime CAS calculator | ANC over-ear wireless headphones | Anker bluetooth earbuds | wireless charger | usb-c hub with pass-through charging and HDMI port | . Apps . chrome | discord | vscode | iterm2 | pocket | feedly | onenote (on ipad too) | procreate | Figma | . Vscode . Github dark theme | Discord presence | Latex Workshop | Prettier code formatting | Pylance python language server | Rust Analyzer | Settings Sync | . Dev . Node through nvm | Python 3.9 through miniconda | MacTex through brew | Rust nightly | Vim: config files coc plugins: coc-tsserver coc-json coc-html coc-css coc-clangd coc-rust-analyzer coc-latex coc-python | . | . Misc . remap caps-lock to esc | install JetBrains mono font with ligatures | use touchid for sudo | . Wallpaper: .",
+          "url": "https://bkkaggle.github.io/blog/uses/",
+          "relUrl": "/uses/",
+          "date": ""
+      }
+      
   
 
   
   
 
   
+  
+
+  
 
   
   
 
   
-      ,"page11": {
+      ,"page12": {
           "title": "",
           "content": "Sitemap: {{ “sitemap.xml” | absolute_url }} | .",
           "url": "https://bkkaggle.github.io/blog/robots.txt",

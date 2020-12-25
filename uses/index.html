@@ -4,19 +4,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Gpu Memory Usage | Bilal’s Blog</title>
+<title>/Uses | Bilal’s Blog</title>
 <meta name="generator" content="Jekyll v4.1.1" />
-<meta property="og:title" content="Gpu Memory Usage" />
+<meta property="og:title" content="/Uses" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Writing down my notes on memory usage in neural networks" />
-<meta property="og:description" content="Writing down my notes on memory usage in neural networks" />
-<link rel="canonical" href="https://bkkaggle.github.io/blog/2020/07/06/gpu-memory-usage.html" />
-<meta property="og:url" content="https://bkkaggle.github.io/blog/2020/07/06/gpu-memory-usage.html" />
+<meta name="description" content="My blog where I write about what I’m working on, currently machine learning and rust dev." />
+<meta property="og:description" content="My blog where I write about what I’m working on, currently machine learning and rust dev." />
+<link rel="canonical" href="https://bkkaggle.github.io/blog/uses/" />
+<meta property="og:url" content="https://bkkaggle.github.io/blog/uses/" />
 <meta property="og:site_name" content="Bilal’s Blog" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2020-07-06T00:00:00-05:00" />
 <script type="application/ld+json">
-{"url":"https://bkkaggle.github.io/blog/2020/07/06/gpu-memory-usage.html","@type":"BlogPosting","headline":"Gpu Memory Usage","dateModified":"2020-07-06T00:00:00-05:00","datePublished":"2020-07-06T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bkkaggle.github.io/blog/2020/07/06/gpu-memory-usage.html"},"description":"Writing down my notes on memory usage in neural networks","@context":"https://schema.org"}</script>
+{"url":"https://bkkaggle.github.io/blog/uses/","@type":"WebPage","headline":"/Uses","description":"My blog where I write about what I’m working on, currently machine learning and rust dev.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bkkaggle.github.io/blog/feed.xml" title="Bilal's Blog" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" /><script src="https://hypothes.is/embed.js" async></script>
@@ -84,113 +82,100 @@ window.onload = wrap_img;
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        <article class="post">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Gpu Memory Usage</h1><p class="page-description">Writing down my notes on memory usage in neural networks</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-07-06T00:00:00-05:00" itemprop="datePublished">
-        Jul 6, 2020
-      </time>
-       • <span class="read-time" title="Estimated read time">
-    
-    
-      1 min read
-    
-</span></p>
+    <h1 class="post-title">/Uses</h1>
+  </header>
 
-    
-
-    </header>
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <ul class="section-nav">
-<li class="toc-entry toc-h2"><a href="#purpose">Purpose</a></li>
-<li class="toc-entry toc-h2"><a href="#background">Background</a>
-<ul>
-<li class="toc-entry toc-h3"><a href="#parameter-memory">Parameter memory</a></li>
-<li class="toc-entry toc-h3"><a href="#optimizer-memory">Optimizer memory</a>
-<ul>
-<li class="toc-entry toc-h4"><a href="#adafactor">Adafactor:</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul><hr>
-
-<h2 id="purpose">
-<a class="anchor" href="#purpose" aria-hidden="true"><span class="octicon octicon-link"></span></a>Purpose</h2>
-
-<hr>
-
-<p>The purpose of these series of blog posts is to be a place to store my (still in-progress!) notes about topics in learning, help me keep track of everything I’ve learned over the last three years, and to practice my Latex skills.</p>
-
-<p>This is my fourth blog post in the series, and this time I’m (again) really just Cmd+C’ing and Cmd+V’ing over some of my notes on memory usage in neural networks</p>
-
-<hr>
-
-<h2 id="background">
-<a class="anchor" href="#background" aria-hidden="true"><span class="octicon octicon-link"></span></a>Background</h2>
-
-<hr>
-
-<p>GPU memory is used in a few main ways:</p>
+  <div class="post-content">
+    <h1 id="desk">Desk</h1>
 
 <ul>
-  <li>Memory to store the network’s parameters</li>
-  <li>Memory to store the network’s gradients</li>
-  <li>Memory to store the activations of the current batch</li>
-  <li>Memory used by optimizers (momentum, adam, etc) that stores running averages</li>
+  <li>75cm Ikea LINNMON table top+legs</li>
+  <li>2x Ikea TERTIAL desk lamps with 1200 lumen 5000K bulbs</li>
+  <li>Ikea JÄRVFJÄLLET ergonomic chair</li>
 </ul>
 
-<hr>
-
-<h3 id="parameter-memory">
-<a class="anchor" href="#parameter-memory" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parameter memory</h3>
-
-<hr>
-
-<p>Parameter memory usage depends on two things: The number of parameters and the amount of bytes used for each parameter.</p>
+<hr />
 
 <ul>
-  <li>Float 32 =&gt; 4 bytes</li>
-  <li>Float 16 =&gt; 2 bytes</li>
+  <li>13” 2019 space gray macbook pro with 2 usb-c ports and 8 GB of RAM</li>
+  <li>32” Samsung UJ590 4K monitor</li>
+  <li>27” LG 27MP58VQ-P 1080p monitor</li>
 </ul>
 
-<p>You can calculate parameter memory with the formula:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>parameter_memory = n_parameters * bytes_per_parameter
-</code></pre></div></div>
-
-<hr>
-
-<h3 id="optimizer-memory">
-<a class="anchor" href="#optimizer-memory" aria-hidden="true"><span class="octicon octicon-link"></span></a>Optimizer memory</h3>
-
-<p>–</p>
+<hr />
 
 <ul>
-  <li>SGD doesn’t store any extra memory</li>
-  <li>Momentum doubles parameter memory usage by storing one momentum parameter per parameter in a model</li>
-  <li>Adam stores 2 momenum parameters so Adam uses 3x the parameter memory of SGD</li>
+  <li>2020 IPad+1st gen apple pencil</li>
+  <li>space gray IPhone X</li>
 </ul>
 
-<h4 id="adafactor">
-<a class="anchor" href="#adafactor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adafactor:</h4>
+<hr />
 
 <ul>
-  <li>By default adafactor uses n+m memory to store momentum parameters for a nxm matrix</li>
-  <li>If you enable Beta_1, it will be like using momentum + n+m memory, so a little more than 2x SGD</li>
+  <li>HP Prime CAS calculator</li>
+  <li>ANC over-ear wireless headphones</li>
+  <li>Anker bluetooth earbuds</li>
+  <li>wireless charger</li>
+  <li>usb-c hub with pass-through charging and HDMI port</li>
 </ul>
 
-  </div><!-- from https://github.com/utterance/utterances -->
-<script src="https://utteranc.es/client.js"
-        repo="bkkaggle/blog"
-        issue-term="title"
-        label="blogpost-comment"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script><a class="u-url" href="/blog/2020/07/06/gpu-memory-usage.html" hidden></a>
+<h1 id="apps">Apps</h1>
+
+<ul>
+  <li>chrome</li>
+  <li>discord</li>
+  <li>vscode</li>
+  <li>iterm2</li>
+  <li>pocket</li>
+  <li>feedly</li>
+  <li>onenote (on ipad too)</li>
+  <li>procreate</li>
+  <li>Figma</li>
+</ul>
+
+<h1 id="vscode">Vscode</h1>
+
+<ul>
+  <li><a href="https://marketplace.visualstudio.com/items?itemName=GitHub.github-vscode-theme">Github dark theme</a></li>
+  <li><a href="https://marketplace.visualstudio.com/items?itemName=icrawl.discord-vscode">Discord presence</a></li>
+  <li><a href="https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop">Latex Workshop</a></li>
+  <li><a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">Prettier code formatting</a></li>
+  <li><a href="https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance">Pylance python language server</a></li>
+  <li><a href="https://marketplace.visualstudio.com/items?itemName=matklad.rust-analyzer">Rust Analyzer</a></li>
+  <li><a href="https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync">Settings Sync</a></li>
+</ul>
+
+<h1 id="dev">Dev</h1>
+
+<ul>
+  <li>Node through nvm</li>
+  <li>Python 3.9 through miniconda</li>
+  <li>MacTex through brew</li>
+  <li>Rust nightly</li>
+  <li>Vim: <a href="https://github.com/bkkaggle/dotfiles">config files</a>
+    <ul>
+      <li>coc plugins: <code class="language-plaintext highlighter-rouge">coc-tsserver coc-json coc-html coc-css coc-clangd coc-rust-analyzer coc-latex coc-python</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="misc">Misc</h1>
+
+<ul>
+  <li>remap <code class="language-plaintext highlighter-rouge">caps-lock</code> to <code class="language-plaintext highlighter-rouge">esc</code></li>
+  <li>install JetBrains mono font with ligatures</li>
+  <li><a href="https://apple.stackexchange.com/questions/259093/can-touch-id-for-the-mac-touch-bar-authenticate-sudo-users-and-admin-privileges/306324#306324">use</a> touchid for <code class="language-plaintext highlighter-rouge">sudo</code></li>
+</ul>
+
+<p>Wallpaper: <img src="/blog/images/wallpaper.jpg" alt="firewatch wallpaper" /></p>
+
+  </div>
+
 </article>
+
       </div>
     </main><footer class="site-footer h-card">
   <data class="u-url" href="/blog/"></data>
