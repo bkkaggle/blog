@@ -5,8 +5,8 @@ permalink: /uses/
 ---
 
 ### Desk
- 
-I have a 75cm Ikea LINNMON table top+legs which is pretty nice and large but I'd recommend anyone to get a stronger set of table legs since mine could be sturdier. I use two Ikea TERTIAL desk lamps with 1200 lumen 5000K bulbs that are pretty bright and simulate daylight pretty well, which is especially helpful during the winter. I recently got an Ikea JÄRVFJÄLLET chair, which I'd really recommend for anyone who doesn't want to go for a herman miller but still wants something that's comfortable to sit on for *many, many* hours at a time. 
+
+I have a 75cm Ikea LINNMON table top+legs which is pretty nice and large but I'd recommend anyone to get a stronger set of table legs since mine could be sturdier. I use two Ikea TERTIAL desk lamps with 1200 lumen 5000K bulbs that are pretty bright and simulate daylight pretty well, which is especially helpful during the winter. I recently got an Ikea JÄRVFJÄLLET chair, which I'd really recommend for anyone who doesn't want to go for a herman miller but still wants something that's comfortable to sit on for _many, many_ hours at a time.
 
 I use the 13" 2019 macbook pro along with a 32" 4K monitor and a 27" 1080p monitor. I used to use the 27" one full time until I got the second monitor so I now just keep this one off to the side to hold extra tabs/arxiv papers/discord. I bought an ipad with the apple pencil for school (thanks academic readiness bursary) because I eventually wore down my old surface pro 3's pen nib until it just stopped working. The ipad was a really good freebie for working on math assignments but I've moved over to latex for most of my assignments now. I still use my OG iphone x which was one of the last iphones to still have force touch, which was imo a really underrated feature that I don't want to give up. And ofc, I got all my apple gadgets in matching space gray.
 
@@ -24,13 +24,13 @@ So far, I'm sticking with chrome for browsing the web, vscode as my main editor,
 
 I've found some of these extensions to be useful:
 
-- [Github dark theme](https://marketplace.visualstudio.com/items?itemName=GitHub.github-vscode-theme)
-- [Discord presence](https://marketplace.visualstudio.com/items?itemName=icrawl.discord-vscode)
-- [Latex Workshop](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop)
-- [Prettier code formatting](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-- [Pylance python language server](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance)
-- [Rust Analyzer](https://marketplace.visualstudio.com/items?itemName=matklad.rust-analyzer)
-- [Settings Sync](https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync)
+-   [Github dark theme](https://marketplace.visualstudio.com/items?itemName=GitHub.github-vscode-theme)
+-   [Discord presence](https://marketplace.visualstudio.com/items?itemName=icrawl.discord-vscode)
+-   [Latex Workshop](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop)
+-   [Prettier code formatting](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+-   [Pylance python language server](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance)
+-   [Rust Analyzer](https://marketplace.visualstudio.com/items?itemName=matklad.rust-analyzer)
+-   [Settings Sync](https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync)
 
 ### Dev
 
