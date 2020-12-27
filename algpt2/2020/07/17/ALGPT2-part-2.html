@@ -93,7 +93,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      26 min read
+      24 min read
     
 </span></p>
 
@@ -126,6 +126,7 @@ window.onload = wrap_img;
 <li class="toc-entry toc-h2"><a href="#openwebtext">OpenWebText</a></li>
 <li class="toc-entry toc-h2"><a href="#tokenization">Tokenization</a></li>
 <li class="toc-entry toc-h2"><a href="#tfrecords">TFRecords</a></li>
+<li class="toc-entry toc-h2"><a href="#coding-it-up">Coding it up</a></li>
 </ul>
 </li>
 <li class="toc-entry toc-h1"><a href="#replicating-gpt-2">Replicating GPT-2</a>
@@ -187,11 +188,7 @@ window.onload = wrap_img;
 
 <p>A little bit about myself: I’m an incoming software engineering student at the University of Waterloo and this post is supposed to be a writeup of a NLP research project that I was working on from around March to May of 2020 (right in the middle of the first Covid-19 lockdown of 2020, I’m currently writing this on July 15, 2020 while waiting for my Pix2PixHD model to train for a few hundred epochs on colab for a new project that I’m working on).</p>
 
-<p>Over the last three or four years I’ve done a lot of machine learning related stuff. I started out back in early 2017 by going through the <a href="https://www.google.com/search?sxsrf=ALeKk010AvJn990-Vqb1MA50AAVbnMg8uw:1594828665718&amp;q=Introduction+to+Machine+Learning+with+Python:+A+Guide+for+Data+Scientists&amp;stick=H4sIAAAAAAAAAONgVuLVT9c3NEwyLzRLKs_Ke8RowS3w8sc9YSn9SWtOXmPU5OIKzsgvd80rySypFJLmYoOyBKX4uVB18ixi9fTMKynKTylNLsnMz1MoyVfwTUzOyMxLVfBJTSzKy8xLVyjPLMlQCKgsycjPs1JwVHAvzUxJVUjLL1JwSSxJVAhOzkwFGl9cUgwAxHs76ZgAAAA&amp;biw=1920&amp;bih=969">Introduction to Machine Learning with Python</a> and <a href="https://www.google.com/search?q=hands+on+machine+learning+with+scikit-learn+and+tensorflow&amp;oq=hands+on+mac&amp;aqs=chrome.0.0j69i57j46j0l5.1936j0j7&amp;sourceid=chrome&amp;ie=UTF-8">Hands-On Machine Learning with Scikit-Learn and TensorFlow</a> books. At the time, I didn’t really understand all the math behind neural networks, but it got me hooked on ML and then I took the <a href="https://www.deeplearning.ai/">deeplearning.ai</a> courses on Coursera and the original <a href="https://www.fast.ai/">fast.ai</a> course (back in late 2017 when they hadn’t switched over to Pytorch and still used Tensorflow and Keras).</p>
-
-<p>I started competing on <a href="https://kaggle.com">Kaggle</a> in early 2018 and kept on competing in competitions non-stop for about a year and a half, winning a few medals and becoming a competitions expert (At one point I was ranked in the top $100$ Kagglers on the competitions leaderboard). Kaggle was a really nice way to get a lot of experience using neural networks because of the wide range of competitions and datasets that I had access to. I started out by doing a few semantic segmentation competitions then moved onto competing in NLP competitions. Since around mid 2019, I’ve been working on a bunch of different projects in ML and lower-level CS stuff. I worked on making a PyTorch-style machine learning library in <a href="https://github.com/bkkaggle/L2/tree/c%2B%2B">C++</a> and more recently in <a href="https://github.com/bkkaggle/L2">Rust</a>, and for the last few months I’ve also been trying to keep up with all the new machine learning (esp. NLP) papers on arXiv.</p>
-
-<p>I was pretty lucky that I started learning NLP right before transformers exploded in popularity, I remember when <a href="https://arxiv.org/abs/1301.3781">word2vec</a> and LSTMs were still SOTA on a lot of NLP tasks, and it has been really interesting to see how much the field of NLP has changed in just a few years, going from when LSTMs with only a a handful of layers and somewhere on the order of $512$ units were considered to be large networks and computationally expensive to train, to training LSTMs with <a href="https://arxiv.org/abs/1409.0473">attention</a> layers on top, to the original <a href="https://arxiv.org/abs/1706.03762">transformer encoder/decoder networks</a>, to <a href="https://arxiv.org/abs/1801.06146">ULMFIT</a> and <a href="https://arxiv.org/abs/1802.05365">ELMO</a>, then <a href="https://arxiv.org/abs/1810.04805">BERT</a>, <a href="https://arxiv.org/abs/1907.11692">RoBERTa</a>, <a href="https://openai.com/blog/better-language-models/">GPT-2</a>, and <a href="https://arxiv.org/abs/1910.10683">T5</a>, to just a few months ago with the explosion of new, more efficient replacements for self-attention like the <a href="https://openai.com/blog/sparse-transformer/">Sparse Transformer</a>, the <a href="https://arxiv.org/abs/2001.04451">Reformer</a>, and <a href="https://arxiv.org/abs/2005.00743">Synthesizers</a>, and now <a href="https://arxiv.org/abs/2005.14165">GPT-3</a>, which IMO has the potential to really change the whole field of NLP.</p>
+<p>I was pretty lucky that I started learning NLP right before transformers exploded in popularity, I remember when <a href="https://arxiv.org/abs/1301.3781">word2vec</a> and LSTMs were SOTA on a lot of NLP tasks, and it has been really interesting to see how much the field of NLP has changed in just a few years, going from when LSTMs with only a a handful of layers and somewhere on the order of $512$ units were considered to be large networks and computationally expensive to train, to training LSTMs with <a href="https://arxiv.org/abs/1409.0473">attention</a> layers on top, to the original <a href="https://arxiv.org/abs/1706.03762">transformer encoder/decoder networks</a>, to <a href="https://arxiv.org/abs/1801.06146">ULMFIT</a> and <a href="https://arxiv.org/abs/1802.05365">ELMO</a>, then <a href="https://arxiv.org/abs/1810.04805">BERT</a>, <a href="https://arxiv.org/abs/1907.11692">RoBERTa</a>, <a href="https://openai.com/blog/better-language-models/">GPT-2</a>, and <a href="https://arxiv.org/abs/1910.10683">T5</a>, to just a few months ago with the explosion of new, more efficient replacements for self-attention like the <a href="https://openai.com/blog/sparse-transformer/">Sparse Transformer</a>, the <a href="https://arxiv.org/abs/2001.04451">Reformer</a>, and <a href="https://arxiv.org/abs/2005.00743">Synthesizers</a>, and now <a href="https://arxiv.org/abs/2005.14165">GPT-3</a>, which IMO has the potential to really change the whole field of NLP.</p>
 
 <p>Just a few years ago we trained shallow recurrent networks on datasets, then pretrained large transformer language models on large datasets and finetuned on task-specific datasets. Now the whole idea of just training a gigantic language model on a huge dataset, then conditioning the model in a form of few-shot learning by prepending a few examples of a certain task to an input feels like it can really make NLP models a lot more accessible and easier to productionize as well as making human-chatbot interactions a lot more realistic than they are today.</p>
 
@@ -422,7 +419,8 @@ window.onload = wrap_img;
 
 <hr>
 
-<p># Code</p>
+<h2 id="coding-it-up">
+<a class="anchor" href="#coding-it-up" aria-hidden="true"><span class="octicon octicon-link"></span></a>Coding it up</h2>
 
 <hr>
 
@@ -535,10 +533,10 @@ window.onload = wrap_img;
 
         ...
 
--       self.h = nn.ModuleList([Block(config.n_ctx, config, scale=True)
-<span class="gd">-           for _ in range(config.n_layer)])
-</span><span class="gi">+       self.h = Block(config.n_ctx, config, scale=True)
-</span>
+        # self.h = nn.ModuleList([Block(config.n_ctx, config, scale=True)
+        #     for _ in range(config.n_layer)])
+        self.h = Block(config.n_ctx, config, scale=True)
+
         ...
 
     def forward(self, ...):
@@ -547,20 +545,21 @@ window.onload = wrap_img;
 
         if past is None:
             past_length = 0
-<span class="gd">-           past = [None] * len(self.h)
-</span><span class="gi">+           past = [None] * self.config.n_layer
-</span>
+
+            # past = [None] * len(self.h)
+            past = [None] * self.config.n_layer
+
         ...
 
--       for i, (block, layer_past) in enumerate(zip(self.h, past)):
-<span class="gi">+       for i in range(self.config.n_layer):
-</span>
+        # for i, (block, layer_past) in enumerate(zip(self.h, past)):
+        for i in range(self.config.n_layer):
+
             if self.output_hidden_states:
                 all_hidden_states = all_hidden_states + (hidden_states.view(*output_shape),)
-<span class="gd">-
--           outputs = block(
-</span><span class="gi">+           outputs = self.h(
-</span>                hidden_states,
+
+            # outputs = block(
+            outputs = self.h(
+                hidden_states,
                 layer_past=layer_past,
                 attention_mask=attention_mask,
                 head_mask=head_mask[i],
@@ -614,11 +613,11 @@ window.onload = wrap_img;
 
         ...
 
--       self.wte = nn.Embedding(config.vocab_size, config.n_embd)
-<span class="gd">-       self.wpe = nn.Embedding(config.n_positions, config.n_embd)
-</span><span class="gi">+       self.wte = nn.Embedding(config.vocab_size, config.embedding_size)
-+       self.wpe = nn.Embedding(config.n_positions, config.embedding_size)
-</span>
+        # self.wte = nn.Embedding(config.vocab_size, config.n_embd)
+        # self.wpe = nn.Embedding(config.n_positions, config.n_embd)
+        self.wte = nn.Embedding(config.vocab_size, config.embedding_size)
+        self.wpe = nn.Embedding(config.n_positions, config.embedding_size)
+
 +       self.projection_layer = nn.Linear(config.embedding_size, config.n_embd)
 
 
@@ -641,18 +640,18 @@ window.onload = wrap_img;
 
         ...
 
--        self.lm_head = nn.Linear(config.n_embd, config.vocab_size, bias=False)
-<span class="gi">+        self.dense = nn.Linear(config.n_embd, config.embedding_size)
-+        self.lm_head = nn.Linear(config.embedding_size, config.vocab_size, bias=False)
-</span>
+        # self.lm_head = nn.Linear(config.n_embd, config.vocab_size, bias=False)
+        self.dense = nn.Linear(config.n_embd, config.embedding_size)
+        self.lm_head = nn.Linear(config.embedding_size, config.vocab_size, bias=False)
+
     def forward(self, ...):
 
         ...
 
--       lm_logits = self.lm_head(hidden_states)
-<span class="gi">+       dense = self.dense(hidden_states)
-+       lm_logits = self.lm_head(dense)
-</span>        ...
+        # lm_logits = self.lm_head(hidden_states)
+        dense = self.dense(hidden_states)
+        lm_logits = self.lm_head(dense)
+        ...
 </code></pre></div></div>
 
 <hr>
