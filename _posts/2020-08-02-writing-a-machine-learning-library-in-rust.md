@@ -1,7 +1,7 @@
 ---
 toc: true
 layout: post
-description: "[Extremely WIP]: Make your own fast PyTorch-style ML library in Rust"
+description: '[Extremely WIP]: Make your own fast PyTorch-style ML library in Rust'
 categories: [rust]
 comments: true
 sticky_rank: 2
@@ -9,11 +9,11 @@ sticky_rank: 2
 
 ---
 
-<img alt='A code example showing how my library could be used' src='https://raw.githubusercontent.com/bkkaggle/L2/master/screenshot.png' width='100%'></img>
+<img alt='A code example showing how my library could be used' src='https://raw.githubusercontent.com/bilal2vec/L2/master/screenshot.png' width='100%'></img>
 
 <p align='center'>
     <a href="">
-        <img src="https://github.com/bkkaggle/l2/workflows/Rust/badge.svg" alt="Rust: CI">
+        <img src="https://github.com/bilal2vec/l2/workflows/Rust/badge.svg" alt="Rust: CI">
     </a>
     <a href="https://opensource.org/licenses/MIT">
         <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
@@ -32,7 +32,7 @@ sticky_rank: 2
 
 ---
 
-This blog post shows you, step-by-step, how to build a fast [PyTorch](https://pytorch.org/)-style machine learning library in the [Rust programming language](https://www.rust-lang.org/). This blog post is based on a library called [L2](https://github.com/bkkaggle/L2) that I finished working on a while ago.
+This blog post shows you, step-by-step, how to build a fast [PyTorch](https://pytorch.org/)-style machine learning library in the [Rust programming language](https://www.rust-lang.org/). This blog post is based on a library called [L2](https://github.com/bilal2vec/L2) that I finished working on a while ago.
 
 I [compiled](#resources) quite a long list of blog posts, articles, and GitHub repos that I found useful when I was working on L2, so take a look at that if that's the type of stuff you're interested in.
 
@@ -50,12 +50,11 @@ I wrote dozens of tests and benchmarks to make sure that L2 was working properly
 
 **If you just want to skip to the code part of the tutorial, click [here](#baseline)**
 
-
 # Background
 
 ---
 
-Last summer [^3], I [wrote](https://github.com/bkkaggle/L2/tree/c%2B%2B) a machine learning library as a way of getting better at using C++. The library wasn't really that advanced (I didn't have an autograd system like PyTorch does, instead I just did the backprop calculations by hand for each layer) or very fast (I pretty much passed everything by value and didn't really put a focus on making my code fast and performant), but it was a good way at getting a lot of experience working with a lower level language like c++ that I'd never used before and I learned a lot about how machine learning libraries like Pytorch and Tensorflow work behind the scenes.
+Last summer [^3], I [wrote](https://github.com/bilal2vec/L2/tree/c%2B%2B) a machine learning library as a way of getting better at using C++. The library wasn't really that advanced (I didn't have an autograd system like PyTorch does, instead I just did the backprop calculations by hand for each layer) or very fast (I pretty much passed everything by value and didn't really put a focus on making my code fast and performant), but it was a good way at getting a lot of experience working with a lower level language like c++ that I'd never used before and I learned a lot about how machine learning libraries like Pytorch and Tensorflow work behind the scenes.
 
 This summer, I did a complete rewrite of L2, this time in Rust, with a focus on making it as close to Pytorch as I could (speed and feature wise) and got to learn about and implement a lot of interesting and cool features that are used in all the popular machine learning libraries today.
 
@@ -234,7 +233,7 @@ $$
 \end{bmatrix}
 $$
 
-Most machine learning libraries like Numpy, PyTorch, and Tensorflow store Tensors in row-major order by default. This lets you quickly access the next element in the same row just by moving one element to the right in the `Tensor`. Column-major order isn't as commonly used, the only time I had to use it when I was integrating a BLAS library written in very optimized Fortran into L2 in order to use its super fast matrix multiplication implementations (using BLAS sped up my matrix multiplication code by about 200 times IIRC). 
+Most machine learning libraries like Numpy, PyTorch, and Tensorflow store Tensors in row-major order by default. This lets you quickly access the next element in the same row just by moving one element to the right in the `Tensor`. Column-major order isn't as commonly used, the only time I had to use it when I was integrating a BLAS library written in very optimized Fortran into L2 in order to use its super fast matrix multiplication implementations (using BLAS sped up my matrix multiplication code by about 200 times IIRC).
 
 The choice of whether to store your data in column-major or row-major order depends on whether you prefer to have contigous access to elements in the first or last dimensions of your `Tensor`. For example, if you store a batch of $N$ three-channel image in a `Tensor` of dimensions ($256$, $256$, $3$), you would be able to either access the channels or the batch dimension contigously (i.e. have the elements in that dimension be next to each other in memory) depending on whether it's stored in row-major or column-major order.
 
@@ -285,7 +284,7 @@ $$
 <br />
 
 $$
-\text{physical index} = {\color{blue} 1} {\color{white} *} {\color{blue} 1} {\color{white} +} {\color{red} 1} {\color{white} *} {\color{red} 2} 
+\text{physical index} = {\color{blue} 1} {\color{white} *} {\color{blue} 1} {\color{white} +} {\color{red} 1} {\color{white} *} {\color{red} 2}
 $$
 
 $$
@@ -1803,20 +1802,14 @@ _todo_
 
 ---
 
-
 ---
 
 # References
 
 ---
 
-
 [^1]: I guess the fact that I like to spend my last free summer working on a side project says a lot about me :p
-
 [^2]: I'm almost certain that there are a few bugs in how I handle backpropogation through broadcasted tensors
-
 [^3]: That's the summer of 2019, for those of you reading this in the near or not so near future :)
-
 [^4]: https://blog.ezyang.com/2019/05/pytorch-internals/'>http://blog.ezyang.com/2019/05/pytorch-internals
-
 [^5]: In my defense, I was pretty bad at algorithmy stuff back then

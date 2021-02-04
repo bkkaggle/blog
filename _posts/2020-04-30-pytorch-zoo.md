@@ -1,7 +1,7 @@
 ---
 toc: true
 layout: post
-description: A collection of useful modules and utilities in PyTorch 
+description: A collection of useful modules and utilities in PyTorch
 categories: [AI, cross-posts]
 comments: true
 ---
@@ -14,19 +14,19 @@ PyTorch Zoo is a collection of modules and utilities that I’ve found to be use
 
 ---
 
-<img src='https://raw.githubusercontent.com/bkkaggle/pytorch_zoo/master/screenshot.png' width='100%'></img>
+<img src='https://raw.githubusercontent.com/bilal2vec/pytorch_zoo/master/screenshot.png' width='100%'></img>
 
-From: [https://github.com/bkkaggle/pytorch_zoo](https://github.com/bkkaggle/pytorch_zoo)
+From: [https://github.com/bilal2vec/pytorch_zoo](https://github.com/bilal2vec/pytorch_zoo)
 
 ---
 
-The library is open-source on [Github](https://github.com/bkkaggle/pytorch_zoo) and is available as a pip package. Just run:
+The library is open-source on [Github](https://github.com/bilal2vec/pytorch_zoo) and is available as a pip package. Just run:
 
 ```bash
 pip install pytorch_zoo
 ```
 
-to install it in your local development environment and check out the [documentation](https://github.com/bkkaggle/pytorch_zoo#documentation) for in-depth examples on all the library’s features. I’ve included quite a few modules in PyTorch Zoo, so I’ll try to focus only on some of the ones that I found to be the most interesting for this blog post.
+to install it in your local development environment and check out the [documentation](https://github.com/bilal2vec/pytorch_zoo#documentation) for in-depth examples on all the library’s features. I’ve included quite a few modules in PyTorch Zoo, so I’ll try to focus only on some of the ones that I found to be the most interesting for this blog post.
 
 ---
 
@@ -48,26 +48,26 @@ for epoch in range(10):
 
 ---
 
-
 # Squeeze and Excitation
 
 ---
 
-Squeeze and Excitation modules [^2] [^3] can be easily integrated into existing models by just adding one of these modules after each convolutional block and improves the model’s performance without significantly impacting training time. All three variants of the squeeze-and-excitation block that were proposed in the original papers are available in PyTorch Zoo, see the [documentation](https://github.com/bkkaggle/pytorch_zoo#modules) for specific examples on how to use each one. Here's an example of how you could use SqueezeAndExcitation in a convolutional block
+Squeeze and Excitation modules [^2] [^3] can be easily integrated into existing models by just adding one of these modules after each convolutional block and improves the model’s performance without significantly impacting training time. All three variants of the squeeze-and-excitation block that were proposed in the original papers are available in PyTorch Zoo, see the [documentation](https://github.com/bilal2vec/pytorch_zoo#modules) for specific examples on how to use each one. Here's an example of how you could use SqueezeAndExcitation in a convolutional block
 
 ```python
 class Encoder(nn.Module):
     def __init__(self, in_ch, out_ch, r):
         super(Encoder, self).__init__()
-        
+
         self.conv = nn.Conv2d(in_ch, out_ch, 3, padding=1)
         self.se = SqueezeAndExcitation(out_ch, r)
-        
+
     def forward(self, x):
         x = F.relu(self.conv(x), inplace=True)
         x = self.se(x)
         return x
 ```
+
 ---
 
 # Utilities
@@ -79,7 +79,7 @@ PyTorch Zoo also has a small range of utilities to make it easier to follow PyTo
 Here’s an example of how you could use some of these utilities:
 
 ```python
-# Send a notification to your phone directly with IFTTT (https://ifttt.com/) notifying 
+# Send a notification to your phone directly with IFTTT (https://ifttt.com/) notifying
 # you when a training run ends or at the end of an epoch.
 notify({'value1': 'Notification title', 'value2': 'Notification body'}, key=[IFTTT_KEY])
 
@@ -104,7 +104,7 @@ save_model(model, fold=0)
 
 ---
 
-To learn more about PyTorch Zoo and its features, check out our [Github repository](https://github.com/bkkaggle/pytorch_zoo).
+To learn more about PyTorch Zoo and its features, check out our [Github repository](https://github.com/bilal2vec/pytorch_zoo).
 
 The project is still a work in progress, so if you find a bug, think there is something missing, or have any suggestions for new features or modules, feel free to open an issue or a pull request. Feel free to use the library or code from it in your own projects, and if you feel that some code used in this project hasn’t been properly accredited, please open an issue.
 
@@ -115,7 +115,5 @@ The project is still a work in progress, so if you find a bug, think there is so
 ---
 
 [^1]: https://arxiv.org/abs/1803.09820
-
 [^2]: https://arxiv.org/abs/1709.01507
-
 [^3]: https://arxiv.org/abs/1803.02579

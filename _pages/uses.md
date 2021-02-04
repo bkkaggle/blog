@@ -36,9 +36,9 @@ I've found some of these extensions to be useful:
 
 I use zsh as my default shell with the [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) theme manager and the [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) plugin. I use [starship.rs](https://starship.rs) as my shell prompt.
 
-I've installed and use nightly Rust, the latest version of Node through nvm, Python 3.9 through miniconda, and Latex through MacTex and homebrew. I also recently set up a nice vim [configuration](https://github.com/bkkaggle/dotfiles) with almost all the features that I would have had through vscode, which is nice when I just want to edit something in the terminal or when I'm working on a remote machine through ssh. I use CoC for autocompletion with the following language server plugins: `coc-tsserver coc-json coc-html coc-css coc-clangd coc-rust-analyzer coc-latex coc-python`.
+I've installed and use nightly Rust, the latest version of Node through nvm, Python 3.9 through miniconda, and Latex through MacTex and homebrew. I also recently set up a nice vim [configuration](https://github.com/bilal2vec/dotfiles) with almost all the features that I would have had through vscode, which is nice when I just want to edit something in the terminal or when I'm working on a remote machine through ssh. I use CoC for autocompletion with the following language server plugins: `coc-tsserver coc-json coc-html coc-css coc-clangd coc-rust-analyzer coc-latex coc-python`.
 
-You can see most of the configuration files I use to customize my experience [here](https://github.com/bkkaggle/dotfiles).
+You can see most of the configuration files I use to customize my experience [here](https://github.com/bilal2vec/dotfiles).
 
 ### Misc
 
