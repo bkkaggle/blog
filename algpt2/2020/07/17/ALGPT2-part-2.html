@@ -487,7 +487,7 @@ window.onload = wrap_img;
 
 <p>I made a <a href="https://colab.research.google.com/drive/19Q0M9lMI4FqE7sosepkNVeIvan39SVFI?usp=sharing">colab notebook</a> showing how to use my pretrained GPT-2 model to generate text</p>
 
-<iframe title="Replicating GPT-2" src="https://app.wandb.ai/bilal2vec/lm-finetuning/reports/Replicating-GPT-2-(124M)--VmlldzoxNzE3Mzc" height="600px" width="100%"> </iframe>
+<iframe title="Replicating GPT-2" src="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/Replicating-GPT-2-(124M)--VmlldzoxNzE3Mzc" height="600px" width="100%"> </iframe>
 
 <hr>
 
@@ -669,7 +669,7 @@ window.onload = wrap_img;
 
 <p>This difference is quite a bit larger than the difference between ALBERT and BERT, but might be explained by masked language modelling being an easier task than autoregressive language modelling. Increasing the size of the ALGPT-2 model might make it more competitive with GPT-2.</p>
 
-<iframe title="Effect of layer-wise parameter sharing" src="https://app.wandb.ai/bilal2vec/lm-finetuning/reports/Effect-of-layer-wise-parameter-sharing--VmlldzoxNzI0NzU" height="600px" width="100%"> </iframe>
+<iframe title="Effect of layer-wise parameter sharing" src="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/Effect-of-layer-wise-parameter-sharing--VmlldzoxNzI0NzU" height="600px" width="100%"> </iframe>
 
 <hr>
 
@@ -726,7 +726,7 @@ window.onload = wrap_img;
 
 <p>There was practically no difference in the loss curves between the baseline and the $512$ run since the change in the number of parameters wasn’t that great. However, the training runs with factorized embeddings of sizes $256$ and $128$ were significantly worse than the baseline: $34$ and $38$ ppl respectively, a pretty big difference from the baseline of $31$ ppl.</p>
 
-<iframe title="Effect of factorized embeddings" src="https://app.wandb.ai/bilal2vec/lm-finetuning/reports/Effect-of-factorized-embeddings--VmlldzoxNzI0ODU" height="600px" width="100%"> </iframe>
+<iframe title="Effect of factorized embeddings" src="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/Effect-of-factorized-embeddings--VmlldzoxNzI0ODU" height="600px" width="100%"> </iframe>
 
 <hr>
 
@@ -737,7 +737,7 @@ window.onload = wrap_img;
 
 <p>I only had the time to run one more full training run with ALGPT-2-medium (this one is comparable to the $345$M version of GPT-2). ALGPT-2-medium has about $66$M parameters and took twice as long as ALGPT-2 to train (a little more than $20$ hours). The larger model size made quite a big difference in performance, the training perplexity decreased $5$ppl from $31$ to $26$ ppl.</p>
 
-<iframe title="Effect of model size" src="https://app.wandb.ai/bilal2vec/lm-finetuning/reports/Effect-of-model-size--VmlldzoxNzI0OTM" height="600px" width="100%"> </iframe>
+<iframe title="Effect of model size" src="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/Effect-of-model-size--VmlldzoxNzI0OTM" height="600px" width="100%"> </iframe>
 
 <hr>
 
