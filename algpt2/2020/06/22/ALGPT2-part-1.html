@@ -10,15 +10,15 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Best Practices for Finetuning Large Transformer Language models" />
 <meta property="og:description" content="Best Practices for Finetuning Large Transformer Language models" />
-<link rel="canonical" href="https://bkkaggle.github.io/blog/algpt2/2020/06/22/ALGPT2-part-1.html" />
-<meta property="og:url" content="https://bkkaggle.github.io/blog/algpt2/2020/06/22/ALGPT2-part-1.html" />
+<link rel="canonical" href="https://bilal2vec.github.io/blog/algpt2/2020/06/22/ALGPT2-part-1.html" />
+<meta property="og:url" content="https://bilal2vec.github.io/blog/algpt2/2020/06/22/ALGPT2-part-1.html" />
 <meta property="og:site_name" content="Bilal Khan" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-06-22T00:00:00-05:00" />
 <script type="application/ld+json">
-{"url":"https://bkkaggle.github.io/blog/algpt2/2020/06/22/ALGPT2-part-1.html","@type":"BlogPosting","headline":"Algpt2 Part 1","dateModified":"2020-06-22T00:00:00-05:00","datePublished":"2020-06-22T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bkkaggle.github.io/blog/algpt2/2020/06/22/ALGPT2-part-1.html"},"description":"Best Practices for Finetuning Large Transformer Language models","@context":"https://schema.org"}</script>
+{"url":"https://bilal2vec.github.io/blog/algpt2/2020/06/22/ALGPT2-part-1.html","@type":"BlogPosting","headline":"Algpt2 Part 1","dateModified":"2020-06-22T00:00:00-05:00","datePublished":"2020-06-22T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bilal2vec.github.io/blog/algpt2/2020/06/22/ALGPT2-part-1.html"},"description":"Best Practices for Finetuning Large Transformer Language models","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bkkaggle.github.io/blog/feed.xml" title="Bilal Khan" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bilal2vec.github.io/blog/feed.xml" title="Bilal Khan" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" /><script src="https://hypothes.is/embed.js" async></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
@@ -132,9 +132,9 @@ window.onload = wrap_img;
 
 <p>Unfortunately, ALGPT2 doesn’t generate coherent, natural sounding text as well as GPT2 (ALGPT2 gets $31$ ppl on OpenWebText compared to $21$ ppl for my pretrained GPT2 model), but I’m writing this series of blog posts to go through everything I’ve learned over the last few months.</p>
 
-<p>I have a cleaned-up version of my codebase on Github <a href="https://github.com/bkkaggle/lm-training-research-project">here</a>, and my original codebase with all my notes <a href="https://github.com/bkkaggle/lm-finetuning">here</a>.</p>
+<p>I have a cleaned-up version of my codebase on Github <a href="https://github.com/bilal2vec/lm-training-research-project">here</a>, and my original codebase with all my notes <a href="https://github.com/bilal2vec/lm-finetuning">here</a>.</p>
 
-<p>You can take a look at my Weights&amp;Biases workspace with all my runs <a href="https://app.wandb.ai/bkkaggle/lm-finetuning">here</a>.</p>
+<p>You can take a look at my Weights&amp;Biases workspace with all my runs <a href="https://app.wandb.ai/bilal2vec/lm-finetuning">here</a>.</p>
 
 <hr>
 
@@ -143,7 +143,7 @@ window.onload = wrap_img;
 
 <hr>
 
-<p>I don’t usually have access to a lot of compute (I mostly just use Google Colab) so I started out by limiting the scope of my project to finetuning or running inference on GPT2. I wrote down a <a href="https://github.com/bkkaggle/lm-finetuning/blob/master/Markdown/RESEARCH.md#objectives">few notes</a> on what I wanted to look into:</p>
+<p>I don’t usually have access to a lot of compute (I mostly just use Google Colab) so I started out by limiting the scope of my project to finetuning or running inference on GPT2. I wrote down a <a href="https://github.com/bilal2vec/lm-finetuning/blob/master/Markdown/RESEARCH.md#objectives">few notes</a> on what I wanted to look into:</p>
 
 <hr>
 
@@ -214,7 +214,7 @@ window.onload = wrap_img;
 
 <p>Most of the GPU experiments I did were with NVidia’s Apex library, with its $01$ mixed precision setting. I also tried running a few experiments on using only FP16, but the gradients would explode or vanish and the model wouldn’t train.</p>
 
-<p>I have a <a href="https://github.com/bkkaggle/transformers/tree/grad-checkpointing">forked version</a> of Huggingface’s Transformers repository where I’ve implemented gradient checkpointing for GPT-2. I haven’t been maintaining it but you can see all the changes that I did to make it work (it’s really only a few lines of code) <a href="https://github.com/huggingface/transformers/compare/master...bkkaggle:grad-checkpointing">here</a>. I tried training GPT2-XL with grad checkpointing which IIRC worked with a smaller context length of 256 but still threw OOM errors when finetuning at a context length of 1024.</p>
+<p>I have a <a href="https://github.com/bilal2vec/transformers/tree/grad-checkpointing">forked version</a> of Huggingface’s Transformers repository where I’ve implemented gradient checkpointing for GPT-2. I haven’t been maintaining it but you can see all the changes that I did to make it work (it’s really only a few lines of code) <a href="https://github.com/huggingface/transformers/compare/master...bilal2vec:grad-checkpointing">here</a>. I tried training GPT2-XL with grad checkpointing which IIRC worked with a smaller context length of 256 but still threw OOM errors when finetuning at a context length of 1024.</p>
 
 <p>For small datasets like WikiText-2, (WikiText-2 consists of about 2 million words, so it’s actually on the larger size for datasets that you might collect yourself) the model usually overfits within the first 1-3 epochs, so most of the experiments that I did trained for a single epoch — there really is no performance benefit to finetuning for any longer. I set the learning rate for all of my finetuning experiments to $5e-5$ (This was just the first value I tried, no hyperparameter tuning involved) and linearly increased the learning rate from $0$ to $5e-5$ over the first 10% of the training iterations and then linearly decayed it to zero over the rest of the training iterations.</p>
 
@@ -224,13 +224,13 @@ window.onload = wrap_img;
 
 <p>If you want to finetune GPT2 on a dataset like WikiText-2, there’s a relationship between the batch size, learning rate, and the number of training iterations that you need to adjust to train effectively and avoid overfitting or plateauing. There’s a pretty important ratio that you need to keep constant between the batch size and the learning rate. A larger batch size means that there are fewer gradient updates performed if you keep the number of training iterations constant.</p>
 
-<p>I have a <a href="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/1-epoch-context-len--Vmlldzo3NTI4MA">WandB report</a> showing a few different training runs on WikiText-2 with different sized GPT2 models and context lengths. The results aren’t really that surprising, finetuning larger models at larger context lengths increases perplexity significantly.</p>
+<p>I have a <a href="https://app.wandb.ai/bilal2vec/lm-finetuning/reports/1-epoch-context-len--Vmlldzo3NTI4MA">WandB report</a> showing a few different training runs on WikiText-2 with different sized GPT2 models and context lengths. The results aren’t really that surprising, finetuning larger models at larger context lengths increases perplexity significantly.</p>
 
 <p>I wrote a quick <a href="https://colab.research.google.com/drive/1Vxh91ASFvCPgBL0I6ui97SyxtoLBvY3I?usp=sharing">Colab notebook</a> on how to finetune and evaluate on WikiText-2.</p>
 
   </div><!-- from https://github.com/utterance/utterances -->
 <script src="https://utteranc.es/client.js"
-        repo="bkkaggle/blog"
+        repo="bilal2vec/blog"
         issue-term="title"
         label="blogpost-comment"
         theme="github-light"
@@ -259,7 +259,7 @@ window.onload = wrap_img;
       </div>
     </div>
 
-    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/bkkaggle" title="bkkaggle"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/bilal2vec" title="bilal2vec"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
 </div>
 
   </div>

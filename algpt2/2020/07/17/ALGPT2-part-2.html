@@ -10,15 +10,15 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="How I (almost) replicated OpenAI’s GPT-2 (124M version)" />
 <meta property="og:description" content="How I (almost) replicated OpenAI’s GPT-2 (124M version)" />
-<link rel="canonical" href="https://bkkaggle.github.io/blog/algpt2/2020/07/17/ALGPT2-part-2.html" />
-<meta property="og:url" content="https://bkkaggle.github.io/blog/algpt2/2020/07/17/ALGPT2-part-2.html" />
+<link rel="canonical" href="https://bilal2vec.github.io/blog/algpt2/2020/07/17/ALGPT2-part-2.html" />
+<meta property="og:url" content="https://bilal2vec.github.io/blog/algpt2/2020/07/17/ALGPT2-part-2.html" />
 <meta property="og:site_name" content="Bilal Khan" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-07-17T00:00:00-05:00" />
 <script type="application/ld+json">
-{"url":"https://bkkaggle.github.io/blog/algpt2/2020/07/17/ALGPT2-part-2.html","@type":"BlogPosting","headline":"Algpt2 Part 2","dateModified":"2020-07-17T00:00:00-05:00","datePublished":"2020-07-17T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bkkaggle.github.io/blog/algpt2/2020/07/17/ALGPT2-part-2.html"},"description":"How I (almost) replicated OpenAI’s GPT-2 (124M version)","@context":"https://schema.org"}</script>
+{"url":"https://bilal2vec.github.io/blog/algpt2/2020/07/17/ALGPT2-part-2.html","@type":"BlogPosting","headline":"Algpt2 Part 2","dateModified":"2020-07-17T00:00:00-05:00","datePublished":"2020-07-17T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bilal2vec.github.io/blog/algpt2/2020/07/17/ALGPT2-part-2.html"},"description":"How I (almost) replicated OpenAI’s GPT-2 (124M version)","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bkkaggle.github.io/blog/feed.xml" title="Bilal Khan" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bilal2vec.github.io/blog/feed.xml" title="Bilal Khan" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" /><script src="https://hypothes.is/embed.js" async></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
@@ -320,7 +320,7 @@ window.onload = wrap_img;
 
 <p>When I was working on this project, I set up two VMs; One with a lot of RAM and CPU cores to process the data quickly and another small instance to run the TPU training script. <em>One of the nice things about training on TPUs and TPU pods is that as long as your data has been preprocessed as a set of TFRecord files, you don’t need a really powerful VM instance which saves you a lot of money/compute credits.</em></p>
 
-<p>You can look at <a href="https://github.com/bkkaggle/lm-finetuning/blob/master/Markdown/CLOUD.md">this</a> for a full list of every command that I used to setup the VM and preprocess the dataset.</p>
+<p>You can look at <a href="https://github.com/bilal2vec/lm-finetuning/blob/master/Markdown/CLOUD.md">this</a> for a full list of every command that I used to setup the VM and preprocess the dataset.</p>
 
 <hr>
 
@@ -358,7 +358,7 @@ window.onload = wrap_img;
 
 <p>I trained a Byte-level BPE tokenizer with a vocabulary size of $50,257$ (The same as GPT-2) on a $1$M file subset of the training set (I’m not sure if GPT-2 trains the tokenizer on the entire dataset or on just a subset, but I know that the <a href="https://arxiv.org/abs/1909.05858">CTRL</a> paper trains their tokenizer on a 5% split of their training set.). I used Hugginface’s fast Rust-based <a href="https://github.com/huggingface/tokenizers">Tokenizers</a> library and their <code class="language-plaintext highlighter-rouge">ByteLevelBPETokenizer</code> tokenizer.</p>
 
-<p>You can use my script <a href="https://github.com/bkkaggle/lm-finetuning/blob/master/train_tokenizer.py">here</a> and run</p>
+<p>You can use my script <a href="https://github.com/bilal2vec/lm-finetuning/blob/master/train_tokenizer.py">here</a> and run</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">python3</span> <span class="n">train_tokenizer</span><span class="p">.</span><span class="n">py</span> <span class="o">--</span><span class="n">train_path</span> <span class="p">.</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">openwebtext</span><span class="o">/</span> <span class="o">--</span><span class="n">save_path</span> <span class="p">.</span><span class="o">/</span><span class="n">tokenizer</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">vocab_size</span> <span class="mi">50257</span> <span class="o">--</span><span class="n">n_files</span> <span class="mi">1000000</span>
@@ -398,12 +398,12 @@ window.onload = wrap_img;
 <blockquote>
   <p>Here’s a thing that’s not very well documented when working with TPU Pods (this doesn’t really apply to TPUs as much): TPU Pods create a lot (100s of GBs) of logs that get sent to Stackdriver, where you get charged about 50 cents for each GiB of logs ingested beyond a certain limit (I think it’s around 50GiB/month). In just a few days of training, I ended up being charged about a $$100$ IIRC. Luckily, I still had most of the free GCP credits so this didn’t end up being a major problem for me, but make sure to turn off ingesting logs for TPUs.</p>
 
-  <p>I ran into a problem early on when I got access to the TPU pod where my code would work perfectly on a single TPU, but would throw an <code class="language-plaintext highlighter-rouge">Out of range: End of sequence</code> <a href="https://gist.github.com/bkkaggle/ee63a04cd86c5fd45c41dc0b7ce109eb">error</a> when running it on a TPU pod. I struggled with this for a pretty long time until I took a look at <a href="https://www.kaggle.com/c/flower-classification-with-tpus/discussion/130199">this</a> Kaggle discussion post that says that TPUs expect each TPU board (8 cores) to get its own TFrecord file (until that point, I was splitting the train set into 8 TFRecord files where I should’ve been splitting it into 16 (128 cores / 8 cores per board) TFRecord files.</p>
+  <p>I ran into a problem early on when I got access to the TPU pod where my code would work perfectly on a single TPU, but would throw an <code class="language-plaintext highlighter-rouge">Out of range: End of sequence</code> <a href="https://gist.github.com/bilal2vec/ee63a04cd86c5fd45c41dc0b7ce109eb">error</a> when running it on a TPU pod. I struggled with this for a pretty long time until I took a look at <a href="https://www.kaggle.com/c/flower-classification-with-tpus/discussion/130199">this</a> Kaggle discussion post that says that TPUs expect each TPU board (8 cores) to get its own TFrecord file (until that point, I was splitting the train set into 8 TFRecord files where I should’ve been splitting it into 16 (128 cores / 8 cores per board) TFRecord files.</p>
 
   <p>TPUs are awesome for scaling to huge models and huge datasets, but there are a lot of TPU-specific information (especially for TPU Pods) that you need to know that’s not covered in the documentation and isn’t easy to find._**</p>
 </blockquote>
 
-<p>You can use my script <a href="https://github.com/bkkaggle/lm-finetuning/blob/master/make_tfrecords.py">here</a> and run</p>
+<p>You can use my script <a href="https://github.com/bilal2vec/lm-finetuning/blob/master/make_tfrecords.py">here</a> and run</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 make_tfrecords.py <span class="nt">--path</span> ./data/openwebtext/ <span class="nt">--save_path</span> ./train/ <span class="nt">--files_per_tfrecord</span> 500000 <span class="se">\</span>
     <span class="nt">--use_control_codes</span> <span class="nt">--seq_len</span> 1024 <span class="nt">--min_seq_len</span> <span class="nt">--tokenizer</span> ./tokenizer/
@@ -415,7 +415,7 @@ window.onload = wrap_img;
 
 <p>to convert the raw text files from the train and validation splits into two sets of $16$ TFRecord files.</p>
 
-<p>I ran a quick analysis on the average lengths of text fields in the dataset, $67$% of files have less than $1024$ tokens, $35$% of files have less than $512$ tokens, and only $10$% of files have less than $256$ tokens. This means that if I wanted to make the dataset as clean as possible and have each input sequence to the model be of a single contigous stream of $1024$ tokens, the dataset’s size would be a lot smaller. For this reason, everyone prepends a token like <code class="language-plaintext highlighter-rouge">&lt;|endoftext|&gt;</code> to the beginning of each sequence and concatenates together sequences with lengths smaller than $1024$. The specifics of how exactly you do that (e.g. do you treat the dataset as single stream of tokens and just break it up into sequences of length $1024$, or do you keep track of sequences smaller that $1024$ and just concatenate them together into a single sequence) really shouldn’t make too big of a difference in your model’s performance, but you can take a look at my implementation <a href="https://github.com/bkkaggle/lm-finetuning/blob/master/make_tfrecords.py">here</a>.</p>
+<p>I ran a quick analysis on the average lengths of text fields in the dataset, $67$% of files have less than $1024$ tokens, $35$% of files have less than $512$ tokens, and only $10$% of files have less than $256$ tokens. This means that if I wanted to make the dataset as clean as possible and have each input sequence to the model be of a single contigous stream of $1024$ tokens, the dataset’s size would be a lot smaller. For this reason, everyone prepends a token like <code class="language-plaintext highlighter-rouge">&lt;|endoftext|&gt;</code> to the beginning of each sequence and concatenates together sequences with lengths smaller than $1024$. The specifics of how exactly you do that (e.g. do you treat the dataset as single stream of tokens and just break it up into sequences of length $1024$, or do you keep track of sequences smaller that $1024$ and just concatenate them together into a single sequence) really shouldn’t make too big of a difference in your model’s performance, but you can take a look at my implementation <a href="https://github.com/bilal2vec/lm-finetuning/blob/master/make_tfrecords.py">here</a>.</p>
 
 <p>My version doesn’t take full advantage of the fast, multithreaded <code class="language-plaintext highlighter-rouge">batch_encode_plus()</code> way to tokenize large datasets in parallel since it only keeps the first <code class="language-plaintext highlighter-rouge">context_len</code> tokens in each line of the files which makes dealing with files with more or less than $1024$ tokens harder. Because of this, tokenizing the dataset takes about $8$ hours, which is something I want to improve.</p>
 
@@ -428,7 +428,7 @@ window.onload = wrap_img;
 
 <hr>
 
-<p>Since I’m using TPUs, the only real library that you can practically use right now would be Tensorflow. I didn’t want to have to go through the learning curve of learning how to make custom training loops and stuff in TF2 so I just stuck to using Keras. You can take a look at my training script (It’s pretty short) <a href="https://github.com/bkkaggle/lm-finetuning/blob/master/train_tfrecords.py">here</a>. It’s pretty simple so I’m not going to copy over the entire training script, but I will talk about a few small code snippets.</p>
+<p>Since I’m using TPUs, the only real library that you can practically use right now would be Tensorflow. I didn’t want to have to go through the learning curve of learning how to make custom training loops and stuff in TF2 so I just stuck to using Keras. You can take a look at my training script (It’s pretty short) <a href="https://github.com/bilal2vec/lm-finetuning/blob/master/train_tfrecords.py">here</a>. It’s pretty simple so I’m not going to copy over the entire training script, but I will talk about a few small code snippets.</p>
 
 <p>I usually like to add a ptvsd breakpoint to my script so I can debug my training script locally with vscode before pushing it up to my VM</p>
 
@@ -487,7 +487,7 @@ window.onload = wrap_img;
 
 <p>I made a <a href="https://colab.research.google.com/drive/19Q0M9lMI4FqE7sosepkNVeIvan39SVFI?usp=sharing">colab notebook</a> showing how to use my pretrained GPT-2 model to generate text</p>
 
-<iframe title="Replicating GPT-2" src="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/Replicating-GPT-2-(124M)--VmlldzoxNzE3Mzc" height="600px" width="100%"> </iframe>
+<iframe title="Replicating GPT-2" src="https://app.wandb.ai/bilal2vec/lm-finetuning/reports/Replicating-GPT-2-(124M)--VmlldzoxNzE3Mzc" height="600px" width="100%"> </iframe>
 
 <hr>
 
@@ -511,7 +511,7 @@ window.onload = wrap_img;
   <p>Section 2 of the <a href="https://arxiv.org/pdf/2005.14165.pdf">GPT-3</a> paper lists the learning rates the OpenAI team used for different sized models when training GPT-3. They use a learning rate of $6e-4$ for the $124$M version of their model and decrease the learning rate with model size.</p>
 </blockquote>
 
-<p>You can take a look at <a href="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/adamw-1e-4-vs-1e-3--VmlldzoxNzE3NDc">this</a> partial training run to see the difference between training at different learning rates.</p>
+<p>You can take a look at <a href="https://app.wandb.ai/bilal2vec/lm-finetuning/reports/adamw-1e-4-vs-1e-3--VmlldzoxNzE3NDc">this</a> partial training run to see the difference between training at different learning rates.</p>
 
 <hr>
 
@@ -520,7 +520,7 @@ window.onload = wrap_img;
 
 <hr>
 
-<p>Since I was using the Huggingface <a href="https://github.com/huggingface/transformers">Transformers</a> repository’s implementations of GPT-2 and ALBERT, I just <a href="https://github.com/bkkaggle/transformers/tree/albert-style">forked</a> the repository and modified a few files to implement my ALGPT-2 model. You can take a look at all the changes that I had to make <a href="https://github.com/bkkaggle/transformers/compare/master...bkkaggle:albert-style">here</a>, most of the changes are only to make ALGPT-2 compatible with the /Transformers library and to be able to use the useful abstractions that it gives you, but most of the important code is in the <a href="https://github.com/bkkaggle/transformers/blob/0f7c7c11e7b8bc8a275f3d16865b8a873c271571/src/transformers/modeling_algpt2.py"><code class="language-plaintext highlighter-rouge">modelling_algpt2.py</code> file</a> in which I just copied over the contents of <code class="language-plaintext highlighter-rouge">modelling_gpt2.py</code> and changed a few parts of the code. I’m only showing the changes that I made to the Pytorch version of ALGPT-2 here, the changes in the TF version are pretty similar to the Pytorch version and can be seen <a href="https://github.com/bkkaggle/transformers/blob/0f7c7c11e7b8bc8a275f3d16865b8a873c271571/src/transformers/modeling_tf_algpt2.py">here</a>.</p>
+<p>Since I was using the Huggingface <a href="https://github.com/huggingface/transformers">Transformers</a> repository’s implementations of GPT-2 and ALBERT, I just <a href="https://github.com/bilal2vec/transformers/tree/albert-style">forked</a> the repository and modified a few files to implement my ALGPT-2 model. You can take a look at all the changes that I had to make <a href="https://github.com/bilal2vec/transformers/compare/master...bilal2vec:albert-style">here</a>, most of the changes are only to make ALGPT-2 compatible with the /Transformers library and to be able to use the useful abstractions that it gives you, but most of the important code is in the <a href="https://github.com/bilal2vec/transformers/blob/0f7c7c11e7b8bc8a275f3d16865b8a873c271571/src/transformers/modeling_algpt2.py"><code class="language-plaintext highlighter-rouge">modelling_algpt2.py</code> file</a> in which I just copied over the contents of <code class="language-plaintext highlighter-rouge">modelling_gpt2.py</code> and changed a few parts of the code. I’m only showing the changes that I made to the Pytorch version of ALGPT-2 here, the changes in the TF version are pretty similar to the Pytorch version and can be seen <a href="https://github.com/bilal2vec/transformers/blob/0f7c7c11e7b8bc8a275f3d16865b8a873c271571/src/transformers/modeling_tf_algpt2.py">here</a>.</p>
 
 <hr>
 
@@ -669,7 +669,7 @@ window.onload = wrap_img;
 
 <p>This difference is quite a bit larger than the difference between ALBERT and BERT, but might be explained by masked language modelling being an easier task than autoregressive language modelling. Increasing the size of the ALGPT-2 model might make it more competitive with GPT-2.</p>
 
-<iframe title="Effect of layer-wise parameter sharing" src="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/Effect-of-layer-wise-parameter-sharing--VmlldzoxNzI0NzU" height="600px" width="100%"> </iframe>
+<iframe title="Effect of layer-wise parameter sharing" src="https://app.wandb.ai/bilal2vec/lm-finetuning/reports/Effect-of-layer-wise-parameter-sharing--VmlldzoxNzI0NzU" height="600px" width="100%"> </iframe>
 
 <hr>
 
@@ -678,7 +678,7 @@ window.onload = wrap_img;
 
 <hr>
 
-<p>I ran a <a href="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/Effect-of-removing-dropout--VmlldzoxNzI0Nzk">partial training run</a> on removing dropout from ALGPT-2. I didn’t run it for very long, but it looks like removing dropout gives you a slight improvement (~3ppl).</p>
+<p>I ran a <a href="https://app.wandb.ai/bilal2vec/lm-finetuning/reports/Effect-of-removing-dropout--VmlldzoxNzI0Nzk">partial training run</a> on removing dropout from ALGPT-2. I didn’t run it for very long, but it looks like removing dropout gives you a slight improvement (~3ppl).</p>
 
 <hr>
 
@@ -726,7 +726,7 @@ window.onload = wrap_img;
 
 <p>There was practically no difference in the loss curves between the baseline and the $512$ run since the change in the number of parameters wasn’t that great. However, the training runs with factorized embeddings of sizes $256$ and $128$ were significantly worse than the baseline: $34$ and $38$ ppl respectively, a pretty big difference from the baseline of $31$ ppl.</p>
 
-<iframe title="Effect of factorized embeddings" src="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/Effect-of-factorized-embeddings--VmlldzoxNzI0ODU" height="600px" width="100%"> </iframe>
+<iframe title="Effect of factorized embeddings" src="https://app.wandb.ai/bilal2vec/lm-finetuning/reports/Effect-of-factorized-embeddings--VmlldzoxNzI0ODU" height="600px" width="100%"> </iframe>
 
 <hr>
 
@@ -737,7 +737,7 @@ window.onload = wrap_img;
 
 <p>I only had the time to run one more full training run with ALGPT-2-medium (this one is comparable to the $345$M version of GPT-2). ALGPT-2-medium has about $66$M parameters and took twice as long as ALGPT-2 to train (a little more than $20$ hours). The larger model size made quite a big difference in performance, the training perplexity decreased $5$ppl from $31$ to $26$ ppl.</p>
 
-<iframe title="Effect of model size" src="https://app.wandb.ai/bkkaggle/lm-finetuning/reports/Effect-of-model-size--VmlldzoxNzI0OTM" height="600px" width="100%"> </iframe>
+<iframe title="Effect of model size" src="https://app.wandb.ai/bilal2vec/lm-finetuning/reports/Effect-of-model-size--VmlldzoxNzI0OTM" height="600px" width="100%"> </iframe>
 
 <hr>
 
@@ -746,8 +746,8 @@ window.onload = wrap_img;
 
 <hr>
 
-<p>Well that’s pretty much everything that I did. After my TPU pod’s quota was used up, I started working on a <a href="https://github.com/bkkaggle/L2">few</a> <a href="/">other</a>
-<a href="https://github.com/bkkaggle/raytracer">things</a> over the summer and just kept delaying writing up what I did for a couple of months until now.</p>
+<p>Well that’s pretty much everything that I did. After my TPU pod’s quota was used up, I started working on a <a href="https://github.com/bilal2vec/L2">few</a> <a href="/">other</a>
+<a href="https://github.com/bilal2vec/raytracer">things</a> over the summer and just kept delaying writing up what I did for a couple of months until now.</p>
 
 <p>There are a lot of things that I still want to work on or look into:</p>
 
@@ -762,7 +762,7 @@ window.onload = wrap_img;
 
   </div><!-- from https://github.com/utterance/utterances -->
 <script src="https://utteranc.es/client.js"
-        repo="bkkaggle/blog"
+        repo="bilal2vec/blog"
         issue-term="title"
         label="blogpost-comment"
         theme="github-light"
@@ -791,7 +791,7 @@ window.onload = wrap_img;
       </div>
     </div>
 
-    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/bkkaggle" title="bkkaggle"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/bilal2vec" title="bilal2vec"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
 </div>
 
   </div>

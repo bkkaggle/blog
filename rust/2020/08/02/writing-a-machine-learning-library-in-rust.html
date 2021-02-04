@@ -10,15 +10,15 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="My blog where I write about what I’m working on, usually machine learning and rust dev." />
 <meta property="og:description" content="My blog where I write about what I’m working on, usually machine learning and rust dev." />
-<link rel="canonical" href="https://bkkaggle.github.io/blog/rust/2020/08/02/writing-a-machine-learning-library-in-rust.html" />
-<meta property="og:url" content="https://bkkaggle.github.io/blog/rust/2020/08/02/writing-a-machine-learning-library-in-rust.html" />
+<link rel="canonical" href="https://bilal2vec.github.io/blog/rust/2020/08/02/writing-a-machine-learning-library-in-rust.html" />
+<meta property="og:url" content="https://bilal2vec.github.io/blog/rust/2020/08/02/writing-a-machine-learning-library-in-rust.html" />
 <meta property="og:site_name" content="Bilal Khan" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-08-02T00:00:00-05:00" />
 <script type="application/ld+json">
-{"url":"https://bkkaggle.github.io/blog/rust/2020/08/02/writing-a-machine-learning-library-in-rust.html","@type":"BlogPosting","headline":"Writing A Machine Learning Library In Rust","dateModified":"2020-08-02T00:00:00-05:00","datePublished":"2020-08-02T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bkkaggle.github.io/blog/rust/2020/08/02/writing-a-machine-learning-library-in-rust.html"},"description":"My blog where I write about what I’m working on, usually machine learning and rust dev.","@context":"https://schema.org"}</script>
+{"url":"https://bilal2vec.github.io/blog/rust/2020/08/02/writing-a-machine-learning-library-in-rust.html","@type":"BlogPosting","headline":"Writing A Machine Learning Library In Rust","dateModified":"2020-08-02T00:00:00-05:00","datePublished":"2020-08-02T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://bilal2vec.github.io/blog/rust/2020/08/02/writing-a-machine-learning-library-in-rust.html"},"description":"My blog where I write about what I’m working on, usually machine learning and rust dev.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bkkaggle.github.io/blog/feed.xml" title="Bilal Khan" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bilal2vec.github.io/blog/feed.xml" title="Bilal Khan" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" /><script src="https://hypothes.is/embed.js" async></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
@@ -124,11 +124,11 @@ window.onload = wrap_img;
 <li class="toc-entry toc-h1"><a href="#references">References</a></li>
 </ul><hr>
 
-<p><img alt="A code example showing how my library could be used" src="https://raw.githubusercontent.com/bkkaggle/L2/master/screenshot.png" width="100%">&lt;/img&gt;</p>
+<p><img alt="A code example showing how my library could be used" src="https://raw.githubusercontent.com/bilal2vec/L2/master/screenshot.png" width="100%">&lt;/img&gt;</p>
 
 <p align="center">
     <a href="">
-        <img src="https://github.com/bkkaggle/l2/workflows/Rust/badge.svg" alt="Rust: CI">
+        <img src="https://github.com/bilal2vec/l2/workflows/Rust/badge.svg" alt="Rust: CI">
     </a>
     <a href="https://opensource.org/licenses/MIT">
         <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
@@ -148,7 +148,7 @@ window.onload = wrap_img;
 
 <hr>
 
-<p>This blog post shows you, step-by-step, how to build a fast <a href="https://pytorch.org/">PyTorch</a>-style machine learning library in the <a href="https://www.rust-lang.org/">Rust programming language</a>. This blog post is based on a library called <a href="https://github.com/bkkaggle/L2">L2</a> that I finished working on a while ago.</p>
+<p>This blog post shows you, step-by-step, how to build a fast <a href="https://pytorch.org/">PyTorch</a>-style machine learning library in the <a href="https://www.rust-lang.org/">Rust programming language</a>. This blog post is based on a library called <a href="https://github.com/bilal2vec/L2">L2</a> that I finished working on a while ago.</p>
 
 <p>I <a href="#resources">compiled</a> quite a long list of blog posts, articles, and GitHub repos that I found useful when I was working on L2, so take a look at that if that’s the type of stuff you’re interested in.</p>
 
@@ -171,7 +171,7 @@ window.onload = wrap_img;
 
 <hr>
 
-<p>Last summer <sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote">3</a></sup>, I <a href="https://github.com/bkkaggle/L2/tree/c%2B%2B">wrote</a> a machine learning library as a way of getting better at using C++. The library wasn’t really that advanced (I didn’t have an autograd system like PyTorch does, instead I just did the backprop calculations by hand for each layer) or very fast (I pretty much passed everything by value and didn’t really put a focus on making my code fast and performant), but it was a good way at getting a lot of experience working with a lower level language like c++ that I’d never used before and I learned a lot about how machine learning libraries like Pytorch and Tensorflow work behind the scenes.</p>
+<p>Last summer <sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote">3</a></sup>, I <a href="https://github.com/bilal2vec/L2/tree/c%2B%2B">wrote</a> a machine learning library as a way of getting better at using C++. The library wasn’t really that advanced (I didn’t have an autograd system like PyTorch does, instead I just did the backprop calculations by hand for each layer) or very fast (I pretty much passed everything by value and didn’t really put a focus on making my code fast and performant), but it was a good way at getting a lot of experience working with a lower level language like c++ that I’d never used before and I learned a lot about how machine learning libraries like Pytorch and Tensorflow work behind the scenes.</p>
 
 <p>This summer, I did a complete rewrite of L2, this time in Rust, with a focus on making it as close to Pytorch as I could (speed and feature wise) and got to learn about and implement a lot of interesting and cool features that are used in all the popular machine learning libraries today.</p>
 
@@ -1899,7 +1899,7 @@ TrackGrad: <span class="nb">true
 
   </div><!-- from https://github.com/utterance/utterances -->
 <script src="https://utteranc.es/client.js"
-        repo="bkkaggle/blog"
+        repo="bilal2vec/blog"
         issue-term="title"
         label="blogpost-comment"
         theme="github-light"
@@ -1928,7 +1928,7 @@ TrackGrad: <span class="nb">true
       </div>
     </div>
 
-    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/bkkaggle" title="bkkaggle"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/bilal2vec" title="bilal2vec"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
 </div>
 
   </div>
