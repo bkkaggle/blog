@@ -18,7 +18,7 @@ Here's a picture of everything on my desk (ignore the messy wiring):
 
 ### Apps
 
-So far, I'm sticking with chrome for browsing the web, vscode as my main editor, and [iterm2](https://iterm2.com/) as my preferred terminal emulator. I use the [pocket](https://getpocket.com/) extension on my laptop and phone to save any interesting articles to read through later, and [feedly](https://feedly.com/) for keeping up the RSS feeds of blogs that I like to follow. I mostly use discord to keep in touch with friends, figma to mockup designs and make memes, and I have the procreate app, even though I haven't used it much recently.
+At the moment, I'm using Firefox as my primary web browser, vscode as my main editor, and [iterm2](https://iterm2.com/) as my preferred terminal emulator. I use the [pocket](https://getpocket.com/) app on my laptop and phone to save any interesting articles to read through later, and [feedly](https://feedly.com/) for keeping up the RSS feeds of blogs that I like to follow. I mostly use discord to keep in touch with friends, figma to mockup designs and make memes, and I have the procreate app, even though I haven't used it much recently.
 
 ### Vscode
 
@@ -36,7 +36,7 @@ I've found some of these extensions to be useful:
 
 I use zsh as my default shell with the [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) theme manager and the [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) plugin. I use [starship.rs](https://starship.rs) as my shell prompt.
 
-I've installed and use nightly Rust, the latest version of Node through nvm, Python 3.9 through miniconda, and Latex through MacTex and homebrew. I also recently set up a nice vim [configuration](https://github.com/bilal2vec/dotfiles) with almost all the features that I would have had through vscode, which is nice when I just want to edit something in the terminal or when I'm working on a remote machine through ssh. I use CoC for autocompletion with the following language server plugins: `coc-tsserver coc-json coc-html coc-css coc-clangd coc-rust-analyzer coc-latex coc-python`.
+I've installed and use nightly Rust, the latest version of Node through nvm, Python 3.9 through miniconda, and Latex through MacTex and homebrew. I also recently set up a nice newvim [configuration](https://github.com/bilal2vec/dotfiles) with almost all the features that I would have had through vscode, which is nice when I just want to edit something in the terminal or when I'm working on a remote machine through ssh. I use CoC for autocompletion with the following language server plugins: `coc-tsserver coc-json coc-html coc-css coc-clangd coc-rust-analyzer coc-latex coc-python`.
 
 You can see most of the configuration files I use to customize my experience [here](https://github.com/bilal2vec/dotfiles).
 
