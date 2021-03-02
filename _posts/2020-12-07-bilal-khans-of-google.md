@@ -1,9 +1,8 @@
 ---
 toc: true
 layout: post
-description: 
+description:
 categories: []
 comments: true
 hide: true
 ---
-

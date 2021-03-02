@@ -7,7 +7,7 @@
 # https://learnxinyminutes.com/docs/yaml/
 
 title: Bilal Khan
-description: My blog where I write about what I'm working on, usually machine learning and rust dev.
+description: Blog
 github_username: bilal2vec
 # you can comment the below line out if your repo name is not different than your baseurl
 github_repo: 'blog'

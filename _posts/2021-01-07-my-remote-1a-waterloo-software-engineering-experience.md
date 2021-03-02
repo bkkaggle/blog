@@ -1,7 +1,7 @@
 ---
 toc: true
 layout: post
-description: My remote 1A term in waterloo's software engineering program.
+description: My remote 1A waterloo software engineering experience
 categories: []
 comments: true
 hide: false
@@ -9,21 +9,21 @@ hide: false
 
 # application season and pre-university
 
-hi, my name is bilal and i'm a 1b student in the software engineering program at the university of waterloo. i applied to university like every other canadian kid born in 2002 around september of last year, filled out my OUAC application, spent a lot longer than i should have looking over my AIF, and finally finished the main part of all my university applications by early january, JIT for covid.
+hi, my name is bilal and i'm currently a 1b student in the software engineering program at the university of waterloo. a bit of pre-university backstory: i applied to university like every other canadian kid born in 2002 around september of last year, filled out my OUAC application, spent a lot longer than i should have looking over my AIF, and finally finished the main part of all my university applications by early january, JIT for covid.
 
 🥲
 
-thankfully covid didn't have as much of an effect on my application (at least compared to everyone applying this fall). i remember that the CCC went on pretty much like normal and that the Euclid math contest was effectively cancelled, and i was able to finish off the rest of my courses by mid april. this meant that I got to have a 4.5-ish month summer vacation before starting university in the fall, which was the longest amount of free time that i'm probably going to have for a pretty long time. I got my decision letters in early may (accepted to software engineering, rejected from CS), and enrolled into the software engineering program. having all this free time was pretty fun at the beginning, but to no one's surprise, i got bored and started counting down the days to when school would start ...
+thankfully covid didn't have as much of an effect on my application (at least compared to everyone applying this fall). i remember that the CCC went on pretty much like normal and that the Euclid math contest was effectively cancelled, and i was able to finish off the rest of my courses by mid april. this meant that I got to have a 4.5-ish month summer vacation before starting university in the fall, which was the longest amount of free time that i'm probably going to have for a pretty long time. I got my decision letters in early may (accepted to software engineering, rejected from CS), and enrolled into the software engineering program. having all this free time was pretty fun at the beginning, but to no one's surprise, i quickly got bored and started counting down the days to when school would start ...
 
 By early june-ish (i think), it was pretty obvious that covid really wasn't going to go away any time soon and that our 1A term would be online (1B is also online), which meant that there was no way i was going to move to waterloo in the middle of a pandemic (covid miller hall 👀).
 
 # meeting the cohort
 
-ok, so my whole experience over the last 4 months isn't _all_ doom-and-gloom, i had a lot of really amazing times with my cohort which really helped feeling a lot less isolated. in early may, i joined a discord server for software engineering 2025 students, which even in those early days was pretty active and had a really nice vibe to it.
+ok, so my whole experience over the last 4 months isn't _all_ doom-and-gloom, there were a lot of fun experiences with my cohort which really helped feeling a lot less isolated. in early may, i joined a discord server for software engineering 2025 students, which even in those early days was pretty active and had a really nice vibe to it.
 
 through the server, i got to get to know a lot of really nice, funny, and all-around awesome people (you know who you are!). i'm not too sure about this since i don't know a lot of people in my year who are in other programs, but our cohort feels special in a way as it really has developed this sense of community that i think really helped with the isolation of studying alone. there's this whole stereotype of waterloo students that i heard of coming in—especially those in cs or engineering—that i really haven't felt like i experienced while in SE.
 
-just to list a few of the things that my cohort did before school even started: there was a phase where we made a `#social-media` channel that ended up with everyone following everyone else's github profiles, a couple of students organized a mini hackathon in june, we also hosted weekly game nights and video calls, as well as a movie night once (the frequency of these events dropped pretty quickly once school started), and i remember that there was this SE party that a bunch of people hosted during orientation week. we also had a sticker+hoodie competition in june to design a software engineering class of '25 sweater and had the hoodies shipped out by september, through [softwears](https://softwears.ca/). idk about you, but imo our designs are pretty slick:
+just to list a few of the things that my cohort did before school even started: there was a phase where we made a `#social-media` channel that ended up with everyone following everyone else's github profiles, a couple of students organized a mini hackathon in june, we also hosted weekly game nights and video calls, as well as a movie night once (the frequency of these events dropped pretty quickly once school started), and i remember that there was this SE party that a bunch of people hosted during orientation week. we also had a sticker+hoodie competition in june to design a SE class of '25 sweater and had the hoodies shipped out by september, through [softwears](https://softwears.ca/). idk about you, but imo our designs are pretty slick:
 
 ![stickers](https://bilal2vec.github.io/blog/images/stickers.jpg)
 ![hoodie front](https://bilal2vec.github.io/blog/images/hoodie_front.png)
@@ -31,13 +31,13 @@ just to list a few of the things that my cohort did before school even started: 
 
 > just to throw some friendly shade on the cs first years, i saw a post on their discord in mid october (and again a few weeks later) saying that they still haven't been able to choose a hoodie design 🥲
 
-by the time school started in early september, i'm pretty sure only about 20-30 people in the cohort chose to move to waterloo, while the rest studied from home (same story for the winter tem). most of us are in the toronto/GTA area or elsewhere in ontario, but there are also groups of people studying from elsewhere in canada, quite a few international students studying across _many_ timezones, as well as a few who took a gap year or entered university a few years early.
+by the time school started in early september, i'm pretty sure only about 20-30 people in the cohort chose to move to waterloo, while the rest studied from home (same story for the winter term). most of us are in the toronto/GTA area or elsewhere in ontario, but there are also groups of people studying from elsewhere in canada, quite a few international students studying across _many_ timezones, as well as a few who took a gap year or entered university a few years early.
 
 # 1A
 
 when september 8 finally rolled around i'm pretty sure that many people (including me) were looking forward to school starting if only to have _something_ change. the first day or two of classes were _interesting_ to say the least. since all our classes were online and asynchronous, with office hours a few times a week replacing live lectures, we really didn't have much of a "schedule" that we could follow other than knowing when assignments are due. a lot of credit to making sure that we didn't forget when assignments are due goes to the people who set up notion calendars and google docs with all the information scattered across all the different platforms that we had to use. going to the office hours in the first few days of class was a pretty ~~embarassing~~unforgettable experience, from the non-stop pings from webex whenever someone joined the call to the chat section of every call looking like twitch with endless streams of "F"s and "poggers"s.
 
-the courseload was also a thing for a lot of people to get to used to. we had 5 full 0.5 credit courses and the quarter-credit se101 course that was a bunch of short weekly activities and a term-long group project. i've heard that in a _normal year_, we would have usually had an assignment or quiz due for each course every week, along with midterms and finals. instead, we had two (pretty long) assignments due every week for each course, as well as midterms and finals for two courses and 3 monthly term tests for the other two. the university decided to put more emphasis on assignments and quizzes while making exams shorter, unproctored, and open-book, which helped make them less stressful.
+the courseload was also a thing for a lot of people to get to used to. we had 5 full credit courses and one half-credit course to juggle. i've heard that in a _normal year_, we would have usually had an assignment or quiz due for each course every week, along with midterms and finals. instead, we had two (pretty long) assignments due every week for each course, as well as midterms and finals for two courses and 3 monthly term tests for the other two. the university decided to put more emphasis on assignments and quizzes while making exams shorter, unproctored, and open-book, which helped make them less stressful.
 
 i looked up the class profile for the software engineering class of 2020 and their attendance rate decreased over time from the low 90s in 1A to about 50% by 4B. i stopped going to pretty much any synchronous office hour or tutorial after the first one or two weeks of class since it really wasn't worth spending the time there when i could be working on an assignment instead—i know that a pretty large portion of the class skipped most of their classes, so our attendance graph is going to look _very_ weird when we make our class profile in a few years.
 
